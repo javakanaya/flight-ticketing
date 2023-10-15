@@ -16,7 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->integer('first');
             $table->integer('business');
-            $table->integer('premium_ecomony');
+            $table->integer('premium_economy');
             $table->integer('economy');
         });
     }

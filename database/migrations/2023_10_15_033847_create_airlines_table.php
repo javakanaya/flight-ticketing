@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('name');
-            $table->char('IATA', 2);
+            $table->char('IATA', 3);
         });
     }
 

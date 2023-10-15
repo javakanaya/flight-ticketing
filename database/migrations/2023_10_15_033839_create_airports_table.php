@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('name');
-            $table->char('IATA', 3)->nullable()->unique();
+            $table->char('IATA', 4)->nullable()->unique();
             $table->double('timezone', 3, 1);
             $table->foreignId('city_id');
         });

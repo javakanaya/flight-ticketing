@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('name');
-            $table->foreignId('country_id');
+            $table->foreignId('province_id');
         });
     }
 
