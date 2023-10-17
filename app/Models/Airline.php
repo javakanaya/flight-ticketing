@@ -16,5 +16,5 @@ class Airline extends Model
     {
         return $this->hasMany(Route::class);
     }
-
+    
 }
