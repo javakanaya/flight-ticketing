@@ -1,0 +1,33 @@
+.container{
+    @apply flex h-screen bg-blue-400 overflow-auto;
+    background-image: linear-gradient(rgba(198, 197, 197, 0.8), rgba(40, 37, 37, 0.8)), url('../../storage/app/public/img.jpg');
+    background-position-x: 50%;
+    background-position-y: 60%;
+}
+
+.imgstyle{
+    position:relative;
+    overflow: hidden;
+}
+
+.images{
+    background: url('../../storage/app/public/img.jpg') no-repeat;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+    background-position: 50%;
+}
+
+
+
+
+@media screen and (max-width:850px){
+   .images{
+        opacity: 0;
+   }
+}  
