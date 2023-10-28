@@ -16,13 +16,23 @@ class RouteFactory extends Factory
      */
     public function definition(): array
     {
+
+        $departureDatetime = $this->faker->dateTimeInInterval('now', '+7 days');
+        $arrivalDatetime = $this->faker->dateTimeInInterval($departureDatetime, '+5 hours');
+        $sourceAirportId = $this->faker->numberBetween(1, 5);
+
+        do {
+            $destinationAirportId = $this->faker->numberBetween(1, 5);
+        } while ($destinationAirportId === $sourceAirportId);
+
+
         return [
-            'departure' => fake()->dateTime(),
-            'arrival' => fake()->dateTime(),
-            'airline_id' => fake()->numberBetween(1, 4),
-            'source_airport_id' => fake()->numberBetween(1, 5),
-            'destination_airport_id' => fake()->numberBetween(1, 5),
-            'seat_id' => fake()->randomDigit()
+            'departure' => $departureDatetime,
+            'arrival' => $arrivalDatetime,
+            'airline_id' => $this->faker->numberBetween(1, 4),
+            'source_airport_id' => $sourceAirportId,
+            'destination_airport_id' => $destinationAirportId,
+            'seat_id' => $this->faker->unique()->numberBetween(1, 20),
         ];
     }
 }

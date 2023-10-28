@@ -17,9 +17,9 @@ class TicketFactory extends Factory
     public function definition(): array
     {
         return [
-            'route_id' => fake()->numberBetween(1, 10),
-            'class' => fake()->numberBetween(1, 14),
-            'price' => fake()->numberBetween(500000, 5000000),
+            'route_id' => $this->faker->numberBetween(1, 20),
+            'class' => $this->faker->numberBetween(1, 4),
+            'price' => $this->faker->numberBetween(400000, 3000000),
         ];
     }
 }
