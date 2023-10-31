@@ -12,7 +12,7 @@ class Navbar extends Component{
     return (
 
       <nav className="NavbarItems">
-        <h1 className="navbar-logo">Flights</h1>
+        <h1 className="navbar-logo"><i class="fa-solid fa-plane"></i></h1>
         <div className="menu-icons" onClick = { this.handleClick }>
           <i className={this.state.clicked ? "fas fa-times" : "fas fa-bars"}></i>
         </div>
@@ -27,10 +27,10 @@ class Navbar extends Component{
           })}
 
           <Link
-            href={route('register')}
+            href={route('login')}
             className="button"
           >
-            Register
+            Login
           </Link>
         </ul>
       </nav>

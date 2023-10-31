@@ -20,8 +20,8 @@ export const MenuItems = [
         cName : "nav-links",
     },
     {
-        title : "Register",
-        url : "/",
+        title : "Login",
+        url : route('login'),
         cName : "nav-links-mobile",
     },
     
