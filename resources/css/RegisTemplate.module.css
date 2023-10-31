@@ -1,6 +1,5 @@
 .container{
-    @apply flex h-screen bg-blue-400 overflow-auto;
-    background-image: linear-gradient(rgba(198, 197, 197, 0.8), rgba(40, 37, 37, 0.8)), url('../../storage/app/public/img.jpg');
+    @apply flex h-screen bg-blue-500 overflow-auto;
     background-position-x: 50%;
     background-position-y: 60%;
 }
