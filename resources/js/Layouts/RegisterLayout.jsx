@@ -1,6 +1,7 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import { Link } from '@inertiajs/react';
 import style from "../../css/RegisTemplate.module.css"
+
 export default function Register({ children }) {
     return (
         <div className={style.container}>
