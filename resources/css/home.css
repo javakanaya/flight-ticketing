@@ -1,9 +1,13 @@
+/* *{
+    border: 1px solid red;
+} */
+
 .img {
     background: url('../../storage/app/public/assets/plane_vec.png') no-repeat;
     background-size: 40%;
+    background-position: 70% center;
     position: absolute;
-    top: 25%;
-    left: 50%;
+    top: -7%;
     height: 100%;
     width: 100%;
     z-index: 0;

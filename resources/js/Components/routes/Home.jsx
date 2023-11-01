@@ -20,6 +20,7 @@ function Home (){
 
             </div>
             <GetTicket />
+            <div className="h-60 bg-white"></div>
         </>
     )
 }

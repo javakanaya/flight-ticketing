@@ -2,16 +2,20 @@
     position: absolute;
     display: grid;
     grid-template-rows: auto auto; 
-    grid-template-columns: auto auto auto; 
-    padding: 2rem 0.3rem;
-    padding-right: 1rem;
+    grid-template-columns: auto auto auto;
+    width: 57%;
+    height: max-content; 
+    padding: 0rem 0.5rem;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+
     background: #fff;
-    border-radius: 10px;
-    gap: 1rem;
+    border-radius: 15px;
+    gap: 1.5rem;
     top: 60%;
     left: 50%;
     transform: translate(-50%);
-    align-items: center; 
+    align-items: start; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     column-gap: 0; 
     
@@ -106,14 +110,13 @@
 }
 .dropdown-content .dropdown-item .counterButton button {
     margin: 0 5px;
-  }
+}
 
 .destinationInput .searchDiv{
     z-index: 1;
-    width: 100%;
+    width: 70%;
     background-color: rgb(45, 216, 255);
-    margin-top: 1rem;
-    margin-left: 1rem;
+    margin-left: 5rem;
     padding: 0.4rem 1.7rem;
     border-radius: 1.5rem;
     align-items: center;
@@ -131,4 +134,6 @@
     color: white;
 }
 
-
+select option:hover {
+    background-color: #93C5FD;
+}
