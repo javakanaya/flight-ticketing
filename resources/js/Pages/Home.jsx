@@ -1,7 +1,7 @@
-import Navbar from "../Navbar";
-import Hero from "../Hero";
-import GetTicket from "../GetTicket";
-import "../../../css/home.css"
+import Navbar from "../Components/Navbar";
+import Hero from "../Components/Hero";
+import GetTicket from "../Components/GetTicket";
+import "../../css/home.css"
 
 function Home (){
     return (
