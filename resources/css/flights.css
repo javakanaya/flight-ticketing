@@ -1,0 +1,21 @@
+.filterbox{
+    background-color: #fff;
+    grid-template-rows: auto; 
+    grid-template-columns: auto auto auto auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    width: 60%;
+    height: 15%;
+    border-radius: 10px;
+    position: absolute;
+    top: 16%;
+    left: 50%;
+    transform: translate(-50%);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.ticketbox{
+    
+}
