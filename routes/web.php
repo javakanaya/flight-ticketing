@@ -36,6 +36,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/tickets', [TicketController::class, 'index']);
+Route::post('/tickets/search', [TicketController::class, 'search'])->name('tickets.search');
 
 require __DIR__.'/auth.php';

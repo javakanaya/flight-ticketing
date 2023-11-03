@@ -14,7 +14,24 @@ class TicketController extends Controller
      */
     public function index()
     {
-        // return Ticket::all();
+        return Ticket::all();
+    }
+
+    public function search(Request $request)
+    {
+
+        dd(request()->all());
+        $validatedRequest = $request->validate([
+            'origin' => 'required',
+            'destination' => 'required',
+            'departure_date' => 'required|date',
+            'class' => 'required',
+            'adult' => 'required|integer',  
+            'child' => 'required|integer',  
+            'infant' => 'required|integer', 
+          ]);
+
+
         $source_airport_id = 2;
         $destination_airport_id = 3;
         $depature_date = '2023-11-03';
@@ -50,7 +67,6 @@ class TicketController extends Controller
             ->get();
 
         return $ticket;
-
     }
 
     /**
