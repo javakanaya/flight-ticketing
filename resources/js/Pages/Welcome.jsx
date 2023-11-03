@@ -3,7 +3,7 @@ import { Link, Head } from '@inertiajs/react';
 import Navbar from '../Components/Navbar';
 import { Routes } from 'react-router-dom';
 import "../../css/welcome.css"
-import Home from'../Components/routes/Home';
+import Home from'./Home';
 
 const Welcome = ({ auth, laravelVersion, phpVersion }) => {
   return (
