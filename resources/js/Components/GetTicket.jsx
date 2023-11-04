@@ -12,16 +12,7 @@ import { useForm } from "@inertiajs/react";
 
 function GetTicket() {
     const { data, setData, post, processing, errors } = useForm({
-        origin: "",
-        destination: "",
-        class:"",
-        depature_date:"",        
-        adult: 1,
-        child: 0,
-        infant: 0,
-    });
-
-    const [counts, setCounts] = useState({
+        class: 4,
         adult: 1,
         child: 0,
         infant: 0,
@@ -36,15 +27,35 @@ function GetTicket() {
     };
 
     const handleCounter = (type, action) => {
-        setCounts((prevCounts) => ({
-            ...prevCounts,
-            [type]:
-                action === "add"
-                    ? prevCounts[type] + 1
-                    : prevCounts[type] > 0
-                    ? prevCounts[type] - 1
-                    : 0,
-        }));
+        setData((prevCounts) => {
+            const currentValue = prevCounts[type];
+
+            if (action === "add") {
+                // Increment the counter
+                return {
+                    ...prevCounts,
+                    [type]: currentValue + 1,
+                };
+            } else if (action === "subtract") {
+                if (type === "adult" && currentValue > 1) {
+                    // For "adult" type, decrement only if the current value is greater than 1
+                    return {
+                        ...prevCounts,
+                        [type]: currentValue - 1,
+                    };
+                } else if (type !== "adult" && currentValue > 0) {
+                    // For other types, decrement only if the current value is greater than 0
+                    return {
+                        ...prevCounts,
+                        [type]: currentValue - 1,
+                    };
+                }
+            }
+
+            // If the action is not "add" or "subtract" or the current value doesn't meet the conditions,
+            // do not change the state
+            return prevCounts;
+        });
     };
 
     function handleChange(e) {
@@ -58,9 +69,7 @@ function GetTicket() {
 
     function handleSubmit(e) {
         e.preventDefault();
-        setData("adult", counts.adult);
-        setData("child", counts.child);
-        setData("infant", counts.infant);
+
         post("/tickets/search");
     }
 
@@ -69,7 +78,7 @@ function GetTicket() {
             <form onSubmit={handleSubmit}>
                 <div className="cardDiv grid ">
                     <div className="destinationInput">
-                        <label htmlFor="origin">Enter your Origin</label>
+                        <label htmlFor="origin">Enter your Origin (id)</label>
                         <div className="input flex">
                             <LiaPlaneDepartureSolid className="icon" />
                             <input
@@ -79,16 +88,16 @@ function GetTicket() {
                                 value={data.origin}
                                 onChange={handleChange}
                             />
-                            {errors.origin && (
-                                <span className="text-red-500 text-sm">
-                                    {errors.origin}
-                                </span>
-                            )}
                         </div>
+                        {errors.origin && (
+                            <span className="text-red-500 text-sm">
+                                {errors.origin}
+                            </span>
+                        )}
                     </div>
                     <div className="destinationInput">
                         <label htmlFor="destination">
-                            Enter your Destination
+                            Enter your Destination (id)
                         </label>
                         <div className="input flex">
                             <TbPlaneArrival className="icon" />
@@ -100,6 +109,11 @@ function GetTicket() {
                                 onChange={handleChange}
                             />
                         </div>
+                        {errors.destination && (
+                            <span className="text-red-500 text-sm">
+                                {errors.destination}
+                            </span>
+                        )}
                     </div>
 
                     <div className="destinationInput">
@@ -111,20 +125,21 @@ function GetTicket() {
                                 className="button-passenger"
                                 onClick={() => setShowDropdown(!showDropdown)}
                             >
-                                {counts.adult} Adult, {counts.child} Kid,{" "} {counts.infant} Toodler
+                                {data.adult} Adult, {data.child} Kid,{" "}
+                                {data.infant} Toodler
                             </button>
                             {showDropdown && (
                                 <div className="dropdown-content">
                                     <div className="dropdown-item">
                                         <BsPerson className="icon" />
-                                        <span>{counts.adult} Adult</span>
+                                        <span>{data.adult} Adult</span>
                                         <div className="counterButton">
                                             <button
                                                 type="button"
                                                 onClick={() =>
                                                     handleCounter(
                                                         "adult",
-                                                        "substract"
+                                                        "subtract"
                                                     )
                                                 }
                                             >
@@ -145,14 +160,14 @@ function GetTicket() {
                                     </div>
                                     <div className="dropdown-item">
                                         <FaChildReaching className="icon" />
-                                        <span>{counts.child} Child</span>
+                                        <span>{data.child} Child</span>
                                         <div className="counterButton">
                                             <button
                                                 type="button"
                                                 onClick={() =>
                                                     handleCounter(
                                                         "child",
-                                                        "substract"
+                                                        "subtract"
                                                     )
                                                 }
                                             >
@@ -173,14 +188,14 @@ function GetTicket() {
                                     </div>
                                     <div className="dropdown-item">
                                         <PiBaby className="icon" />
-                                        <span>{counts.infant} Infant</span>
+                                        <span>{data.infant} Infant</span>
                                         <div className="counterButton">
                                             <button
                                                 type="button"
                                                 onClick={() =>
                                                     handleCounter(
                                                         "infant",
-                                                        "substract"
+                                                        "subtract"
                                                     )
                                                 }
                                             >
@@ -205,16 +220,21 @@ function GetTicket() {
                     </div>
 
                     <div className="destinationInput">
-                        <label htmlFor="departure-date">Departure Date</label>
+                        <label htmlFor="departure_date">Departure Date</label>
                         <div className="input flex">
                             <AiOutlineCalendar className="icon" />
                             <input
                                 type="date"
-                                id="departure-date"
-                                value={data.depature_date}
+                                id="departure_date"
+                                value={data.departure_date}
                                 onChange={handleChange}
                             />
                         </div>
+                        {errors.departure_date && (
+                            <span className="text-red-500 text-sm">
+                                {errors.departure_date}
+                            </span>
+                        )}
                     </div>
 
                     {/* Is Pulang Pergi */}
@@ -256,17 +276,17 @@ function GetTicket() {
                             value={data.class}
                             onChange={handleChange}
                         >
-                            <option value="1" className="hover:bg-sky-400">
-                                First
-                            </option>
-                            <option value="2" className="hover:bg-sky-400">
-                                Business
+                            <option value="4" className="hover:bg-sky-400">
+                                Economy
                             </option>
                             <option value="3" className="hover:bg-sky-400">
                                 Premium Economy
                             </option>
-                            <option value="4" className="hover:bg-sky-400">
-                                Economy
+                            <option value="2" className="hover:bg-sky-400">
+                                Business
+                            </option>
+                            <option value="1" className="hover:bg-sky-400">
+                                First
                             </option>
                         </select>
                     </div>

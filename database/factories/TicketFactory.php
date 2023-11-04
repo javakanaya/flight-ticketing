@@ -16,10 +16,23 @@ class TicketFactory extends Factory
      */
     public function definition(): array
     {
+        // Generate a unique set of classes (1, 2, 3, and 4) for each route_id
+        static $uniqueClasses = [1, 2, 3, 4];
+
+        $routeId = $this->faker->numberBetween(1, 100);
+        $class = array_shift($uniqueClasses);
+
+        if (empty($uniqueClasses)) {
+            // Reset classes when all have been used
+            $uniqueClasses = [1, 2, 3, 4];
+        }
+
         return [
-            'route_id' => $this->faker->numberBetween(1, 20),
-            'class' => $this->faker->numberBetween(1, 4),
+            'route_id' => $routeId,
+            'class' => $class,
             'price' => $this->faker->numberBetween(400000, 3000000),
         ];
     }
+
+
 }

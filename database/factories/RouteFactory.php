@@ -17,7 +17,7 @@ class RouteFactory extends Factory
     public function definition(): array
     {
 
-        $departureDatetime = $this->faker->dateTimeInInterval('now', '+7 days');
+        $departureDatetime = $this->faker->dateTimeInInterval('now', '+3 days');
         $arrivalDatetime = $this->faker->dateTimeInInterval($departureDatetime, '+5 hours');
         $sourceAirportId = $this->faker->numberBetween(1, 5);
 
@@ -32,7 +32,7 @@ class RouteFactory extends Factory
             'airline_id' => $this->faker->numberBetween(1, 4),
             'source_airport_id' => $sourceAirportId,
             'destination_airport_id' => $destinationAirportId,
-            'seat_id' => $this->faker->unique()->numberBetween(1, 20),
+            'seat_id' => $this->faker->unique()->numberBetween(1, 100),
         ];
     }
 }
