@@ -34,14 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::post('/tickets/search', [TicketController::class, 'search'])->name('tickets.search');
+Route::get('/search', [TicketController::class, 'search'])->name('tickets.search');
 
-Route::get('/flights', function () {
-    return Inertia::render('Flights', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+
 require __DIR__.'/auth.php';

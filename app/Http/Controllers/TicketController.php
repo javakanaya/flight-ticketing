@@ -22,24 +22,33 @@ class TicketController extends Controller
 
     public function search(Request $request)
     {
+        if (!$request->input()) {
+            $sourceAirportId = 1;
+            $destinationAirportId = 2;
+            $depatureDate = now()->format('Y-m-d');
+            $countTicket = 1;
+            $classNum = 4;
+        } else {
+            // dd(request()->all());
+            $validatedRequest = $request->validate([
+                'origin' => 'required',
+                'destination' => 'required',
+                'departure_date' => 'required|date|after_or_equal:today',
+                'class' => 'required|integer|between:1,4',
+                'adult' => 'required|integer',
+                'child' => 'required|integer',
+                'infant' => 'required|integer',
+            ]);
 
-        // dd(request()->all());
-        $validatedRequest = $request->validate([
-            'origin' => 'required',
-            'destination' => 'required',
-            'departure_date' => 'required|date|after_or_equal:today',
-            'class' => 'required|integer|between:1,4',
-            'adult' => 'required|integer',
-            'child' => 'required|integer',
-            'infant' => 'required|integer',
-        ]);
+            // dd($validatedRequest);
+            $sourceAirportId = intval($validatedRequest['origin']);
+            $destinationAirportId = intval($validatedRequest['destination']);
+            $depatureDate = strval($validatedRequest['departure_date']);
+            $countTicket = ($validatedRequest['adult'] + $validatedRequest['child']);
+            $classNum = intval($validatedRequest['class']);
+        }
 
-        // dd($validatedRequest);
-        $sourceAirportId = intval($validatedRequest['origin']);
-        $destinationAirportId = intval($validatedRequest['destination']);
-        $depatureDate = strval($validatedRequest['departure_date']);
-        $countTicket = $validatedRequest['adult'] + $validatedRequest['child'];
-        $classNum = strval($validatedRequest['class']);
+
         $classType = "";
 
         switch ($classNum) {
@@ -60,7 +69,7 @@ class TicketController extends Controller
         }
 
         $allTicket = DB::table('tickets')
-            ->select('tickets.id', 'tickets.price', 'routes.departure', 'routes.arrival', 'routes.airline_id', 'routes.seat_id')
+            ->select('tickets.id', 'tickets.price', 'routes.departure', 'routes.arrival', 'routes.airline_id', 'routes.seat_id', 'tickets.class')
             ->join('routes', 'tickets.route_id', '=', 'routes.id')
             ->join('seats', 'routes.seat_id', '=', 'seats.id')
             ->whereDate('routes.departure', $depatureDate)
@@ -72,6 +81,7 @@ class TicketController extends Controller
 
         $sourceAirport = Airport::find($sourceAirportId);
         $destinationAirport = Airport::find($destinationAirportId);
+
 
         foreach ($allTicket as $ticket) {
             $departureTimestamp = Carbon::parse($ticket->departure, $sourceAirport->timezone);
@@ -85,18 +95,19 @@ class TicketController extends Controller
             $minutes = $duration % 60;
 
             // Format the duration as "XX hours YY minutes"
-            $ticket->duration = $hours . ' hours ' . $minutes . ' minutes';
+            if ($hours == 0)
+                $ticket->duration = $minutes . 'm';
+            else 
+                $ticket->duration = $hours . 'h ' . $minutes . 'm';
+
             $ticket->airline = Airline::select('name')->find($ticket->airline_id);
         }
 
-        // return Inertia::render('User/Show', 
-        return [
+        return Inertia::render('Flights', [
             'sourceAirport' => $sourceAirport,
-            'desinationAirport' => $destinationAirport,
+            'destinationAirport' => $destinationAirport,
             'tickets' => $allTicket,
-        ];
-        // );
-
+        ]);
     }
 
     /**

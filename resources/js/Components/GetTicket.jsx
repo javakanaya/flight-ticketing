@@ -11,7 +11,7 @@ import { useState } from "react";
 import { useForm } from "@inertiajs/react";
 
 function GetTicket() {
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, get, processing, errors } = useForm({
         class: 4,
         adult: 1,
         child: 0,
@@ -70,7 +70,7 @@ function GetTicket() {
     function handleSubmit(e) {
         e.preventDefault();
 
-        post("/tickets/search");
+        get("/search");
     }
 
     return (
