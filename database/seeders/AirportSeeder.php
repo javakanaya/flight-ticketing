@@ -16,31 +16,9 @@ class AirportSeeder extends Seeder
         //
         $indonesia_airports = [
             [
-                'name' => 'Bandara Internasional Kualanamu',
-                'city_id' => 1275,
-                'IATA' => 'KNO',
-                "timezone" => 7,
-            ],
-
-
-            [
-                'name' => 'Bandara Internasional Sultan Hasanuddin',
-                'city_id' => 7371,
-                'IATA' => 'UPG',
-                "timezone" => 8,
-            ],
-
-            [
-                'name' => 'Bandara Internasional Husein Sastranegara',
-                'city_id' => 3273,
-                'IATA' => 'BDO',
-                "timezone" => 7,
-            ],
-
-            [
-                'name' => 'Bandara Sultan Syarif Qasim II',
-                'city_id' => 1471,
-                'IATA' => 'PKU',
+                'name' => 'Bandara Internasional Soekarno Hatta',
+                'city_id' => 3671,
+                'IATA' => 'CGK',
                 "timezone" => 7,
             ],
             [
@@ -49,6 +27,31 @@ class AirportSeeder extends Seeder
                 'IATA' => 'DPS',
                 "timezone" => 8,
             ],
+            [
+                'name' => 'Bandara Internasional Kualanamu',
+                'city_id' => 1275,
+                'IATA' => 'KNO',
+                "timezone" => 7,
+            ],
+            [
+                'name' => 'Bandara Internasional Sultan Hasanuddin',
+                'city_id' => 7371,
+                'IATA' => 'UPG',
+                "timezone" => 8,
+            ],
+            [
+                'name' => 'Bandara Internasional Husein Sastranegara',
+                'city_id' => 3273,
+                'IATA' => 'BDO',
+                "timezone" => 7,
+            ],
+            [
+                'name' => 'Bandara Sultan Syarif Qasim II',
+                'city_id' => 1471,
+                'IATA' => 'PKU',
+                "timezone" => 7,
+            ],
+
 
         ];
 

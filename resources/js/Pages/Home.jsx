@@ -3,7 +3,7 @@ import Hero from "../Components/Hero";
 import GetTicket from "../Components/GetTicket";
 import "../../css/home.css"
 
-const Home = ({ auth, laravelVersion, phpVersion }) => {
+const Home = () => {
     return (
         <>
             <Navbar />
