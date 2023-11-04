@@ -16,7 +16,7 @@
     width: 60%;
     height: 50px;
     border-radius: 100px;
-    position: fixed;
+    position: absolute;
     top: 20px;
     left: 50%;
     transform: translate(-50%);
