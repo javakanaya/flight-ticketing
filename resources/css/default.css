@@ -1,0 +1,18 @@
+.bg-blue-color {
+    background-color: #00c3ff;
+}
+
+
+.hover\:bg-blue-color:hover {
+    background-color: #00c3ff;
+}
+
+.txt-blue-color {
+    color: #00c3ff;
+}
+
+
+.hover\:txt-blue-color:hover {
+    color: #00c3ff;
+}
+
