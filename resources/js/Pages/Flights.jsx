@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { Link, Head } from '@inertiajs/react';
 import Navbar from '../Components/Navbar';
 import { Routes } from 'react-router-dom';
-import Home from'../Components/routes/Home';
+import Home from'./Home';
 import GetTicket from '@/Components/GetTicket';
 import TicketCard from '@/Components/TicketCard';
 import {LiaPlaneDepartureSolid} from 'react-icons/lia';
@@ -10,7 +10,7 @@ import "../../css/flights.css";
 import "../../css/getTicket.css";
 
 import {FaPlaneArrival} from 'react-icons/fa';
-import {RiArrowDropDownLine} from 'react-icons/ri';
+import {RiArrowDropDownLine} from 'react-icons/Ri';
 import {HiOutlineSwitchHorizontal} from 'react-icons/hi'
 
 const Flights = ({ auth, laravelVersion, phpVersion }) => {

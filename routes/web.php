@@ -45,4 +45,11 @@ Route::get('/flights', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
+Route::get('/flights/transaction', function () {
+    return Inertia::render('Transaction');
+})->name('Transaction-page');
+
+
+
 require __DIR__.'/auth.php';
