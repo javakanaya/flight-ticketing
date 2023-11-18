@@ -21,8 +21,6 @@ Route::get('/', function () {
     return Inertia::render('Home', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
     ]);
 });
 
@@ -35,6 +33,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/search', [TicketController::class, 'search'])->name('tickets.search');
 
 
 Route::get('/flights', function () {
@@ -49,7 +49,5 @@ Route::get('/flights', function () {
 Route::get('/flights/transaction', function () {
     return Inertia::render('Transaction');
 })->name('Transaction-page');
-
-
 
 require __DIR__.'/auth.php';
