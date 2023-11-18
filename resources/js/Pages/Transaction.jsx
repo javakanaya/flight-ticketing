@@ -52,7 +52,7 @@ const Transaction = ({ auth, laravelVersion, phpVersion }) => {
                                         First / Given Name & Middle Name (if any)(ex: Budi Setiawan)<span className="text-red-600">*</span>
                                 </label>
                                     <div className="flex-col flex my-3">                                           
-                                        <input type="text" name="" id="" className="rounded-lg"/>
+                                        <input type="text" name="ctc-first-name" id="ctc-first-name" className="rounded-lg"/>
                                         <span className="text-slate-500 text-xs my-1">(without title and punctuation)</span>
                                     </div>
                                 </div>
@@ -61,7 +61,7 @@ const Transaction = ({ auth, laravelVersion, phpVersion }) => {
                                         Family Name / Last Name (ex: Wiryosaputro)<span className="text-red-600">*</span>
                                     </label>
                                     <div className="flex-col flex my-2">
-                                        <input type="text" name="" id="" className="rounded-lg my-1" readOnly={isDisabled1} value={inputValue1}/>
+                                        <input type="text" name="ctc-last-name" id="ctc-last-name" className="rounded-lg my-1" readOnly={isDisabled1} value={inputValue1}/>
                                         <span className="text-slate-500 text-xs py-1">(without title and punctuation)</span>
                                     </div>
                                 </div>
@@ -74,10 +74,10 @@ const Transaction = ({ auth, laravelVersion, phpVersion }) => {
                                 <div className="w-1/2">
                                     <label htmlFor="">Mobile Phone<span className="text-red-600">*</span></label>
                                     <div className="flex my-1">
-                                            <select className="mr-1 rounded-lg">
+                                            <select id="ctc-mob-pref" name="ctc-mob-pref" className="mr-1 rounded-lg">
                                                 +
                                             </select>
-                                            <input type="text" className="rounded-lg"/>
+                                            <input type="text"  id="ctc-mob" name="ctc-mob" className="rounded-lg"/>
                                     </div>
                                     <span className="text-xs text-slate-500">e.g. +62812345678, for Country Code (+62) and Mobile No. 0812345678</span>
                                 </div>
@@ -86,7 +86,7 @@ const Transaction = ({ auth, laravelVersion, phpVersion }) => {
                                         Email<span className="text-red-600">*</span>
                                     </label>
                                     <div className="my-1">
-                                        <input type="text" className="w-full rounded-lg" />
+                                        <input type="text" id="ctc-email" name="ctc-email" className="w-full rounded-lg" />
                                         <span className="text-xs text-slate-500">e.g. email@example.com</span>
                                     </div>
                                 </div>
@@ -104,7 +104,7 @@ Avoid any mistake, because some airlines don't allow name corrections after book
                         </div>
                         <div className="flex flex-col py-3">
                             <label htmlFor="" className="">Title<span className="text-red-600">*</span></label>
-                            <select name="" id="" className="my-2 w-1/3 rounded-lg">
+                            <select name="trav-title" id="trav-title" className="my-2 w-1/3 rounded-lg">
                                 <option value="mr">Mr</option>
                                 <option value=""></option>
                             </select>
@@ -115,7 +115,7 @@ Avoid any mistake, because some airlines don't allow name corrections after book
                                         First / Given Name & Middle Name (if any)(ex: Budi Setiawan)<span className="text-red-600">*</span>
                                 </label>
                                     <div className="flex-col flex my-3">                                           
-                                        <input type="text" name="" id="" className="rounded-lg"/>
+                                        <input type="text" name="trav-first" id="trav-first" className="rounded-lg"/>
                                         <span className="text-slate-500 text-xs my-1">(without title and punctuation)</span>
                                     </div>
                                 </div>
@@ -124,7 +124,7 @@ Avoid any mistake, because some airlines don't allow name corrections after book
                                         Family Name / Last Name (ex: Wiryosaputro)<span className="text-red-600">*</span>
                                     </label>
                                     <div className="flex-col flex my-2">
-                                        <input type="text" name="" id="" className="rounded-lg my-1" readOnly={isDisabled2} value={inputValue2}/>
+                                        <input type="text" name="trav-last" id="trav-last" className="rounded-lg my-1" readOnly={isDisabled2} value={inputValue2}/>
                                         <span className="text-slate-500 text-xs py-1">(without title and punctuation)</span>
                                     </div>
                                 </div>
@@ -135,7 +135,7 @@ Avoid any mistake, because some airlines don't allow name corrections after book
                             </div>
                             <div className="flex flex-col">
                                 <label htmlFor="">Nationality<span className="text-red-600">*</span></label>
-                                <select name="" id="" className="my-2 w-1/3 rounded-lg"></select>
+                                <select name="trav-nat" id="trav-nat" className="my-2 w-1/3 rounded-lg"></select>
                             </div>
                     </form>
                 </div>
