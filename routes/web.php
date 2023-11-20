@@ -37,4 +37,17 @@ Route::middleware('auth')->group(function () {
 Route::get('/search', [TicketController::class, 'search'])->name('tickets.search');
 
 
+Route::get('/flights', function () {
+    return Inertia::render('Flights', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
+
+Route::get('/flights/transaction', function () {
+    return Inertia::render('Transaction');
+})->name('Transaction-page');
+
 require __DIR__.'/auth.php';
