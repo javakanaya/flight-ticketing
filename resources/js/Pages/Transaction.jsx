@@ -30,30 +30,6 @@ const Transaction = ({ auth, laravelVersion, phpVersion }) => {
         }
     };
 
-    const handleBothFormsSubmit = (event) => {
-        event.preventDefault();
-      
-        const formData1 = {
-          ctcFirstName: document.getElementById('ctc-first-name').value, 
-          ctcLastName: isDisabled1 ? '' :  document.getElementById('ctc-last-name').value,
-          ctcPrefMob : document.getElementById('ctc-mob-pref').value,
-          ctcMob : document.getElementById('ctc-mob').value,
-          ctcEmail : document.getElementById('ctc-email').value,
-        };
-      
-        const formData2 = {
-          travTitle: document.getElementById('trav-title').value, 
-          travFirstName: document.getElementById('trav-first').value ,
-          travLastName: isDisabled2 ? '' : document.getElementById('trav-last').value,
-          travNat : document.getElementById('trav-nat').value 
-        };
-
-        const combinedFormData = {
-          formData1,
-          formData2,
-        };
-      };
-
     
     
     return (
