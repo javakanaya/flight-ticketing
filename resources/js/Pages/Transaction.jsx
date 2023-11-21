@@ -38,6 +38,7 @@ const Transaction = ({ auth, laravelVersion, phpVersion }) => {
             <div className=" h-24 bg-[#60cff4]">
                 
             </div>
+            <form action="" className="">
             <div className="pl-[20%] pt-12 w-[60%] absolute">
                 <h1 className="text-2xl pb-2 font-semibold">Your Booking</h1>
                 <p className="font-thin text-sm text-slate-500">Fill in your details and review your bookings</p>
@@ -45,7 +46,6 @@ const Transaction = ({ auth, laravelVersion, phpVersion }) => {
                 <h1 className="my-5 text-xl font-medium">Contact Details</h1>
                 <div className="w-full p-3 font-medium shadow-md border border-slate-300">
                     <h1 className="text-base">Contact Details (for E-ticket/Voucher)</h1>
-                    <form action="" className="">
                             <div className="flex">
                                 <div className=" py-3 w-1/2 text-sm">
                                 <label htmlFor="" className="">
@@ -91,13 +91,12 @@ const Transaction = ({ auth, laravelVersion, phpVersion }) => {
                                     </div>
                                 </div>
                             </div>
-                    </form>
+             
                 </div>
                 <h1 className=" mt-10 mb-3 text-xl font-medium">Traveler Details</h1>
                 <div className="w-full p-3 font-medium shadow-lg border border-slate-300">
                     <h1 className="text-base">Adult 1</h1>
                     <hr  className="my-1 border-1 border-slate-300"/>
-                    <form action="" className="">
                         <div className="py-3">
                             <p className=" px-3 text-sm text-yellow-500">Make sure that the passenger's name is exactly as written in the government issued ID/Passport/Driving License. 
 Avoid any mistake, because some airlines don't allow name corrections after booking.</p>
@@ -137,9 +136,11 @@ Avoid any mistake, because some airlines don't allow name corrections after book
                                 <label htmlFor="">Nationality<span className="text-red-600">*</span></label>
                                 <select name="trav-nat" id="trav-nat" className="my-2 w-1/3 rounded-lg"></select>
                             </div>
-                    </form>
                 </div>
         </div>
+        <button type='submit' className="button w-[250px] h-[45px] absolute top-[70%] left-[70%]">Submit</button>
+
+        </form>
         <div className="p-4 absolute top-[39.5%] left-[63%] w-[350px] border-2 border-slate-200">
             <div className="w-full flex items-center justify-between">
                 <BiSolidPlaneAlt className="text-3xl text-[#60cff4]"/>
