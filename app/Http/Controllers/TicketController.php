@@ -107,6 +107,7 @@ class TicketController extends Controller
             'sourceAirport' => $sourceAirport,
             'destinationAirport' => $destinationAirport,
             'tickets' => $allTicket,
+            'countTicket' => $countTicket,
         ]);
     }
 

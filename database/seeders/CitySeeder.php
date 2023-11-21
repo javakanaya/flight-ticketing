@@ -16,15 +16,15 @@ class CitySeeder extends Seeder
     {
         //
         $indonesia_cities = [
-            ["id" => 3372, "name" => "KOTA SURAKARTA", "province_id" => 33],
-            ["id" => 3401, "name" => "KABUPATEN KULON PROGO", "province_id" => 34],
-            ["id" => 3578, "name" => "KOTA SURABAYA", "province_id" => 35],
-            ["id" => 3671, "name" => "KOTA TANGERANG", "province_id" => 36],
-            ["id" => 5171, "name" => "KOTA DENPASAR", "province_id" => 51],
-            ["id" => 1275, "name" => "KOTA MEDAN", "province_id" => 12],
-            ["id" => 3273, "name" => "KOTA BANDUNG", "province_id" => 32],
-            ["id" => 7371, "name" => "KOTA MAKASSAR", "province_id" => 73],
-            ["id" => 1471, "name" => "KOTA PEKANBARU", "province_id" => 1471],
+            ["id" => 3372, "name" => "Solo", "province_id" => 33],
+            ["id" => 3401, "name" => "KULON PROGO", "province_id" => 34],
+            ["id" => 3578, "name" => "Surabaya", "province_id" => 35],
+            ["id" => 3671, "name" => "Jakarta", "province_id" => 36],
+            ["id" => 5171, "name" => "Denpasar", "province_id" => 51],
+            ["id" => 1275, "name" => "Medan", "province_id" => 12],
+            ["id" => 3273, "name" => "Bandung", "province_id" => 32],
+            ["id" => 7371, "name" => "Makassar", "province_id" => 73],
+            ["id" => 1471, "name" => "Pekanbaru", "province_id" => 1471],
         ];
 
         DB::table('cities')->insert($indonesia_cities);
