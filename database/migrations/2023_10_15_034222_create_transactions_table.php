@@ -17,6 +17,9 @@ return new class extends Migration
             $table->integer('count');
             $table->foreignId('ticket_id');
             $table->foreignId('user_id');
+            $table->string('external_id');
+            $table->string('status');
+            $table->string('payment_url')->nullable();
         });
     }
 
