@@ -37,6 +37,10 @@ Route::middleware('auth')->group(function () {
 Route::get('/search', [TicketController::class, 'search'])->name('tickets.search');
 
 
+Route::get('/flights/transaction/payment', function (){
+    return Inertia::render('Payment');
+});
+
 Route::get('/flights', function () {
     return Inertia::render('Flights', [
         'canLogin' => Route::has('login'),
