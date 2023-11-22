@@ -12,6 +12,7 @@ const Transaction = ({}) => {
             <div className=" h-24 bg-[#60cff4]">
                 
             </div>
+            <form action="" className="">
             <div className="pl-[20%] pt-12 w-[60%] absolute">
                 <TransactionComp/>
             </div>
