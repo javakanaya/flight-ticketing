@@ -60,4 +60,16 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    public function transaction()
+    {
+        $user = auth()->user(); // Assuming you're using authentication
+        $transactions = $user->transactions;
+
+        return Inertia::render('Profile/TransactionList', [
+            'user' => $user,
+            'transactions' => $transactions,
+        ]);
+    }
 }
+
