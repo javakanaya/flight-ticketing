@@ -1,5 +1,4 @@
 import React from 'react'
-import '../../css/heroStyle.css'
 
 function Hero(props){
   return (
@@ -8,9 +7,9 @@ function Hero(props){
             {/* <img src={props.heroImg} alt="HeroImg"/> */}
         </div>
 
-        <div className='hero-text'>
-            <h1>{props.title}</h1>
-            <p>{props.text}</p>
+        <div className='absolute top-[30%] left-[15%] width-[500px]  text-[#fff] leading-14'>
+            <h1 className='text-[3rem] font-[800]'>{props.title}</h1>
+            <p className=''>{props.text}</p>
         </div>
 
     </>
