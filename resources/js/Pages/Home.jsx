@@ -4,10 +4,10 @@ import GetTicket from "../Components/GetTicket";
 import "../../css/home.css"
 
 
-const Home = () => {
+const Home = ({}) => {
     return (
         <>
-            <Navbar  />
+            <Navbar />
             <div className="bg-[#60cff4] h-[500px]">
                 <Hero 
                     cName="hero"
