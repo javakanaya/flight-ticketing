@@ -108,6 +108,10 @@ const NumOfPassenger = () => {
           </div>
         </PopoverContent>
       </Popover>
+
+      <input type="hidden" value={adultCount} id="adultCount" name="adultCount"/>
+      <input type="hidden" value={kidCount} id="kidCount" name="kidCount"/>
+      <input type="hidden" value={infantCount} id="infantCount" name="infantCount"/>
     </>
   );
 };

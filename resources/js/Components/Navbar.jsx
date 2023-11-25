@@ -29,7 +29,7 @@ class Navbar extends Component{
         
         <div className="mx-auto flex gap-4">
           {user ? (<>
-            <Link className="flex items-center gap-3 hover:shadow-md hover:border-2 hover:border-gray-300 rounded-3xl p-2">
+            <Link className="flex items-center gap-3 hover:shadow-md hover:border-2 hover:border-gray-300 rounded-3xl p-2" href={route('profile.edit')}>
               <FaRegUser />
               {user.name}
             </Link>
