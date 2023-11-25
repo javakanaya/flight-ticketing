@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import AirportCombobox from './AirportCombobox';
 import { FaPlaneDeparture } from "react-icons/fa";
 import { FaPlaneArrival } from "react-icons/fa";
 import NumOfPassanger from './NumOfPassanger';
@@ -7,6 +6,7 @@ import { IoMdPeople } from "react-icons/io";
 import TextField from '@mui/material/TextField';
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { FaMagnifyingGlass } from "react-icons/fa6";
+import Autocomplete from '@mui/material/Autocomplete';
 
 
 const GetTicket = ({airports}) => {
@@ -19,17 +19,19 @@ const GetTicket = ({airports}) => {
     }));
 
     const [showReturn, setShowReturn] = useState(false);
-
+    const [selectedSourceAirport, setSelectedSourceAirport] = useState(null);
+    const [selectedDestAirport, setSelectedDestAirport] = useState(null);
+   
     const handleButtonClick = () => {
-        setShowReturn(!showReturn); // Toggle the value of showInput
-    };
-
-    const handleSubmit = (e) => {
+        setShowReturn(!showReturn);
+      };
+    
+      const handleSubmit = (e) => {
         e.preventDefault();
-      
+    
         console.log({
-          sourceAirport: document.getElementById('source_airport').value,
-          destAirport: document.getElementById('dest_airport').value,
+          sourceAirport: selectedSourceAirport ? selectedSourceAirport.id : null,
+          destAirport: selectedDestAirport ? selectedDestAirport.id : null,
           adultCount: document.getElementById('adultCount').value,
           kidCount: document.getElementById('kidCount').value,
           infantCount: document.getElementById('infantCount').value,
@@ -37,6 +39,7 @@ const GetTicket = ({airports}) => {
           returnDate: showReturn ? document.getElementById('return_date').value : null,
         });
       };
+
   return (
     <>
     <form action="">
@@ -46,9 +49,20 @@ const GetTicket = ({airports}) => {
                     <div className='flex items-center gap-3'>
                         <FaPlaneDeparture className='text-2xl' />
                         <div className='relative'>
-                            <AirportCombobox
-                                option={formattedAirports}
-                                label="From" id="source_airport" name="source_airport"/>
+                            <Autocomplete
+                                options={formattedAirports}
+                                getOptionLabel={(option) => option.label}
+                                onChange={(event, newValue) => setSelectedSourceAirport(newValue)}
+                                sx={{width:250}}
+                                renderOption={(props, option) => (
+                                    <div {...props} style={{ display: 'flex', flexDirection: 'column', alignItems:'flex-start'}}>
+                                        <h1 className='w-full'>{option.label}</h1>
+                                        <p className='text-xs '>{option.name}</p>
+                                    </div>
+                                    )}
+                                name= "source_airport"
+                                renderInput={(params) => <TextField {...params} label="From" id="source_airport" />}
+                            />
                         </div>
                     </div>
                 </div>
@@ -56,9 +70,20 @@ const GetTicket = ({airports}) => {
                     <div className='flex items-center gap-3'>
                         <FaPlaneArrival className='text-2xl '/>
                         <div className='relative'>
-                            <AirportCombobox
-                                option={formattedAirports}
-                                label="To" id="dest_airport" name="dest_airport"/>
+                            <Autocomplete
+                                options={formattedAirports}
+                                getOptionLabel={(option) => option.label}
+                                onChange={(event, newValue) => setSelectedDestAirport(newValue)}
+                                sx={{width:250}}
+                                renderOption={(props, option) => (
+                                    <div {...props} style={{ display: 'flex', flexDirection: 'column', alignItems:'flex-start'}}>
+                                        <h1 className='w-full'>{option.label}</h1>
+                                        <p className='text-xs '>{option.name}</p>
+                                    </div>
+                                    )}
+                                name="dest_airport"
+                                renderInput={(params) => <TextField {...params} label="To" id="dest_airport" />}
+                            />
                         </div>
                     </div>
                 </div>
