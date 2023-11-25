@@ -105,7 +105,7 @@ const GetTicket = ({airports}) => {
 
                 <div className="grid">
                     <div className='flex gap-3'>
-                        <input type="checkbox" className='rounded-md' onClick={ handleButtonClick } />
+                        <input type="checkbox" className='rounded-md text-[#60cff4]' onClick={ handleButtonClick } />
                         <h1 className='text-xs text-slate-300'>Date of Return</h1>
                     </div>
                     {showReturn &&  <div className='flex items-center gap-4'>

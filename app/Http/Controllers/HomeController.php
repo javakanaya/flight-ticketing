@@ -13,10 +13,18 @@ class HomeController extends Controller
     {
         $airports = Airport::with('city')->get();
    
-        return Inertia::render('Home', [
-            'canLogin'    => route('login'),
-            'canRegister' => route('register'),
-            'airports' => $airports,
-        ]);
+        if (request()->is('dashboard')) {
+            return Inertia::render('Home', [
+                'airports' => $airports,
+            ]);
+        } else {
+            return Inertia::render('Home', [
+                'canLogin'    => route('login'),
+                'canRegister' => route('register'),
+                'airports' => $airports,
+            ]);
+        }
     }
+
+
 }
