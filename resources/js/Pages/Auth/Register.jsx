@@ -32,19 +32,19 @@ export default function Register() {
             <Head title="Register" />
 
             <section className='w-3/4 h-4/5 mx-auto flex flex-col gap-10'>
-                <div className="title">
+                <div className="">
                     <h1 className='text-gray-800 text-4xl font-bold'>Register</h1>
                     <p className='w-3/4 mx-auto text-gray-400'></p>
                 </div>
 
                 <form onSubmit={submit} className='flex flex-col gap-3'>
-                    <div className={style.input_group}>
+                    <div className="flex border rounded-xl relative">
 
                         <TextInput
                             id="name"
                             name="name"
                             value={data.name}
-                            className={style.input_text}
+                            className="w-full py-3 px-6 border rounded-xl focus:outline-none border-none"
                             autoComplete="name"
                             isFocused={true}
                             placeholder ="Name"
@@ -61,7 +61,7 @@ export default function Register() {
                             type="email"
                             name="email"
                             value={data.email}
-                            className={style.input_text}
+                            className="w-full py-3 px-6 border rounded-xl focus:outline-none border-none"
                             autoComplete="username"
                             placeholder="Email"
                             onChange={(e) => setData('email', e.target.value)}
@@ -71,14 +71,14 @@ export default function Register() {
                     </div>
                     <InputError message={errors.email} className="text-sm text-red-500" />
 
-                    <div className={style.input_group}>
+                    <div className="flex rounded-xl relative">
 
                         <TextInput
                             id="password"
                             type="password"
                             name="password"
                             value={data.password}
-                            className={style.input_text}
+                            className="w-full py-3 px-6 border rounded-xl focus:outline-none border-none"
                             placeholder = "Password"
                             autoComplete="new-password"
                             onChange={(e) => setData('password', e.target.value)}
@@ -88,13 +88,13 @@ export default function Register() {
                     </div>
                     <InputError message={errors.password} className="text-sm text-red-500" />
 
-                    <div className={style.input_group}>
+                    <div className="flex rounded-xl relative">
                         <TextInput
                             id="password_confirmation"
                             type="password"
                             name="password_confirmation"
                             value={data.password_confirmation}
-                            className={style.input_text}
+                            className="w-full py-3 px-6 border rounded-xl focus:outline-none border-none"
                             autoComplete="new-password"
                             placeholder = "Confirm Password"
                             onChange={(e) => setData('password_confirmation', e.target.value)}
@@ -105,7 +105,7 @@ export default function Register() {
                     <InputError message={errors.password_confirmation} className="text-xs text-red-500" />
 
                     <div className="input-button">
-                        <PrimaryButton className={style.button} disabled={processing} >
+                        <PrimaryButton className="w-full py-3" disabled={processing} >
                             Register
                         </PrimaryButton>
                     </div>

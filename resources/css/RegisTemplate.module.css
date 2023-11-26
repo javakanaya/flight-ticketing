@@ -1,17 +1,7 @@
-.container{
-    @apply flex h-screen bg-blue-500 overflow-auto;
-    background-position-x: 50%;
-    background-position-y: 60%;
-}
-
-.imgstyle{
-    position:relative;
-    overflow: hidden;
-}
-
 .images{
-    background: url('../../storage/app/public/img.jpg') no-repeat;
+    background: url('../../storage/app/public/assets/login_register.png') no-repeat;
     position: absolute;
+    background-color: #60cff4;
     bottom: 0;
     left: 0;
     top: 0;
