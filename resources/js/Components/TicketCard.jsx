@@ -1,7 +1,17 @@
 import { PiAirplaneInFlightDuotone } from "react-icons/pi";
 import "../../css/default.css";
+import { router } from '@inertiajs/react'
 
 function TicketCard(props) {
+    const handleChoose = () => {
+        router.visit("/booking", {
+            data: {
+                ticketId: props.id,
+                passengerCount: props.passengerCount,
+            },
+        });
+    };
+
     return (
         <>
             <div className="w-full grid gap-3 grid-rows-1 grid-cols-8 py-5">
@@ -43,7 +53,10 @@ function TicketCard(props) {
                     {props.price}
                 </div>
                 <div className="flex  items-center mx-auto text-sm">
-                    <button className="button bg-blue-color text-white py-3 px-3 rounded-3xl">
+                    <button
+                        className="button bg-blue-color text-white py-3 px-3 rounded-3xl"
+                        onClick={handleChoose}
+                    >
                         Choose
                     </button>
                 </div>

@@ -10,7 +10,7 @@ import { FaPlaneArrival } from "react-icons/fa";
 import { RiArrowDropDownLine } from "react-icons/ri";
 
 
-const Flights = ({ sourceAirport, destinationAirport, tickets }) => {
+const Flights = ({ sourceAirport, destinationAirport, tickets, passengerCount }) => {
     const [value1, setValue1] = useState("");
     const [value2, setValue2] = useState("");
 
@@ -44,7 +44,7 @@ const Flights = ({ sourceAirport, destinationAirport, tickets }) => {
                 rel="stylesheet"
                 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
             /> */}
-            <div className="w-full h-44 bg-gradient-to-r from-blue-300 to-purple-300 ">
+            <div className="w-full h-24 bg-gradient-to-r from-blue-300 to-purple-300 ">
                 <Navbar />
                 {/* <div className="filterbox">
                     <div className="grid grid-rows-3">
@@ -97,6 +97,9 @@ const Flights = ({ sourceAirport, destinationAirport, tickets }) => {
                     const arrivalTime = ticket.arrival.split(" ")[1];
                     return (
                         <TicketCard
+                            key={ticket.id}
+                            id={ticket.id}
+                            passengerCount={passengerCount}
                             departure={departureTime.slice(0, 5)}
                             arrival={arrivalTime.slice(0, 5)}
                             airline={ticket.airline.name}

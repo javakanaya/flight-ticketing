@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\TicketController;
-use App\Http\Controllers\HomeController;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TicketController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,8 +35,10 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/search', [TicketController::class, 'search'])->name('tickets.search');
 
+Route::get('/booking', [TransactionController::class, 'show'])->name('bookings.show');
+Route::post('/transaction', [TransactionController::class, 'makeTransaction'])->name('bookings.show');
 
-Route::get('/flights/transaction/payment', function (){
+Route::get('/flights/transaction/payment', function () {
     return Inertia::render('Payment');
 });
 
@@ -48,8 +51,5 @@ Route::get('/flights', function () {
     ]);
 });
 
-Route::get('/flights/transaction', function () {
-    return Inertia::render('Transaction');
-})->name('Transaction-page');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
