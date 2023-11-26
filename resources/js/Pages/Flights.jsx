@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Link, Head } from "@inertiajs/react";
 import Navbar from "../Components/Navbar";
 import TicketCard from "@/Components/TicketCard";
-import "../../css/flights.css";
-import "../../css/getTicket.css";
+// import "../../css/flights.css";
+// import "../../css/getTicket.css";
 
 import { HiOutlineSwitchHorizontal } from "react-icons/hi";
 import { FaPlaneArrival } from "react-icons/fa";
@@ -40,13 +40,13 @@ const Flights = ({ sourceAirport, destinationAirport, tickets }) => {
     return (
         <>
             <Head title="Flights" />
-            <link
+            {/* <link
                 rel="stylesheet"
                 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-            />
+            /> */}
             <div className="w-full h-44 bg-gradient-to-r from-blue-300 to-purple-300 ">
                 <Navbar />
-                <div className="filterbox">
+                {/* <div className="filterbox">
                     <div className="grid grid-rows-3">
                         <div className="grid grid-cols-4 w-[50%] text-xs my-2 ">
                             <div className="flex items-center cursor-default hover:text-slate-400">
@@ -89,7 +89,7 @@ const Flights = ({ sourceAirport, destinationAirport, tickets }) => {
                             <HiOutlineSwitchHorizontal />
                         </button>
                     </div>
-                </div>
+                </div> */}
             </div>
             <div className=" w-[60%] h-screen mx-auto mt-[7rem] px-6">
                 {tickets.map((ticket) => {
