@@ -53,7 +53,7 @@ class TransactionController extends Controller
         ]);
     }
 
-    public function makeTransaction($request)
+    public function storeTransaction($request)
     {
 
         dd($request);

@@ -36,7 +36,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/search', [TicketController::class, 'search'])->name('tickets.search');
 
 Route::get('/booking', [TransactionController::class, 'show'])->name('bookings.show');
-Route::post('/transaction', [TransactionController::class, 'makeTransaction'])->name('bookings.show');
+Route::post('/transaction', [TransactionController::class, 'storeTransaction'])->name('bookings.show');
 
 Route::get('/flights/transaction/payment', function () {
     return Inertia::render('Payment');
