@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->foreignId('route_id');
-            $table->integer('class'); // 1: first, 2: business, 3: premEcon, 4: economy
+            $table->tinyInteger('class'); // 1: first, 2: business, 3: premEcon, 4: economy
             $table->double('price', 11, 2);
             $table->integer('bagage')->default(20);
             $table->integer('cabin_bagage')->default(7);
