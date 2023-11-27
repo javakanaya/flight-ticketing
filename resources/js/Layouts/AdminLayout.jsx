@@ -27,9 +27,6 @@ export default function AdminLayout({ user, header, children }) {
                                 <NavLink href={route('admin.routes')} active={route().current('admin.routes')}>
                                     Routes
                                 </NavLink>
-                                <NavLink href={route('admin.tickets')} active={route().current('admin.tickets')}>
-                                    Tickets
-                                </NavLink>
                                 <NavLink href={route('admin.airlines')} active={route().current('admin.airliness')}>
                                     Airlines
                                 </NavLink>

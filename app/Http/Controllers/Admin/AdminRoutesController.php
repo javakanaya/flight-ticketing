@@ -90,6 +90,14 @@ class AdminRoutesController extends Controller
      */
     public function destroy(Route $route)
     {
-        //
+        // delete di tabel
+        // dd($route);
+        $destory = $route->delete();
+        if ($destory) {
+            // add flash for the success notification
+            return redirect()->route('admin.routes')->with('success', 'Product has been deleted!');
+        }
+
+        return redirect()->route('admin.routes')->with('Failed', 'Error deleting product');
     }
 }

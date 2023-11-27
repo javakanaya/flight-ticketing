@@ -1,15 +1,27 @@
 // resources/js/Pages/Products/Index.jsx
 import AdminLayout from "@/Layouts/AdminLayout";
-import { Link } from '@inertiajs/react'
+import { Link, router } from "@inertiajs/react";
+import { Inertia } from '@inertiajs/inertia';
 
 const Index = ({ flightRoutes, auth }) => {
+    // function deletePost(id) {
+    //     router.delete(`/post/${id}`);
+    // }
+
+    const deletePost = async (id) => {
+        Inertia.delete(`/admin/routes/${id}`);
+    }
+
     return (
         <AdminLayout
             user={auth.user}
             header={
-                <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight flex justify-between items-center">
                     Routes
+                    <a href="{{ route('products.create') }}"
+                class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">+ ADD</a>
                 </h2>
+                
             }
         >
             <div className="py-12">
@@ -38,10 +50,17 @@ const Index = ({ flightRoutes, auth }) => {
                                     {flightRoutes.map((flightRoute) => (
                                         <tr key={flightRoute.id}>
                                             <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">
-                                                {flightRoute.source_airport.name}
+                                                {
+                                                    flightRoute.source_airport
+                                                        .name
+                                                }
                                             </td>
                                             <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">
-                                                {flightRoute.destination_airport.name}
+                                                {
+                                                    flightRoute
+                                                        .destination_airport
+                                                        .name
+                                                }
                                             </td>
                                             <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">
                                                 {flightRoute.airline.name}
@@ -65,35 +84,13 @@ const Index = ({ flightRoutes, auth }) => {
                                                 >
                                                     EDIT
                                                 </Link>
-                                                <form
-                                                    method="post"
-                                                    action={route(
-                                                        "admin.routes.destroy",
-                                                        flightRoute.id
-                                                    )}
-                                                    className="inline"
-                                                    onSubmit={(e) => {
-                                                        if (
-                                                            !confirm(
-                                                                "Are you sure?"
-                                                            )
-                                                        ) {
-                                                            e.preventDefault();
-                                                        }
-                                                    }}
+                                                <button
+                                                    type="submit"
+                                                    className="mx-2 border border-red-500 hover:bg-red-500 hover:text-white px-4 py-2 rounded-md"
+                                                    onClick={() => deletePost(flightRoute.id)}
                                                 >
-                                                    <input
-                                                        type="hidden"
-                                                        name="_method"
-                                                        value="delete"
-                                                    />
-                                                    <button
-                                                        type="submit"
-                                                        className="mx-2 border border-red-500 hover:bg-red-500 hover:text-white px-4 py-2 rounded-md"
-                                                    >
-                                                        DELETE
-                                                    </button>
-                                                </form>
+                                                    DELETE
+                                                </button>
                                             </td>
                                         </tr>
                                     ))}

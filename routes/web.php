@@ -45,7 +45,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
         'store' => 'admin.routes.store',
         'edit' => 'admin.routes.edit',
         'update' => 'admin.routes.update',
-        'destroy' => 'admin.routes.destroy',]]);
+        'destroy' => 'admin.routes.destroy']]);
 
     Route::get('/admin/airlines', [AdminController::class, 'index'])->name('admin.airlines');
 
