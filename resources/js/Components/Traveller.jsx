@@ -3,7 +3,7 @@ import Navbar from "@/Components/Navbar";
 import { Disclosure } from "@headlessui/react";
 import React, { useState } from "react";
 
-const Traveller_Detail = ({ title, open, nationality }) => {
+const Traveller_Detail = ({ title, open, nationalities }) => {
     const [lastnameDisabled, setlastnameDisabled] = useState(false);
     const [lastnameValue, setlastnameValue] = useState();
     const handleCheckboxChange = () => {
@@ -109,7 +109,13 @@ const Traveller_Detail = ({ title, open, nationality }) => {
                             name="trav-nat"
                             id="trav-nat"
                             className="my-2 w-1/3 rounded-lg"
-                        ></select>
+                        >
+                            {nationalities.map((option) => (
+                                <option key={option.id} value={option.id}>
+                                    {option.name}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                 </Disclosure.Panel>
             </Disclosure>

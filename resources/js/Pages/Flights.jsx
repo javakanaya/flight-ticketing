@@ -9,8 +9,13 @@ import { HiOutlineSwitchHorizontal } from "react-icons/hi";
 import { FaPlaneArrival } from "react-icons/fa";
 import { RiArrowDropDownLine } from "react-icons/ri";
 
-
-const Flights = ({ sourceAirport, destinationAirport, tickets, passengerCount }) => {
+const Flights = ({
+    sourceAirport,
+    destinationAirport,
+    tickets,
+    passengerCount,
+    auth,
+}) => {
     const [value1, setValue1] = useState("");
     const [value2, setValue2] = useState("");
 
@@ -28,14 +33,14 @@ const Flights = ({ sourceAirport, destinationAirport, tickets, passengerCount })
     };
 
     function formatRupiah(number) {
-        const formatter = new Intl.NumberFormat('id-ID', {
-          style: 'currency',
-          currency: 'IDR',
-          minimumFractionDigits: 0, // Minimum number of decimal places
+        const formatter = new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0, // Minimum number of decimal places
         });
-      
+
         return formatter.format(number);
-      }
+    }
 
     return (
         <>
@@ -45,7 +50,7 @@ const Flights = ({ sourceAirport, destinationAirport, tickets, passengerCount })
                 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
             /> */}
             <div className="w-full h-24 bg-gradient-to-r from-blue-300 to-purple-300 ">
-                <Navbar />
+                <Navbar user={auth.user} />
                 {/* <div className="filterbox">
                     <div className="grid grid-rows-3">
                         <div className="grid grid-cols-4 w-[50%] text-xs my-2 ">

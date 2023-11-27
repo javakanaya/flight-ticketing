@@ -2,8 +2,10 @@ import Navbar from "../Components/Navbar";
 import TransactionComp from "@/Components/TransactionComp";
 import "../../css/home.css";
 import FlightDetail from "@/Components/FlightDetail";
+import { Head } from "@inertiajs/react";
 
 const Transaction = ({
+    auth,
     source_city,
     source_IATA,
     destination_city,
@@ -14,18 +16,20 @@ const Transaction = ({
     arrivalTime,
     classtype,
     passengerCount,
-    nationality,
-    ticketId
+    nationalities,
+    ticketId,
 }) => {
     return (
         <>
-            <Navbar />
+            <Head title="Booking" />
+            <Navbar user={auth.user} />
             <div className=" h-24 bg-[#60cff4]"></div>
             <div className="pl-[20%] pt-12 w-[60%] absolute">
-                <TransactionComp 
-                passengerCount={passengerCount}
-                nationality={nationality}
-                ticketId={ticketId}/>
+                <TransactionComp
+                    passengerCount={passengerCount}
+                    nationalities={nationalities}
+                    ticketId={ticketId}
+                />
             </div>
 
             <div className="p-4 absolute top-[39.5%] left-[63%] w-[350px] border-2 border-slate-200">

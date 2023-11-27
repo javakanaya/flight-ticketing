@@ -16,7 +16,7 @@ class TransactionController extends Controller
     public function show(Request $request)
     {
         $ticket = Ticket::find($request['ticketId']);
-        $nationality = Country::all();
+        $countries = Country::all();
 
 
         // dd($nationality);
@@ -49,7 +49,7 @@ class TransactionController extends Controller
             'arrivalTime' => $arrivalTime,
             'classtype' => $classType,
             'passengerCount' => $request['passengerCount'],
-            'nationality' => $nationality,
+            'nationalities' => $countries,
         ]);
     }
 
