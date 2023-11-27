@@ -1,16 +1,12 @@
 // resources/js/Pages/Products/Index.jsx
 import AdminLayout from "@/Layouts/AdminLayout";
 import { Link, router } from "@inertiajs/react";
-import { Inertia } from '@inertiajs/inertia';
+import { Inertia } from "@inertiajs/inertia";
 
 const Index = ({ flightRoutes, auth }) => {
-    // function deletePost(id) {
-    //     router.delete(`/post/${id}`);
-    // }
-
     const deletePost = async (id) => {
         Inertia.delete(`/admin/routes/${id}`);
-    }
+    };
 
     return (
         <AdminLayout
@@ -18,10 +14,13 @@ const Index = ({ flightRoutes, auth }) => {
             header={
                 <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight flex justify-between items-center">
                     Routes
-                    <a href="{{ route('products.create') }}"
-                class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">+ ADD</a>
+                    <Link
+                        href={ route('admin.routes.create') }
+                        class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
+                    >
+                        + ADD
+                    </Link>
                 </h2>
-                
             }
         >
             <div className="py-12">
@@ -87,7 +86,11 @@ const Index = ({ flightRoutes, auth }) => {
                                                 <button
                                                     type="submit"
                                                     className="mx-2 border border-red-500 hover:bg-red-500 hover:text-white px-4 py-2 rounded-md"
-                                                    onClick={() => deletePost(flightRoute.id)}
+                                                    onClick={() =>
+                                                        deletePost(
+                                                            flightRoute.id
+                                                        )
+                                                    }
                                                 >
                                                     DELETE
                                                 </button>
