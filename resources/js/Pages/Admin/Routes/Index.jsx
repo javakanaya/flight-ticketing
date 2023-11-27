@@ -39,13 +39,13 @@ const Index = ({ flightRoutes, auth }) => {
                                     {flightRoutes.map((flightRoute) => (
                                         <tr key={flightRoute.id}>
                                             <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">
-                                                {flightRoute.source_airport_id}
+                                                {flightRoute.source_airport.name}
                                             </td>
                                             <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">
-                                                {flightRoute.destination_airport_id}
+                                                {flightRoute.destination_airport.name}
                                             </td>
                                             <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">
-                                                {flightRoute.airline_id}
+                                                {flightRoute.airline.name}
                                             </td>
                                             <td className="flex items-center justify-end border-b border-slate-100 p-4 pl-8 text-slate-500">
                                                 <Link
