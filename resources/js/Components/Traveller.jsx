@@ -1,16 +1,21 @@
 import PaymentMethod from "./PaymentMethod";
 import Navbar from "@/Components/Navbar";
 import { Disclosure } from "@headlessui/react";
-import React, { useState } from "react";
+import React, { useState} from "react";
 
 const Traveller_Detail = ({ title, open, nationalities, onUpdate }) => {
     const [lastnameDisabled, setlastnameDisabled] = useState(false);
     const [lastnameValue, setlastnameValue] = useState("");
+    const [firstnameValue, setfirstnameValue] = useState("");
+    const [natValue, setnatValue] = useState("");
+    const [titleValue, settitleValue] = useState("");
+    const [isOpenDisclosure, setOpenDisclosure] = useState(open);
+
     const [formData, setFormData] = useState({
-        title: "",
+        title: "Mr",
         first_name: "",
         last_name: "",
-        nationality: "",
+        nationality: "1",
     });
 
     const handleCheckboxChange = () => {
@@ -21,6 +26,60 @@ const Traveller_Detail = ({ title, open, nationalities, onUpdate }) => {
         }
     };
 
+
+    const handleFirstNameChange = (e) => {
+        const newValue = e.target.value;
+        console.log("New value : ", newValue)
+        setfirstnameValue(newValue);
+        setFormData((prevData) => {
+            const updatedData = { ...prevData, first_name: newValue };
+            // console.log("New value : ", newValue);
+            // console.log("Updated state: ", updatedData);
+            onUpdate(updatedData); // Trigger the onUpdate callback with the updated data
+            return updatedData; // Return the updated state
+        });
+    };
+
+    const handleLastNameChange = (e) => {
+        const newValue = e.target.value;
+        console.log("New value : ", newValue)
+        setlastnameValue(newValue);
+        setFormData((prevData) => {
+            const updatedData = { ...prevData, last_name: newValue };
+            // console.log("New value : ", newValue);
+            // console.log("Updated state: ", updatedData);
+            onUpdate(updatedData); // Trigger the onUpdate callback with the updated data
+            return updatedData; // Return the updated state
+        });
+    };
+
+    const handleNationalityChange = (e) => {
+        const newValue = e.target.value;
+        console.log("New value : ", newValue)
+        setnatValue(newValue);
+        setFormData((prevData) => {
+            const updatedData = { ...prevData, nationality: newValue };
+            console.log("New value : ", newValue);
+            console.log("Updated state: ", updatedData);
+            onUpdate(updatedData); // Trigger the onUpdate callback with the updated data
+            return updatedData; // Return the updated state
+        });
+    };
+
+    const handleTitleChange = (e) => {
+        const newValue = e.target.value;
+        console.log("New value: ", newValue);
+        settitleValue(newValue);
+    
+        setFormData((prevData) => {
+            const updatedData = { ...prevData, title: newValue };
+            console.log("Updated state: ", updatedData);
+            onUpdate(updatedData); // Trigger the onUpdate callback with the updated data
+            return updatedData; // Return the updated state
+        });
+    };
+    
+
     const updateFormData = (data) => {
         setFormData((prevData) => ({ ...prevData, ...data }));
         onUpdate(formData); // Trigger the onUpdate callback with the updated data
@@ -28,11 +87,11 @@ const Traveller_Detail = ({ title, open, nationalities, onUpdate }) => {
 
     return (
         <>
-            <Disclosure defaultOpen={open}>
+            <Disclosure defaultOpen={isOpenDisclosure}>
                 <div className="py-3 grid grid-cols-3">
                     <h1 className="text-base grid col-span-2">{title}</h1>
-                    <Disclosure.Button className="text-right grid mr-3 text-[#2faad3] hover:text-[#373939] ">
-                        Edit Details
+                    <Disclosure.Button className="text-right grid mr-3 text-[#2faad3] hover:text-[#373939]" onClick={() => setOpenDisclosure(!isOpenDisclosure)}>
+                        {isOpenDisclosure ? "Save" : "Edit Details"}
                     </Disclosure.Button>
                 </div>
                 <hr className="w-full border-2 border-slate-200" />
@@ -53,10 +112,11 @@ const Traveller_Detail = ({ title, open, nationalities, onUpdate }) => {
                             name="trav-title"
                             id="trav-title"
                             className="my-2 w-1/3 rounded-lg"
+                            onChange={handleTitleChange}
                         >
-                            <option value="mr">Mr</option>
-                            <option value="">Mrs</option>
-                            <option value="">Ms</option>
+                            <option value="Mr">Mr</option>
+                            <option value="Mrs">Mrs</option>
+                            <option value="Ms">Ms</option>
                         </select>
                     </div>
                     <div className="flex">
@@ -72,7 +132,7 @@ const Traveller_Detail = ({ title, open, nationalities, onUpdate }) => {
                                     name="trav-first"
                                     id="trav-first"
                                     className="rounded-lg"
-                                    onChange={(e) => updateFormData({ first_name: e.target.value })}
+                                    onChange={handleFirstNameChange}
                                 />
                                 <span className="text-slate-500 text-xs my-1">
                                     (without title and punctuation)
@@ -96,7 +156,8 @@ const Traveller_Detail = ({ title, open, nationalities, onUpdate }) => {
                                     className="rounded-lg my-1"
                                     readOnly={lastnameDisabled}
                                     value={lastnameValue}
-                                    onChange={(e) => updateFormData({ last_name: e.target.value })}
+                                    onChange={handleLastNameChange}
+                                    
                                 />
                                 <span className="text-slate-500 text-xs py-1">
                                     (without title and punctuation)
@@ -123,9 +184,7 @@ const Traveller_Detail = ({ title, open, nationalities, onUpdate }) => {
                             name="trav-nat"
                             id="trav-nat"
                             className="my-2 w-1/3 rounded-lg"
-                            onChange={(e) =>
-                                updateFormData({ nationality: e.target.value })
-                            }
+                            onChange={handleNationalityChange}
                         >
                             {nationalities.map((option) => (
                                 <option key={option.id} value={option.id}>
