@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\TicketController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\AdminController;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TicketController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AdminRoutesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,11 +35,25 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');;
-    Route::get('/admin/routes', [AdminController::class, 'index'])->name('admin.routes');;
-    Route::get('/admin/tickets', [AdminController::class, 'index'])->name('admin.tickets');;
-    Route::get('/admin/transaction', [AdminController::class, 'index'])->name('admin.transactions');;
-    Route::get('/admin/users', [AdminController::class, 'index'])->name('admin.users');;
+    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+
+    // Route::get('/admin/routes', [AdminRoutesController::class, 'index'])->name('admin.routes');
+    Route::resource('/admin/routes', AdminRoutesController::class, ['names' => [
+        'index' => 'admin.routes',
+        'show' => 'admin.routes.show',
+        'create' => 'admin.routes.create',
+        'store' => 'admin.routes.store',
+        'edit' => 'admin.routes.edit',
+        'update' => 'admin.routes.update',
+        'destroy' => 'admin.routes.destroy',]]);
+
+    Route::get('/admin/airlines', [AdminController::class, 'index'])->name('admin.airlines');
+
+    Route::get('/admin/tickets', [AdminController::class, 'index'])->name('admin.tickets');
+
+    Route::get('/admin/transaction', [AdminController::class, 'index'])->name('admin.transactions');
+
+    Route::get('/admin/users', [AdminController::class, 'index'])->name('admin.users');
 });
 
 Route::get('/search', [TicketController::class, 'search'])->name('tickets.search');
