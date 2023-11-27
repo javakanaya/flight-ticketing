@@ -3,17 +3,29 @@ import Navbar from "@/Components/Navbar";
 import { Disclosure } from "@headlessui/react";
 import React, { useState } from "react";
 
-const Traveller_Detail = ({ title, open, nationalities }) => {
+const Traveller_Detail = ({ title, open, nationalities, onUpdate }) => {
     const [lastnameDisabled, setlastnameDisabled] = useState(false);
-    const [lastnameValue, setlastnameValue] = useState();
+    const [lastnameValue, setlastnameValue] = useState("");
+    const [formData, setFormData] = useState({
+        title: "",
+        first_name: "",
+        last_name: "",
+        nationality: "",
+    });
+
     const handleCheckboxChange = () => {
         setlastnameDisabled(!lastnameDisabled);
         if (!lastnameDisabled) {
             setlastnameValue("");
-        } else {
-            setlastnameValue();
+            updateFormData({ last_name: "" });
         }
     };
+
+    const updateFormData = (data) => {
+        setFormData((prevData) => ({ ...prevData, ...data }));
+        onUpdate(formData); // Trigger the onUpdate callback with the updated data
+    };
+
     return (
         <>
             <Disclosure defaultOpen={open}>
@@ -60,6 +72,7 @@ const Traveller_Detail = ({ title, open, nationalities }) => {
                                     name="trav-first"
                                     id="trav-first"
                                     className="rounded-lg"
+                                    onChange={(e) => updateFormData({ first_name: e.target.value })}
                                 />
                                 <span className="text-slate-500 text-xs my-1">
                                     (without title and punctuation)
@@ -83,6 +96,7 @@ const Traveller_Detail = ({ title, open, nationalities }) => {
                                     className="rounded-lg my-1"
                                     readOnly={lastnameDisabled}
                                     value={lastnameValue}
+                                    onChange={(e) => updateFormData({ last_name: e.target.value })}
                                 />
                                 <span className="text-slate-500 text-xs py-1">
                                     (without title and punctuation)
@@ -109,6 +123,9 @@ const Traveller_Detail = ({ title, open, nationalities }) => {
                             name="trav-nat"
                             id="trav-nat"
                             className="my-2 w-1/3 rounded-lg"
+                            onChange={(e) =>
+                                updateFormData({ nationality: e.target.value })
+                            }
                         >
                             {nationalities.map((option) => (
                                 <option key={option.id} value={option.id}>
