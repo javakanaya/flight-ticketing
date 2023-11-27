@@ -3,7 +3,6 @@ import AdminLayout from "@/Layouts/AdminLayout";
 import { Link } from '@inertiajs/react'
 
 const Index = ({ flightRoutes, auth }) => {
-    console.log(flightRoutes);
     return (
         <AdminLayout
             user={auth.user}
