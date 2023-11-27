@@ -1,21 +1,33 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+// import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+// import { Head } from '@inertiajs/react';
+// import Navbar from "../Components/Navbar";
+// import Hero from "../Components/Hero";
+// import GetTicket from "../Components/GetTicket";
 
-export default function Dashboard({ auth }) {
-    return (
-        <AuthenticatedLayout
-            user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>}
-        >
-            <Head title="Dashboard" />
+// export default function Dashboard({ auth }) {
+//     return (
+//         <>
+//             <Navbar user={auth.user}/>
+//             <div className="bg-[#60cff4] h-[500px]">
+//                 <Hero 
+//                     cName="hero"
+//                     heroImg=""
+//                     title={<>
+//                         Travel Anywhere <br />
+//                         Less Worry
+//                     </>}
+//                     text="Find hotel and ticket with best experience"
+//                 />
+//             </div>
+//             <div className="img">
+                    
+//             </div>
+//             <div className="absolute left-1/2 transform -translate-x-1/2 top-[450px]">
+//                 <GetTicket />
+//             </div>
 
-            <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">You're logged in!</div>
-                    </div>
-                </div>
-            </div>
-        </AuthenticatedLayout>
-    );
-}
+//             <div className="h-60 bg-white"></div>
+        
+//         </>
+//     );
+// }
