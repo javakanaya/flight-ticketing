@@ -84,4 +84,16 @@ class TransactionController extends Controller
 
         return redirect('/');
     }
+
+
+    public function addFacilities(Request $request)
+    {
+
+        $countries = Country::all();
+        return Inertia::render('Payment', [
+            'travellers' => $request->input('travellers'),
+            'nationalities' => $countries,
+        ]);
+    }
+
 }

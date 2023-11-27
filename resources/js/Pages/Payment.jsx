@@ -6,18 +6,20 @@ import Additional from "@/Components/Additional";
 import FlightDetail from "@/Components/FlightDetail";
 import PriceBar from "@/Components/PriceBar";
 
-const Payment = ({ }) => {
+const Payment = ({ travellers, nationalities }) => {
+    console.log(travellers);
+
+
     return (
         <>
             <Navbar />
             <div className=" h-24 bg-[#60cff4]">
-                
             </div>
             <div className="p-4 absolute top-[39.5%] left-[63%] w-[350px] border-2 border-slate-200">
                 <FlightDetail/>
             </div>
             <div className="pl-[20%] pt-12 w-[60%] absolute">
-            <TransactionComp contactDetailOpen={false} travDetailOpen={false}/>
+            <TransactionComp contactDetailOpen={false} travDetailOpen={false} saveInfo={travellers} passengerCount={2} nationalities={nationalities}/>
             <div className="mt-36">
                 <h1 className="my-5 text-lg font-[1.5rem]">Frequently Added to Booking</h1>
                 <Additional 

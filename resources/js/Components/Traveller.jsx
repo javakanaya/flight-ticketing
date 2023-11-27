@@ -3,12 +3,12 @@ import Navbar from "@/Components/Navbar";
 import { Disclosure } from "@headlessui/react";
 import React, { useState} from "react";
 
-const Traveller_Detail = ({ title, open, nationalities, onUpdate }) => {
+const Traveller_Detail = ({ header, open, nationalities, onUpdate, title, first_name, last_name, nationality}) => {
     const [lastnameDisabled, setlastnameDisabled] = useState(false);
-    const [lastnameValue, setlastnameValue] = useState("");
-    const [firstnameValue, setfirstnameValue] = useState("");
-    const [natValue, setnatValue] = useState("");
-    const [titleValue, settitleValue] = useState("");
+    const [lastnameValue, setlastnameValue] = useState(last_name);
+    const [firstnameValue, setfirstnameValue] = useState(first_name);
+    const [natValue, setnatValue] = useState(nationality);
+    const [titleValue, settitleValue] = useState(title);
     const [isOpenDisclosure, setOpenDisclosure] = useState(open);
 
     const [formData, setFormData] = useState({
@@ -29,7 +29,7 @@ const Traveller_Detail = ({ title, open, nationalities, onUpdate }) => {
 
     const handleFirstNameChange = (e) => {
         const newValue = e.target.value;
-        console.log("New value : ", newValue)
+        // console.log("New value : ", newValue)
         setfirstnameValue(newValue);
         setFormData((prevData) => {
             const updatedData = { ...prevData, first_name: newValue };
@@ -89,7 +89,7 @@ const Traveller_Detail = ({ title, open, nationalities, onUpdate }) => {
         <>
             <Disclosure defaultOpen={isOpenDisclosure}>
                 <div className="py-3 grid grid-cols-3">
-                    <h1 className="text-base grid col-span-2">{title}</h1>
+                    <h1 className="text-base grid col-span-2">{header}</h1>
                     <Disclosure.Button className="text-right grid mr-3 text-[#2faad3] hover:text-[#373939]" onClick={() => setOpenDisclosure(!isOpenDisclosure)}>
                         {isOpenDisclosure ? "Save" : "Edit Details"}
                     </Disclosure.Button>
@@ -112,6 +112,7 @@ const Traveller_Detail = ({ title, open, nationalities, onUpdate }) => {
                             name="trav-title"
                             id="trav-title"
                             className="my-2 w-1/3 rounded-lg"
+                            value={titleValue}
                             onChange={handleTitleChange}
                         >
                             <option value="Mr">Mr</option>
@@ -132,6 +133,7 @@ const Traveller_Detail = ({ title, open, nationalities, onUpdate }) => {
                                     name="trav-first"
                                     id="trav-first"
                                     className="rounded-lg"
+                                    value={firstnameValue}
                                     onChange={handleFirstNameChange}
                                 />
                                 <span className="text-slate-500 text-xs my-1">
@@ -184,6 +186,7 @@ const Traveller_Detail = ({ title, open, nationalities, onUpdate }) => {
                             name="trav-nat"
                             id="trav-nat"
                             className="my-2 w-1/3 rounded-lg"
+                            value={natValue}
                             onChange={handleNationalityChange}
                         >
                             {nationalities.map((option) => (

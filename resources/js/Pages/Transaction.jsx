@@ -4,7 +4,7 @@ import "../../css/home.css";
 import FlightDetail from "@/Components/FlightDetail";
 import { Head } from "@inertiajs/react";
 
-const Transaction = ({
+const Transaction  = ({
     auth,
     source_city,
     source_IATA,

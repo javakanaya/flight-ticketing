@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Contact_Detail from "../Components/Contact_Detail";
 import Traveller_Detail from "../Components/Traveller";
+import { router } from '@inertiajs/react'
 
 const TransactionComp = ({
     contactDetailOpen = true,
@@ -8,7 +9,10 @@ const TransactionComp = ({
     passengerCount,
     nationalities,
     ticketId,
+    saveInfo,
 }) => {
+
+    console.log(nationalities)
     // Step 1: Maintain state to store form data
     const [formData, setFormData] = useState({
         // Add other fields as needed
@@ -25,16 +29,20 @@ const TransactionComp = ({
     };
 
     // Step 3: Function to handle form submission
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        // You can now access the form data in the `formData` state
-        console.log("Form Data:", formData);
-        // Perform any additional actions, e.g., send data to the server
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        router.post(route("facilities.add"), {
+            travellers: formData.travellers
+        });
     };
 
-    const generateTravellerForms = () => {
+    const generateTravellerForms = (saveInfo) => {
         const forms = [];
+
+        console.log("Save Info", saveInfo);
         for (let i = 0; i < passengerCount; i++) {
+            const traveler = saveInfo ? saveInfo[i] : null;
+            console.log(traveler);
             forms.push(
                 <div
                     key={i}
@@ -42,9 +50,13 @@ const TransactionComp = ({
                 >
                     {/* Step 2: Pass the callback function to update form data */}
                     <Traveller_Detail
-                        title={`Adult ${i + 1}`}
+                        header={`Adult ${i + 1}`}
                         open={travDetailOpen}
                         nationalities={nationalities}
+                        title={traveler ? traveler.title: "Mr"}
+                        first_name={traveler ? traveler.first_name : ""}
+                        last_name={traveler ? traveler.last_name : ""}
+                        nationality={traveler ? traveler.nationality : "1"}
                         onUpdate={(data) => updateTravellerData(i, data)}
                     />
                 </div>
@@ -65,7 +77,7 @@ const TransactionComp = ({
                 <h1 className="mt-10 mb-3 text-xl font-medium">
                     Traveler Details
                 </h1>
-                {generateTravellerForms()}
+                {generateTravellerForms(saveInfo)}
                 <button
                     type="submit"
                     className="my-7 w-[20%] text-white h-14 absolute left-[80%] bg-[#60cff4] rounded-xl hover:text-[#60cff4] hover:bg-[#f8f8f8]"
