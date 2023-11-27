@@ -5,7 +5,7 @@ import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
 
-export default function Authenticated({ user, header, children }) {
+export default function AdminLayout({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
     return (
@@ -29,6 +29,9 @@ export default function Authenticated({ user, header, children }) {
                                 </NavLink>
                                 <NavLink href={route('admin.tickets')} active={route().current('admin.tickets')}>
                                     Tickets
+                                </NavLink>
+                                <NavLink href={route('admin.airlines')} active={route().current('admin.airliness')}>
+                                    Airlines
                                 </NavLink>
                                 <NavLink href={route('admin.transactions')} active={route().current('admin.transactions')}>
                                     Transaction
