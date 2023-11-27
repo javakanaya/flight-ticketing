@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Route;
 use App\Models\Ticket;
+use App\Models\Airport;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -69,9 +70,13 @@ class AdminRoutesController extends Controller
      */
     public function edit(Route $route)
     {
-        //
-    }
+        $airports = Airport::all();
 
+        return Inertia::render('Admin/Routes/Edit', [
+            'flightRoute' => $route,
+            'airports' => $airports,
+        ]);
+    }
     /**
      * Update the specified resource in storage.
      */
