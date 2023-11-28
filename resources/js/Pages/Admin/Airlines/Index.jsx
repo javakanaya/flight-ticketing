@@ -1,11 +1,21 @@
-// resources/js/Pages/Products/Index.jsx
 import AdminLayout from "@/Layouts/AdminLayout";
-import { Link, router } from "@inertiajs/react";
+import { Link } from "@inertiajs/react";
 import { Inertia } from "@inertiajs/inertia";
 
-const Index = ({ flightRoutes, auth, success, errors }) => {
-    const deletePost = async (id) => {
-        Inertia.delete(`/admin/routes/${id}`);
+const Index = ({ airlines, auth, success, errors }) => {
+    const deleteAirline = async (id) => {
+        try {
+            await Inertia.delete(`/admin/airlines/${id}`);
+            // Handle success, e.g., show a success toast
+        } catch (error) {
+            // Handle errors, e.g., show an error toast
+            if (error.response.status === 422 && error.response.data.warning) {
+                // Show a warning toast
+                console.warn(error.response.data.warning);
+            } else {
+                console.error(error);
+            }
+        }
     };
 
     return (
@@ -13,9 +23,9 @@ const Index = ({ flightRoutes, auth, success, errors }) => {
             user={auth.user}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight flex justify-between items-center">
-                    Routes
+                    Airlines
                     <Link
-                        href={route("admin.routes.create")}
+                        href={route("admin.airlines.create")}
                         className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
                     >
                         + ADD
@@ -43,13 +53,10 @@ const Index = ({ flightRoutes, auth, success, errors }) => {
                                 <thead>
                                     <tr>
                                         <th className="border-b font-medium p-4 pl-8 pt-0 pb-3 text-slate-900 text-left">
-                                            Source
+                                            Name
                                         </th>
                                         <th className="border-b font-medium p-4 pl-8 pt-0 pb-3 text-slate-900 text-left">
-                                            Destination
-                                        </th>
-                                        <th className="border-b font-medium p-4 pl-8 pt-0 pb-3 text-slate-900 text-left">
-                                            Airlines
+                                            IATA
                                         </th>
                                         <th className="border-b flex items-center justify-end font-medium p-4 pl-8 pt-0 pb-3 text-slate-900 text-left">
                                             Action
@@ -57,29 +64,19 @@ const Index = ({ flightRoutes, auth, success, errors }) => {
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white">
-                                    {flightRoutes.map((flightRoute) => (
-                                        <tr key={flightRoute.id}>
+                                    {airlines.map((airline) => (
+                                        <tr key={airline.id}>
                                             <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">
-                                                {
-                                                    flightRoute.source_airport
-                                                        .name
-                                                }
+                                                {airline.name}
                                             </td>
                                             <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">
-                                                {
-                                                    flightRoute
-                                                        .destination_airport
-                                                        .name
-                                                }
-                                            </td>
-                                            <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">
-                                                {flightRoute.airline.name}
+                                                {airline.IATA}
                                             </td>
                                             <td className="flex items-center justify-end border-b border-slate-100 p-4 pl-8 text-slate-500">
                                                 <Link
                                                     href={route(
-                                                        "admin.routes.show",
-                                                        flightRoute.id
+                                                        "admin.airlines.show",
+                                                        airline.id
                                                     )}
                                                     className="mx-2 border border-blue-500 hover:bg-blue-500 hover:text-white px-4 py-2 rounded-md"
                                                 >
@@ -87,8 +84,8 @@ const Index = ({ flightRoutes, auth, success, errors }) => {
                                                 </Link>
                                                 <Link
                                                     href={route(
-                                                        "admin.routes.edit",
-                                                        flightRoute.id
+                                                        "admin.airlines.edit",
+                                                        airline.id
                                                     )}
                                                     className="mx-2 border border-yellow-500 hover:bg-yellow-500 hover:text-white px-4 py-2 rounded-md"
                                                 >
@@ -98,8 +95,8 @@ const Index = ({ flightRoutes, auth, success, errors }) => {
                                                     type="submit"
                                                     className="mx-2 border border-red-500 hover:bg-red-500 hover:text-white px-4 py-2 rounded-md"
                                                     onClick={() =>
-                                                        deletePost(
-                                                            flightRoute.id
+                                                        deleteAirline(
+                                                            airline.id
                                                         )
                                                     }
                                                 >

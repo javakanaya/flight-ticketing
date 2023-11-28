@@ -21,7 +21,9 @@ class AdminRoutesController extends Controller
         $routes = Route::with(['source_airport', 'destination_airport', 'airline'])->get();
 
         return Inertia::render('Admin/Routes/Index', [
-            'flightRoutes' => $routes
+            'flightRoutes' => $routes,
+            'success' => session('success'),
+            'errors' => session('errors'),
         ]);
     }
 
