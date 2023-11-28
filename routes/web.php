@@ -9,6 +9,7 @@ use App\Http\Controllers\TicketController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminRoutesController;
+use App\Http\Controllers\Admin\AdminUsersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,7 +68,17 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::get('/admin/transaction', [AdminController::class, 'index'])->name('admin.transactions');
 
-    Route::get('/admin/users', [AdminController::class, 'index'])->name('admin.users');
+    Route::resource('/admin/users', AdminUsersController::class, [
+        'names' => [
+            'index' => 'admin.users',
+            'show' => 'admin.users.show',
+            'create' => 'admin.users.create',
+            'store' => 'admin.users.store',
+            'edit' => 'admin.users.edit',
+            'update' => 'admin.users.update',
+            'destroy' => 'admin.users.destroy'
+        ]
+    ]);
 });
 
 Route::get('/search', [TicketController::class, 'search'])->name('tickets.search');
