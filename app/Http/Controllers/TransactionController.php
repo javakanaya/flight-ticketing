@@ -15,11 +15,14 @@ class TransactionController extends Controller
 {
     public function show(Request $request)
     {
+        // dd($request);
+        // dd($request['travellers']);
+        
         $ticket = Ticket::find($request['ticketId']);
         $countries = Country::all();
 
 
-        // dd($nationality);
+        // dd($ticket);
 
         // Map class number to class type
         $classTypes = [1 => 'first', 2 => 'business', 3 => 'premium_economy', 4 => 'economy'];
@@ -37,7 +40,7 @@ class TransactionController extends Controller
         // Extract arrival time (hours and minutes)
         $arrivalTime = $arrivalTimestamp->format('H:i');
 
-        return Inertia::render('Transaction', [
+        return Inertia::render($request['routeTo'], [
             'ticketId' => $ticket->id,
             'source_city' => $ticket->route->source_airport->city->name,
             'source_IATA' => $ticket->route->source_airport->IATA,
@@ -50,6 +53,7 @@ class TransactionController extends Controller
             'classtype' => $classType,
             'passengerCount' => $request['passengerCount'],
             'nationalities' => $countries,
+            'travellers' => $request['travellers'] ? $request['travellers'] : null,
         ]);
     }
 
@@ -89,11 +93,6 @@ class TransactionController extends Controller
     public function addFacilities(Request $request)
     {
 
-        $countries = Country::all();
-        return Inertia::render('Payment', [
-            'travellers' => $request->input('travellers'),
-            'nationalities' => $countries,
-        ]);
     }
 
 }

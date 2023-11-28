@@ -3,8 +3,8 @@ import Navbar from "@/Components/Navbar";
 import { Disclosure } from "@headlessui/react";
 import React, { useState} from "react";
 
-const Traveller_Detail = ({ header, open, nationalities, onUpdate, title, first_name, last_name, nationality}) => {
-    const [lastnameDisabled, setlastnameDisabled] = useState(false);
+const Traveller_Detail = ({ header, open, nationalities, onUpdate, title, first_name, last_name, nationality, ticked}) => {
+    const [lastnameDisabled, setlastnameDisabled] = useState(ticked);
     const [lastnameValue, setlastnameValue] = useState(last_name);
     const [firstnameValue, setfirstnameValue] = useState(first_name);
     const [natValue, setnatValue] = useState(nationality);
@@ -16,14 +16,24 @@ const Traveller_Detail = ({ header, open, nationalities, onUpdate, title, first_
         first_name: "",
         last_name: "",
         nationality: "1",
+        ticked: lastnameDisabled
     });
 
     const handleCheckboxChange = () => {
         setlastnameDisabled(!lastnameDisabled);
+        let newValue = "";
         if (!lastnameDisabled) {
-            setlastnameValue("");
-            updateFormData({ last_name: "" });
+            newValue = formData.first_name;
         }
+        setlastnameValue(newValue);
+        updateFormData({ last_name: newValue});
+        setFormData((prevData) => {
+            const updatedData = { ...prevData, ticked: !lastnameDisabled};
+            // console.log("New value : ", newValue);
+            console.log("Updated state: ", updatedData);
+            onUpdate(updatedData); // Trigger the onUpdate callback with the updated data
+            return updatedData; // Return the updated state
+        });
     };
 
 
@@ -31,8 +41,16 @@ const Traveller_Detail = ({ header, open, nationalities, onUpdate, title, first_
         const newValue = e.target.value;
         // console.log("New value : ", newValue)
         setfirstnameValue(newValue);
+        if(lastnameDisabled){
+            setlastnameValue(newValue);
+        }
         setFormData((prevData) => {
             const updatedData = { ...prevData, first_name: newValue };
+            if (lastnameDisabled) {
+                updatedData.last_name = newValue;
+              }
+          
+
             // console.log("New value : ", newValue);
             // console.log("Updated state: ", updatedData);
             onUpdate(updatedData); // Trigger the onUpdate callback with the updated data
@@ -89,7 +107,7 @@ const Traveller_Detail = ({ header, open, nationalities, onUpdate, title, first_
         <>
             <Disclosure defaultOpen={isOpenDisclosure}>
                 <div className="py-3 grid grid-cols-3">
-                    <h1 className="text-base grid col-span-2">{header}</h1>
+                    <h1 className="text-base grid col-span-2">{((firstnameValue != "") && (lastnameValue != "")) ? ` ${titleValue} ${firstnameValue} ${lastnameValue}` : header}</h1>
                     <Disclosure.Button className="text-right grid mr-3 text-[#2faad3] hover:text-[#373939]" onClick={() => setOpenDisclosure(!isOpenDisclosure)}>
                         {isOpenDisclosure ? "Save" : "Edit Details"}
                     </Disclosure.Button>
@@ -114,6 +132,7 @@ const Traveller_Detail = ({ header, open, nationalities, onUpdate, title, first_
                             className="my-2 w-1/3 rounded-lg"
                             value={titleValue}
                             onChange={handleTitleChange}
+                            required
                         >
                             <option value="Mr">Mr</option>
                             <option value="Mrs">Mrs</option>
@@ -135,6 +154,7 @@ const Traveller_Detail = ({ header, open, nationalities, onUpdate, title, first_
                                     className="rounded-lg"
                                     value={firstnameValue}
                                     onChange={handleFirstNameChange}
+                                    required
                                 />
                                 <span className="text-slate-500 text-xs my-1">
                                     (without title and punctuation)
@@ -159,6 +179,7 @@ const Traveller_Detail = ({ header, open, nationalities, onUpdate, title, first_
                                     readOnly={lastnameDisabled}
                                     value={lastnameValue}
                                     onChange={handleLastNameChange}
+                                    required
                                     
                                 />
                                 <span className="text-slate-500 text-xs py-1">

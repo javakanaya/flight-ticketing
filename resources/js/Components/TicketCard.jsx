@@ -8,6 +8,7 @@ function TicketCard(props) {
             data: {
                 ticketId: props.id,
                 passengerCount: props.passengerCount,
+                routeTo : "Transaction",
             },
         });
     };

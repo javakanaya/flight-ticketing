@@ -36,7 +36,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/search', [TicketController::class, 'search'])->name('tickets.search');
 
 Route::get('/booking', [TransactionController::class, 'show'])->name('bookings.show')->middleware(['auth', 'verified']);
-Route::post('/facilities', [TransactionController::class, 'addFacilities'])->name('facilities.add');
+Route::get('/facilities', [TransactionController::class, 'show'])->name('facilities.add');
 Route::post('/transaction', [TransactionController::class, 'storeTransaction'])->name('bookings.show');
 
 Route::get('/flights/transaction/payment', function () {
