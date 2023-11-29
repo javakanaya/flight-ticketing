@@ -21,7 +21,6 @@ class TransactionController extends Controller
         $ticket = Ticket::find($request['ticketId']);
         $countries = Country::all();
 
-
         // dd($ticket);
 
         // Map class number to class type
@@ -53,6 +52,7 @@ class TransactionController extends Controller
             'classtype' => $classType,
             'passengerCount' => $request['passengerCount'],
             'nationalities' => $countries,
+            'price' => $ticket->price,
             'travellers' => $request['travellers'] ? $request['travellers'] : null,
         ]);
     }

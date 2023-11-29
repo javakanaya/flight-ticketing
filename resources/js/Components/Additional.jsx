@@ -11,6 +11,8 @@ const Additional = ({ items }) => {
 
     return `Rp ${formattedInteger}${formattedDecimal}/pax`;
     }
+
+    
   return (
     <div className='mb-5 w-full gap-4 p-3 border-2 border-slate-100 shadow-lg '>
       <div className='flex items-center gap-3'>

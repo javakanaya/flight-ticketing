@@ -25,8 +25,17 @@ const Payment = ({
     travellers,
     contactDetailOpen = false,
     travDetailOpen = false,
+    price
 }) => {
-    console.log(travellers);
+
+    function formatRupiah(number) {
+        const formatter = new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0, // Minimum number of decimal places
+        })};
+
+    console.log("Price", price);
     // Step 1: Maintain state to store form data
     const [formData, setFormData] = useState({
         // Add other fields as needed
@@ -158,7 +167,7 @@ const Payment = ({
                                     "Up to Rp 30.000.000 for trip cancellation (due to specified causes)",
                                     "Up to Rp 7.500.000 for flight and baggage delay"
                                 ],
-                                price: "1000000"
+                                price: 100000
                             }}
                         />
 
@@ -166,6 +175,7 @@ const Payment = ({
                     <div className="mt-14">
                         <h1 className="">Price Details</h1>
                         <PriceBar items={[
+                            { name: "Ticket", price: price * passengerCount},
                             { name: "Super Air Jet", price: 1000000 },
                             { name: "Super Air Jet", price: 1000000 }
                         ]}
