@@ -37,7 +37,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
 
     // Route::get('/admin/routes', [AdminRoutesController::class, 'index'])->name('admin.routes');
     Route::resource('/admin/routes', AdminRoutesController::class, [
@@ -63,6 +63,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
             'destroy' => 'admin.airlines.destroy'
         ]
     ]);
+    Route::get('/admin/facilites', [AdminController::class, 'index'])->name('admin.facilites');
 
     Route::get('/admin/tickets', [AdminController::class, 'index'])->name('admin.tickets');
 
