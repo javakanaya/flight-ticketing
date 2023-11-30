@@ -63,9 +63,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
             'destroy' => 'admin.airlines.destroy'
         ]
     ]);
-    Route::get('/admin/facilites', [AdminController::class, 'index'])->name('admin.facilites');
-
-    Route::get('/admin/tickets', [AdminController::class, 'index'])->name('admin.tickets');
 
     Route::get('/admin/transaction', [AdminController::class, 'index'])->name('admin.transactions');
 

@@ -3,6 +3,7 @@ import { Link } from "@inertiajs/react";
 
 const ShowAirline = ({ airline, auth }) => {
   console.log(airline);
+  
   return (
     <AdminLayout
       user={auth.user}
@@ -24,8 +25,18 @@ const ShowAirline = ({ airline, auth }) => {
                 <h2 className="text-lg font-medium text-gray-900">IATA Code</h2>
                 <p className="mt-1 text-sm text-gray-600">{airline.IATA}</p>
               </div>
+              {/* Display facilities */}
+              <div className="mb-6">
+                <h2 className="text-lg font-medium text-gray-900">Facilities</h2>
+                {airline.facilities.map((facility, index) => (
+                  <div key={index} className="flex items-center">
+                    <p className="mt-1 text-sm text-gray-600">
+                      {facility.name} - {facility.price}
+                    </p>
+                  </div>
+                ))}
+              </div>
               {/* Add other fields as needed */}
-
               <div className="mb-6">
                 <h2 className="text-lg font-medium text-gray-900">
                   Created At

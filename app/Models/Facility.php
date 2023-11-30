@@ -23,4 +23,9 @@ class Facility extends Model
     {
         return $this->belongsTo(Route::class);
     }
+
+    public function airline(): BelongsTo
+    {
+        return $this->belongsTo(Airline::class);
+    }
 }
