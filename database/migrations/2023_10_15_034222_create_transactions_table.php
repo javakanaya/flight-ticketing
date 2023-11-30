@@ -17,9 +17,10 @@ return new class extends Migration
             $table->integer('count');
             $table->foreignId('ticket_id');
             $table->foreignId('user_id');
-            $table->string('external_id');
-            $table->string('status');
-            $table->string('payment_url')->nullable();
+            $table->tinyInteger('status');// 0 unpaid, 1 Paid, 3 canceled
+            $table->double('total_price', 12, 2);
+            $table->boolean('is_travel_assurance');
+            $table->boolean('is_delay_assurance');
         });
     }
 

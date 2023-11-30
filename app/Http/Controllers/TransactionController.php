@@ -81,9 +81,13 @@ class TransactionController extends Controller
         // Iterate through passengers and insert into the passenger table
         foreach ($request['passenger'] as $passengerData) {
             Passenger::create([
-                'name' => $passengerData['first_name'] . ' ' . $passengerData['last_name'],
+                'title' => $passengerData['title'],
+                'first_name' => $passengerData['first_name'],
+                'last_name' => $passengerData['last_name'],
                 'transaction_id' => $transactionId,
             ]);
+
+            
         }
 
         return redirect('/');
