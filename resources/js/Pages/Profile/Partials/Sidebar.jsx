@@ -3,7 +3,7 @@ import DangerButton from "../../../Components/DangerButton";
 import { Link } from "@inertiajs/react";
 
 const Sidebar = (adminStatus) => {
-    const isAdmin = adminStatus;
+    const isAdmin = adminStatus.adminStatus;
     return (
         <aside
             id="default-sidebar"

@@ -5,6 +5,7 @@ import { Link } from "@inertiajs/react";
 
 const Create = ({ airports, airlines, auth }) => {
     const { data, setData, post, errors } = useForm({
+        flight_number: "", // Added flight_number field
         departure: "",
         arrival: "",
         source_airport_id: "",
@@ -33,6 +34,43 @@ const Create = ({ airports, airlines, auth }) => {
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
                             <form onSubmit={handleCreate}>
+                                {/* Airline */}
+                                <div className="mb-4">
+                                    <label
+                                        htmlFor="airline_id"
+                                        className="block text-sm font-medium text-gray-600"
+                                    >
+                                        Airline
+                                    </label>
+                                    <select
+                                        id="airline_id"
+                                        name="airline_id"
+                                        value={data.airline_id}
+                                        onChange={(e) =>
+                                            setData(
+                                                "airline_id",
+                                                e.target.value
+                                            )
+                                        }
+                                        className="mt-1 p-2 w-full border rounded-md"
+                                    >
+                                        <option value="">Select Airline</option>
+                                        {airlines.map((airline) => (
+                                            <option
+                                                key={airline.id}
+                                                value={airline.id}
+                                            >
+                                                {airline.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    {errors.airline_id && (
+                                        <p className="text-red-500 text-xs mt-1">
+                                            {errors.airline_id}
+                                        </p>
+                                    )}
+                                </div>
+
                                 {/* Departure and Arrival */}
                                 <div className="mb-4">
                                     <label
@@ -159,46 +197,12 @@ const Create = ({ airports, airlines, auth }) => {
                                     )}
                                 </div>
 
-                                {/* Airline */}
+                                {/* Economy Class */}
                                 <div className="mb-4">
                                     <label
-                                        htmlFor="airline_id"
+                                        htmlFor="economy_price"
                                         className="block text-sm font-medium text-gray-600"
                                     >
-                                        Airline
-                                    </label>
-                                    <select
-                                        id="airline_id"
-                                        name="airline_id"
-                                        value={data.airline_id}
-                                        onChange={(e) =>
-                                            setData(
-                                                "airline_id",
-                                                e.target.value
-                                            )
-                                        }
-                                        className="mt-1 p-2 w-full border rounded-md"
-                                    >
-                                        <option value="">Select Airline</option>
-                                        {airlines.map((airline) => (
-                                            <option
-                                                key={airline.id}
-                                                value={airline.id}
-                                            >
-                                                {airline.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    {errors.airline_id && (
-                                        <p className="text-red-500 text-xs mt-1">
-                                            {errors.airline_id}
-                                        </p>
-                                    )}
-                                </div>
-
-                                           {/* Economy Class */}
-                                           <div className="mb-4">
-                                    <label htmlFor="economy_price" className="block text-sm font-medium text-gray-600">
                                         Economy Class Price
                                     </label>
                                     <input
@@ -206,13 +210,25 @@ const Create = ({ airports, airlines, auth }) => {
                                         id="economy_price"
                                         name="economy_price"
                                         value={data.economy_price}
-                                        onChange={(e) => setData("economy_price", e.target.value)}
+                                        onChange={(e) =>
+                                            setData(
+                                                "economy_price",
+                                                e.target.value
+                                            )
+                                        }
                                         className="mt-1 p-2 w-full border rounded-md"
                                     />
-                                    {errors.economy_price && <p className="text-red-500 text-xs mt-1">{errors.economy_price}</p>}
+                                    {errors.economy_price && (
+                                        <p className="text-red-500 text-xs mt-1">
+                                            {errors.economy_price}
+                                        </p>
+                                    )}
                                 </div>
                                 <div className="mb-4">
-                                    <label htmlFor="economy_seat_count" className="block text-sm font-medium text-gray-600">
+                                    <label
+                                        htmlFor="economy_seat_count"
+                                        className="block text-sm font-medium text-gray-600"
+                                    >
                                         Economy Class Seat Count
                                     </label>
                                     <input
@@ -220,15 +236,27 @@ const Create = ({ airports, airlines, auth }) => {
                                         id="economy_seat_count"
                                         name="economy_seat_count"
                                         value={data.economy_seat_count}
-                                        onChange={(e) => setData("economy_seat_count", e.target.value)}
+                                        onChange={(e) =>
+                                            setData(
+                                                "economy_seat_count",
+                                                e.target.value
+                                            )
+                                        }
                                         className="mt-1 p-2 w-full border rounded-md"
                                     />
-                                    {errors.economy_seat_count && <p className="text-red-500 text-xs mt-1">{errors.economy_seat_count}</p>}
+                                    {errors.economy_seat_count && (
+                                        <p className="text-red-500 text-xs mt-1">
+                                            {errors.economy_seat_count}
+                                        </p>
+                                    )}
                                 </div>
 
                                 {/* Premium Economy Class */}
                                 <div className="mb-4">
-                                    <label htmlFor="premium_economy_price" className="block text-sm font-medium text-gray-600">
+                                    <label
+                                        htmlFor="premium_economy_price"
+                                        className="block text-sm font-medium text-gray-600"
+                                    >
                                         Premium Economy Class Price
                                     </label>
                                     <input
@@ -236,13 +264,25 @@ const Create = ({ airports, airlines, auth }) => {
                                         id="premium_economy_price"
                                         name="premium_economy_price"
                                         value={data.premium_economy_price}
-                                        onChange={(e) => setData("premium_economy_price", e.target.value)}
+                                        onChange={(e) =>
+                                            setData(
+                                                "premium_economy_price",
+                                                e.target.value
+                                            )
+                                        }
                                         className="mt-1 p-2 w-full border rounded-md"
                                     />
-                                    {errors.premium_economy_price && <p className="text-red-500 text-xs mt-1">{errors.premium_economy_price}</p>}
+                                    {errors.premium_economy_price && (
+                                        <p className="text-red-500 text-xs mt-1">
+                                            {errors.premium_economy_price}
+                                        </p>
+                                    )}
                                 </div>
                                 <div className="mb-4">
-                                    <label htmlFor="premium_economy_seat_count" className="block text-sm font-medium text-gray-600">
+                                    <label
+                                        htmlFor="premium_economy_seat_count"
+                                        className="block text-sm font-medium text-gray-600"
+                                    >
                                         Premium Economy Class Seat Count
                                     </label>
                                     <input
@@ -250,15 +290,27 @@ const Create = ({ airports, airlines, auth }) => {
                                         id="premium_economy_seat_count"
                                         name="premium_economy_seat_count"
                                         value={data.premium_economy_seat_count}
-                                        onChange={(e) => setData("premium_economy_seat_count", e.target.value)}
+                                        onChange={(e) =>
+                                            setData(
+                                                "premium_economy_seat_count",
+                                                e.target.value
+                                            )
+                                        }
                                         className="mt-1 p-2 w-full border rounded-md"
                                     />
-                                    {errors.premium_economy_seat_count && <p className="text-red-500 text-xs mt-1">{errors.premium_economy_seat_count}</p>}
+                                    {errors.premium_economy_seat_count && (
+                                        <p className="text-red-500 text-xs mt-1">
+                                            {errors.premium_economy_seat_count}
+                                        </p>
+                                    )}
                                 </div>
 
                                 {/* Business Class */}
                                 <div className="mb-4">
-                                    <label htmlFor="business_price" className="block text-sm font-medium text-gray-600">
+                                    <label
+                                        htmlFor="business_price"
+                                        className="block text-sm font-medium text-gray-600"
+                                    >
                                         Business Class Price
                                     </label>
                                     <input
@@ -266,13 +318,25 @@ const Create = ({ airports, airlines, auth }) => {
                                         id="business_price"
                                         name="business_price"
                                         value={data.business_price}
-                                        onChange={(e) => setData("business_price", e.target.value)}
+                                        onChange={(e) =>
+                                            setData(
+                                                "business_price",
+                                                e.target.value
+                                            )
+                                        }
                                         className="mt-1 p-2 w-full border rounded-md"
                                     />
-                                    {errors.business_price && <p className="text-red-500 text-xs mt-1">{errors.business_price}</p>}
+                                    {errors.business_price && (
+                                        <p className="text-red-500 text-xs mt-1">
+                                            {errors.business_price}
+                                        </p>
+                                    )}
                                 </div>
                                 <div className="mb-4">
-                                    <label htmlFor="business_seat_count" className="block text-sm font-medium text-gray-600">
+                                    <label
+                                        htmlFor="business_seat_count"
+                                        className="block text-sm font-medium text-gray-600"
+                                    >
                                         Business Class Seat Count
                                     </label>
                                     <input
@@ -280,15 +344,27 @@ const Create = ({ airports, airlines, auth }) => {
                                         id="business_seat_count"
                                         name="business_seat_count"
                                         value={data.business_seat_count}
-                                        onChange={(e) => setData("business_seat_count", e.target.value)}
+                                        onChange={(e) =>
+                                            setData(
+                                                "business_seat_count",
+                                                e.target.value
+                                            )
+                                        }
                                         className="mt-1 p-2 w-full border rounded-md"
                                     />
-                                    {errors.business_seat_count && <p className="text-red-500 text-xs mt-1">{errors.business_seat_count}</p>}
+                                    {errors.business_seat_count && (
+                                        <p className="text-red-500 text-xs mt-1">
+                                            {errors.business_seat_count}
+                                        </p>
+                                    )}
                                 </div>
 
                                 {/* First Class */}
                                 <div className="mb-4">
-                                    <label htmlFor="first_class_price" className="block text-sm font-medium text-gray-600">
+                                    <label
+                                        htmlFor="first_class_price"
+                                        className="block text-sm font-medium text-gray-600"
+                                    >
                                         First Class Price
                                     </label>
                                     <input
@@ -296,13 +372,25 @@ const Create = ({ airports, airlines, auth }) => {
                                         id="first_class_price"
                                         name="first_class_price"
                                         value={data.first_class_price}
-                                        onChange={(e) => setData("first_class_price", e.target.value)}
+                                        onChange={(e) =>
+                                            setData(
+                                                "first_class_price",
+                                                e.target.value
+                                            )
+                                        }
                                         className="mt-1 p-2 w-full border rounded-md"
                                     />
-                                    {errors.first_class_price && <p className="text-red-500 text-xs mt-1">{errors.first_class_price}</p>}
+                                    {errors.first_class_price && (
+                                        <p className="text-red-500 text-xs mt-1">
+                                            {errors.first_class_price}
+                                        </p>
+                                    )}
                                 </div>
                                 <div className="mb-4">
-                                    <label htmlFor="first_class_seat_count" className="block text-sm font-medium text-gray-600">
+                                    <label
+                                        htmlFor="first_class_seat_count"
+                                        className="block text-sm font-medium text-gray-600"
+                                    >
                                         First Class Seat Count
                                     </label>
                                     <input
@@ -310,10 +398,19 @@ const Create = ({ airports, airlines, auth }) => {
                                         id="first_class_seat_count"
                                         name="first_class_seat_count"
                                         value={data.first_class_seat_count}
-                                        onChange={(e) => setData("first_class_seat_count", e.target.value)}
+                                        onChange={(e) =>
+                                            setData(
+                                                "first_class_seat_count",
+                                                e.target.value
+                                            )
+                                        }
                                         className="mt-1 p-2 w-full border rounded-md"
                                     />
-                                    {errors.first_class_seat_count && <p className="text-red-500 text-xs mt-1">{errors.first_class_seat_count}</p>}
+                                    {errors.first_class_seat_count && (
+                                        <p className="text-red-500 text-xs mt-1">
+                                            {errors.first_class_seat_count}
+                                        </p>
+                                    )}
                                 </div>
 
                                 <div className="mb-4">

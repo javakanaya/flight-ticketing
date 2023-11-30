@@ -1,6 +1,12 @@
 import AdminLayout from "@/Layouts/AdminLayout";
 import { Link } from "@inertiajs/react";
 
+// Helper function to format the price in Rupiah
+const formatPrice = (price) => {
+  // You can implement your logic for formatting the price here
+  return `Rp ${price.toLocaleString()}`;
+};
+
 const ShowAirline = ({ airline, auth }) => {
   console.log(airline);
   
@@ -25,13 +31,16 @@ const ShowAirline = ({ airline, auth }) => {
                 <h2 className="text-lg font-medium text-gray-900">IATA Code</h2>
                 <p className="mt-1 text-sm text-gray-600">{airline.IATA}</p>
               </div>
-              {/* Display facilities */}
+              {/* Display facilities using cards */}
               <div className="mb-6">
                 <h2 className="text-lg font-medium text-gray-900">Facilities</h2>
                 {airline.facilities.map((facility, index) => (
-                  <div key={index} className="flex items-center">
-                    <p className="mt-1 text-sm text-gray-600">
-                      {facility.name} - {facility.price}
+                  <div key={index} className="border p-4 mb-4 rounded-md">
+                    <h3 className="text-md font-medium text-gray-900">
+                      {facility.name}
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      Price: {formatPrice(facility.price)}
                     </p>
                   </div>
                 ))}

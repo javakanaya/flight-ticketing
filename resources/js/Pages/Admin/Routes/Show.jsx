@@ -2,8 +2,13 @@
 import AdminLayout from "@/Layouts/AdminLayout";
 import { Link } from "@inertiajs/react";
 
-const PriceCard = ({ title, quantity, price }) => {
-    const formattedPrice = price ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(price) : 'N/A';
+const PriceCard = ({ title, quantity, price, facilities }) => {
+    const formattedPrice = price
+        ? new Intl.NumberFormat("id-ID", {
+              style: "currency",
+              currency: "IDR",
+          }).format(price)
+        : "N/A";
 
     return (
         <div className="mb-4 bg-white border p-4 rounded-md shadow-md">
@@ -16,7 +21,32 @@ const PriceCard = ({ title, quantity, price }) => {
     );
 };
 
-const Show = ({ flightRoute, auth, firstClassTickets, businessClassTickets, premiumEconomyTickets, economyTickets }) => {
+const FacilityCard = ({ name, price }) => {
+    const formattedPrice = price
+        ? new Intl.NumberFormat("id-ID", {
+              style: "currency",
+              currency: "IDR",
+          }).format(price)
+        : "N/A";
+
+    return (
+        <div className="mb-4 bg-white border p-4 rounded-md shadow-md">
+            <h3 className="text-lg font-medium text-gray-900">{name}</h3>
+            <p className="mt-1 text-sm text-gray-600">
+                Price: {formattedPrice}
+            </p>
+        </div>
+    );
+};
+
+const Show = ({
+    flightRoute,
+    auth,
+    firstClassTickets,
+    businessClassTickets,
+    premiumEconomyTickets,
+    economyTickets,
+}) => {
     return (
         <AdminLayout
             user={auth.user}
@@ -34,20 +64,90 @@ const Show = ({ flightRoute, auth, firstClassTickets, businessClassTickets, prem
                                 <h2 className="text-lg font-medium text-gray-900">
                                     Time
                                 </h2>
-                                <p className="mt-1 text-sm text-gray-600">
-                                    {flightRoute.departure} -{" "}
-                                    {flightRoute.arrival}
-                                </p>
+                                <div className="flex flex-col mt-1 space-y-2 text-sm text-gray-600">
+                                    <div>
+                                        <span className="font-semibold">
+                                            Departure:
+                                        </span>{" "}
+                                        {new Date(
+                                            flightRoute.departure
+                                        ).toLocaleString("en-US", {
+                                            weekday: "long",
+                                            year: "numeric",
+                                            month: "long",
+                                            day: "numeric",
+                                        })}{" "}
+                                        -{" "}
+                                        {new Date(
+                                            flightRoute.departure
+                                        ).toLocaleTimeString("en-US")}
+                                    </div>
+                                    <div>
+                                        <span className="font-semibold">
+                                            Arrival:
+                                        </span>{" "}
+                                        {new Date(
+                                            flightRoute.arrival
+                                        ).toLocaleString("en-US", {
+                                            weekday: "long",
+                                            year: "numeric",
+                                            month: "long",
+                                            day: "numeric",
+                                        })}{" "}
+                                        -{" "}
+                                        {new Date(
+                                            flightRoute.arrival
+                                        ).toLocaleTimeString("en-US")}
+                                    </div>
+                                </div>
                             </div>
+
                             <div className="mb-6">
                                 <h2 className="text-lg font-medium text-gray-900">
                                     Seats
                                 </h2>
                                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                                    <PriceCard title="First Class" quantity={flightRoute.seat_conf.first} price={firstClassTickets ? firstClassTickets.price : null} />
-                                    <PriceCard title="Business Class" quantity={flightRoute.seat_conf.business} price={businessClassTickets ? businessClassTickets.price : null} />
-                                    <PriceCard title="Premium Economy" quantity={flightRoute.seat_conf.premium_economy} price={premiumEconomyTickets ? premiumEconomyTickets.price : null} />
-                                    <PriceCard title="Economy" quantity={flightRoute.seat_conf.economy} price={economyTickets ? economyTickets.price : null} />
+                                    <PriceCard
+                                        title="First Class"
+                                        quantity={flightRoute.seat_conf.first}
+                                        price={
+                                            firstClassTickets
+                                                ? firstClassTickets.price
+                                                : null
+                                        }
+                                    />
+                                    <PriceCard
+                                        title="Business Class"
+                                        quantity={
+                                            flightRoute.seat_conf.business
+                                        }
+                                        price={
+                                            businessClassTickets
+                                                ? businessClassTickets.price
+                                                : null
+                                        }
+                                    />
+                                    <PriceCard
+                                        title="Premium Economy"
+                                        quantity={
+                                            flightRoute.seat_conf
+                                                .premium_economy
+                                        }
+                                        price={
+                                            premiumEconomyTickets
+                                                ? premiumEconomyTickets.price
+                                                : null
+                                        }
+                                    />
+                                    <PriceCard
+                                        title="Economy"
+                                        quantity={flightRoute.seat_conf.economy}
+                                        price={
+                                            economyTickets
+                                                ? economyTickets.price
+                                                : null
+                                        }
+                                    />
                                 </div>
                             </div>
                             <div className="mb-6">
@@ -55,7 +155,8 @@ const Show = ({ flightRoute, auth, firstClassTickets, businessClassTickets, prem
                                     Source Airport
                                 </h2>
                                 <p className="mt-1 text-sm text-gray-600">
-                                    {flightRoute.source_airport.name} - {flightRoute.source_airport.IATA}
+                                    {flightRoute.source_airport.name} -{" "}
+                                    {flightRoute.source_airport.IATA}
                                 </p>
                             </div>
                             <div className="mb-6">
@@ -63,7 +164,8 @@ const Show = ({ flightRoute, auth, firstClassTickets, businessClassTickets, prem
                                     Destination Airport
                                 </h2>
                                 <p className="mt-1 text-sm text-gray-600">
-                                    {flightRoute.destination_airport.name} - {flightRoute.destination_airport.IATA}
+                                    {flightRoute.destination_airport.name} -{" "}
+                                    {flightRoute.destination_airport.IATA}
                                 </p>
                             </div>
                             <div className="mb-6">
@@ -74,7 +176,21 @@ const Show = ({ flightRoute, auth, firstClassTickets, businessClassTickets, prem
                                     {flightRoute.airline.name}
                                 </p>
                             </div>
-                            {/* Add other fields as needed */}
+
+                            <div className="mb-6">
+                                <h2 className="text-lg font-medium text-gray-900">
+                                    Facilities
+                                </h2>
+                                {flightRoute.facilities.map(
+                                    (facility, index) => (
+                                        <FacilityCard
+                                            key={index}
+                                            name={facility.name}
+                                            price={facility.price}
+                                        />
+                                    )
+                                )}
+                            </div>
 
                             <div className="mb-6">
                                 <h2 className="text-lg font-medium text-gray-900">

@@ -19,13 +19,14 @@ class Facility extends Model
     //     return $this->belongsToMany(Passenger::class);
     // }
 
-    public function route(): BelongsTo
+    public function route(): BelongsToMany
     {
-        return $this->belongsTo(Route::class);
+        return $this->belongsToMany(Route::class);
     }
 
     public function airline(): BelongsTo
     {
         return $this->belongsTo(Airline::class);
     }
+
 }

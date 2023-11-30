@@ -8,6 +8,8 @@ use App\Models\Ticket;
 use App\Models\Airport;
 use App\Models\Airline;
 use App\Models\Seat;
+use App\Models\Facility;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -114,7 +116,7 @@ class AdminRoutesController extends Controller
     public function show(Route $route)
     {
         // Eager load the related data for the specific route
-        $route->load('source_airport', 'destination_airport', 'airline', 'seat_conf');
+        $route->load('source_airport', 'destination_airport', 'airline', 'seat_conf', 'facilities');
 
         // Find all tickets where route_id matches the id of the route
         $tickets = Ticket::where('route_id', $route->id)->get();
@@ -139,10 +141,11 @@ class AdminRoutesController extends Controller
      */
     public function edit(Route $route)
     {
-        $route->load('airline', 'seat_conf');
+        $route->load('airline', 'seat_conf', 'facilities'); // Load facilities
 
         $airports = Airport::all();
-        $ailines = Airline::all();
+        $airlines = Airline::all();
+        $facilities = Facility::where('airline_id', $route->airline_id)->get(); // Fetch facilities based on the airline
 
         // Find all tickets where route_id matches the id of the route
         $tickets = Ticket::where('route_id', $route->id)->get();
@@ -153,17 +156,18 @@ class AdminRoutesController extends Controller
         $premiumEconomyTickets = $tickets->where('class', 3)->first();
         $economyTickets = $tickets->where('class', 4)->first();
 
-
         return Inertia::render('Admin/Routes/Edit', [
             'flightRoute' => $route,
             'airports' => $airports,
-            'airlines' => $ailines,
+            'airlines' => $airlines,
+            'facilities' => $facilities, // Pass facilities to the view
             'firstClassTickets' => $firstClassTickets,
             'businessClassTickets' => $businessClassTickets,
             'premiumEconomyTickets' => $premiumEconomyTickets,
             'economyTickets' => $economyTickets,
         ]);
     }
+
     /**
      * Update the specified resource in storage.
      */
@@ -180,6 +184,7 @@ class AdminRoutesController extends Controller
             'premium_economy_seat_count' => 'required|integer',
             'business_seat_count' => 'required|integer',
             'first_class_seat_count' => 'required|integer',
+            'facilities' => 'array', // Add valid
         ]);
 
         // Update seats for each class
@@ -220,7 +225,8 @@ class AdminRoutesController extends Controller
             ['price' => $request->input('first_class_price')]
         );
 
-
+        $facilities = $request->input('facilities', []);
+        $route->facilities()->sync($facilities);
 
         // You can add a response or redirect logic here
 
@@ -232,16 +238,28 @@ class AdminRoutesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+
     public function destroy(Route $route)
     {
-        // delete di tabel
-        // dd($route);
-        $destory = $route->delete();
-        if ($destory) {
-            // add flash for the success notification
-            return redirect()->route('admin.routes')->with('success', 'Product has been deleted!');
+        // Get the associated ticket IDs for the route
+        $ticketIds = $route->ticket()->pluck('id')->toArray();
+
+        // Check if any of the ticket IDs exist in transactions
+        $hasTransactions = Transaction::whereIn('ticket_id', $ticketIds)->exists();
+
+        if ($hasTransactions) {
+            return redirect()->route('admin.routes')->with('error', 'Route is associated with transactions and cannot be deleted.');
         }
 
-        return redirect()->route('admin.routes')->with('Failed', 'Error deleting product');
+        // If no transactions associated, proceed with deletion
+        $destroy = $route->delete();
+
+        if ($destroy) {
+            // add flash for the success notification
+            return redirect()->route('admin.routes')->with('success', 'Route has been deleted!');
+        }
+
+        return redirect()->route('admin.routes')->with('failed', 'Error deleting Route');
     }
+
 }
