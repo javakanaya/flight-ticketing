@@ -28,6 +28,35 @@ const Index = ({ flightRoutes, auth, success, errors }) => {
         setConfirmDelete(false);
     };
 
+    const renderPaginationLink = (link, index) => (
+        <Link
+            key={index}
+            href={link.url}
+            dangerouslySetInnerHTML={{ __html: link.label }}
+            className={`flex items-center justify-center px-3 h-8 ${
+                link.active
+                    ? "text-blue-600 bg-blue-50 hover:bg-blue-100"
+                    : "text-gray-500 bg-white hover:bg-gray-100"
+            } border border-gray-300 ${
+                index === 0
+                    ? "rounded-s-lg"
+                    : index === flightRoutes.links.length - 1
+                    ? "rounded-e-lg"
+                    : ""
+            }`}
+        />
+    );
+
+    const RenderPagination = () => (
+        <nav aria-label="">
+            <ul className="mt-3 inline-flex -space-x-px text-sm">
+                {flightRoutes.links.map((link, index) =>
+                    renderPaginationLink(link, index)
+                )}
+            </ul>
+        </nav>
+    );
+
     return (
         <AdminLayout
             user={auth.user}
@@ -78,7 +107,7 @@ const Index = ({ flightRoutes, auth, success, errors }) => {
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white">
-                                    {flightRoutes.map((flightRoute) => (
+                                    {flightRoutes.data.map((flightRoute) => (
                                         <tr key={flightRoute.id}>
                                             <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">
                                                 {
@@ -106,15 +135,6 @@ const Index = ({ flightRoutes, auth, success, errors }) => {
                                                 >
                                                     SHOW
                                                 </Link>
-                                                <Link
-                                                    href={route(
-                                                        "admin.routes.edit",
-                                                        flightRoute.id
-                                                    )}
-                                                    className="mx-2 border border-yellow-500 hover:bg-yellow-500 hover:text-white px-4 py-2 rounded-md"
-                                                >
-                                                    EDIT
-                                                </Link>
                                                 <button
                                                     type="button"
                                                     className="mx-2 border border-red-500 hover:bg-red-500 hover:text-white px-4 py-2 rounded-md"
@@ -131,6 +151,7 @@ const Index = ({ flightRoutes, auth, success, errors }) => {
                                     ))}
                                 </tbody>
                             </table>
+                            <RenderPagination/>
                         </div>
                     </div>
                 </div>

@@ -20,7 +20,10 @@ class AdminRoutesController extends Controller
      */
     public function index()
     {
-        $routes = Route::with(['source_airport', 'destination_airport', 'airline'])->get();
+        // Assuming you want to paginate with 10 items per page
+        $routes = Route::with(['source_airport', 'destination_airport', 'airline'])
+            ->latest() // Order by the latest created_at by default
+            ->paginate(10);
 
         return Inertia::render('Admin/Routes/Index', [
             'flightRoutes' => $routes,
@@ -28,6 +31,7 @@ class AdminRoutesController extends Controller
             'errors' => session('errors'),
         ]);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -50,22 +54,27 @@ class AdminRoutesController extends Controller
         // Validate the incoming request data
         $request->validate([
             // Add validation rules for other fields
-            'economy_price' => 'required|numeric',
-            'premium_economy_price' => 'required|numeric',
-            'business_price' => 'required|numeric',
-            'first_class_price' => 'required|numeric',
-            'economy_seat_count' => 'required|integer',
-            'premium_economy_seat_count' => 'required|integer',
-            'business_seat_count' => 'required|integer',
-            'first_class_seat_count' => 'required|integer',
+            'departure' => 'required|date',
+            'arrival' => 'required|date',
+            'source_airport_id' => 'required',
+            'destination_airport_id' => 'required',
+            'airline_id' => 'required',
+            'economy_price' => 'required|numeric|gt:0',
+            'premium_economy_price' => 'numeric',
+            'business_price' => 'numeric',
+            'first_class_price' => 'numeric',
+            'economy_seat_count' => 'required|integer|gt:0',
+            'premium_economy_seat_count' => 'integer',
+            'business_seat_count' => 'integer',
+            'first_class_seat_count' => 'integer',
         ]);
 
         // Create seats for each class
         $seat = Seat::create([
-            'first' => $request->input('first_class_seat_count'),
-            'business' => $request->input('business_seat_count'),
-            'premium_economy' => $request->input('premium_economy_seat_count'),
-            'economy' => $request->input('economy_seat_count'),
+            'first' => $request->input('first_class_price') > 0 ? $request->input('first_class_seat_count') : 0,
+            'business' => $request->input('business_price') > 0 ? $request->input('business_seat_count') : 0,
+            'premium_economy' => $request->input('premium_economy_price') > 0 ? $request->input('premium_economy_seat_count') : 0,
+            'economy' => $request->input('economy_price') > 0 ? $request->input('economy_seat_count') : 0,
         ]);
 
         // Create a new route
@@ -79,34 +88,28 @@ class AdminRoutesController extends Controller
         ]);
 
         // Create tickets for the route
-        Ticket::create([
-            'route_id' => $route->id,
-            'class' => 4,
-            'price' => $request->input('economy_price'),
-        ]);
+        // Define the updateOrInsertTicket function
+        $updateOrInsertTicket = function ($class, $price) use ($route) {
+            if ($price > 0) {
+                // Create a new ticket
+                Ticket::create([
+                    'route_id' => $route->id,
+                    'class' => $class,
+                    'price' => $price,
+                ]);
+            }
+        };
 
-        Ticket::create([
-            'route_id' => $route->id,
-            'class' => 3,
-            'price' => $request->input('premium_economy_price'),
-        ]);
-
-        Ticket::create([
-            'route_id' => $route->id,
-            'class' => 2,
-            'price' => $request->input('business_price'),
-        ]);
-
-        Ticket::create([
-            'route_id' => $route->id,
-            'class' => 1,
-            'price' => $request->input('first_class_price'),
-        ]);
+        // Create tickets for the route
+        $updateOrInsertTicket(4, $request->input('economy_price'));
+        $updateOrInsertTicket(3, $request->input('premium_economy_price'));
+        $updateOrInsertTicket(2, $request->input('business_price'));
+        $updateOrInsertTicket(1, $request->input('first_class_price'));
 
 
         // You can add a response or redirect logic here
 
-        return redirect()->route('admin.routes')->with('success', 'Route created successfully');
+        return redirect()->route('admin.routes')->with('success', 'Route created successfully, Add facilities via EDIT');
 
     }
 
@@ -133,6 +136,8 @@ class AdminRoutesController extends Controller
             'businessClassTickets' => $businessClassTickets,
             'premiumEconomyTickets' => $premiumEconomyTickets,
             'economyTickets' => $economyTickets,
+            'success' => session('success'),
+            'errors' => session('errors'),
         ]);
     }
 
@@ -176,23 +181,24 @@ class AdminRoutesController extends Controller
         // Validate the incoming request data
         $request->validate([
             // Add validation rules for other fields
-            'economy_price' => 'required|numeric',
+            'economy_price' => 'required|numeric|gt:0',
             'premium_economy_price' => 'required|numeric',
-            'business_price' => 'required|numeric',
-            'first_class_price' => 'required|numeric',
-            'economy_seat_count' => 'required|integer',
-            'premium_economy_seat_count' => 'required|integer',
-            'business_seat_count' => 'required|integer',
-            'first_class_seat_count' => 'required|integer',
-            'facilities' => 'array', // Add valid
+            'business_price' => 'numeric',
+            'first_class_price' => 'numeric',
+            'economy_seat_count' => 'required|integer|gt:0',
+            'premium_economy_seat_count' => 'integer',
+            'business_seat_count' => 'integer',
+            'first_class_seat_count' => 'integer',
+            'facilities' => 'array',
+            'economy_id' => 'required',
         ]);
 
         // Update seats for each class
         $route->seat_conf->update([
-            'first' => $request->input('first_class_seat_count'),
-            'business' => $request->input('business_seat_count'),
-            'premium_economy' => $request->input('premium_economy_seat_count'),
-            'economy' => $request->input('economy_seat_count'),
+            'first' => $request->input('first_class_price') > 0 ? $request->input('first_class_seat_count') : 0,
+            'business' => $request->input('business_price') > 0 ? $request->input('business_seat_count') : 0,
+            'premium_economy' => $request->input('premium_economy_price') > 0 ? $request->input('premium_economy_seat_count') : 0,
+            'economy' => $request->input('economy_price') > 0 ? $request->input('economy_seat_count') : 0,
         ]);
 
         // Update the route
@@ -204,33 +210,45 @@ class AdminRoutesController extends Controller
             'airline_id' => $request->input('airline_id'),
         ]);
 
-        // Update tickets for the route
-        $route->ticket()->updateOrInsert(
-            ['route_id' => $route->id, 'class' => 4],
-            ['price' => $request->input('economy_price')]
-        );
+        // Define a helper function to update or insert ticket
+        $updateOrInsertTicket = function ($ticketId, $class, $price) use ($route) {
+            if ($ticketId !== null) {
+                // Existing ticket
+                if ($price > 0) {
+                    // Update the existing ticket
+                    $route->ticket()->updateOrInsert(
+                        ['id' => $ticketId],
+                        ['route_id' => $route->id, 'class' => $class, 'price' => $price]
+                    );
+                } else {
+                    // Delete the existing ticket if price is 0
+                    $route->ticket()->where('id', $ticketId)->delete();
+                }
+            } elseif ($price > 0) {
+                // New ticket
+                $route->ticket()->create([
+                    'route_id' => $route->id,
+                    'class' => $class,
+                    'price' => $price,
+                ]);
+            }
+        };
 
-        $route->ticket()->updateOrInsert(
-            ['route_id' => $route->id, 'class' => 3],
-            ['price' => $request->input('premium_economy_price')]
-        );
-
-        $route->ticket()->updateOrInsert(
-            ['route_id' => $route->id, 'class' => 2],
-            ['price' => $request->input('business_price')]
-        );
-
-        $route->ticket()->updateOrInsert(
-            ['route_id' => $route->id, 'class' => 1],
-            ['price' => $request->input('first_class_price')]
-        );
+        // Update or insert tickets for each class
+        $updateOrInsertTicket($request->input('economy_id'), 4, $request->input('economy_price'));
+        $updateOrInsertTicket($request->input('premium_economy_id'), 3, $request->input('premium_economy_price'));
+        $updateOrInsertTicket($request->input('business_id'), 2, $request->input('business_price'));
+        $updateOrInsertTicket($request->input('first_class_id'), 1, $request->input('first_class_price'));
 
         $facilities = $request->input('facilities', []);
         $route->facilities()->sync($facilities);
 
         // You can add a response or redirect logic here
 
-        return redirect()->route('admin.routes')->with('success', 'Route updated successfully');
+        return redirect()->route(
+            "admin.routes.show",
+            $route->id
+        )->with('success', 'Route updated successfully');
 
 
     }

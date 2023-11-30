@@ -5,12 +5,19 @@ import { Link, Head } from "@inertiajs/react";
 
 const Create = ({ airports, airlines, auth }) => {
     const { data, setData, post, errors } = useForm({
-        flight_number: "", // Added flight_number field
         departure: "",
         arrival: "",
         source_airport_id: "",
         destination_airport_id: "",
         airline_id: "",
+        business_price : 0,
+        business_seat_count : 0,
+        premium_economy_seat_count : 0,
+        premium_economy_price: 0,
+        first_class_price : 0,
+        first_class_seat_count : 0,
+        economy_price: 0,
+        economy_seat_count: 0,
         // Add other fields as needed
     });
 

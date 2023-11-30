@@ -14,48 +14,42 @@ const Edit = ({
     economyTickets,
     facilities,
 }) => {
+
     const { data, setData, put, errors } = useForm({
         departure: flightRoute.departure,
         arrival: flightRoute.arrival,
         source_airport_id: flightRoute.source_airport_id,
         destination_airport_id: flightRoute.destination_airport_id,
         airline_id: flightRoute.airline_id,
-        // Add other fields as needed
-        first_class_price: firstClassTickets ? firstClassTickets.price : "",
+        first_class_id: firstClassTickets ? firstClassTickets.id : null,
+        business_id: businessClassTickets ? businessClassTickets.id : null,
+        premium_economy_id: premiumEconomyTickets
+            ? premiumEconomyTickets.id
+            : null,
+        economy_id: economyTickets ? economyTickets.id : null,
+        first_class_price: firstClassTickets ? firstClassTickets.price : 0,
         first_class_seat_count: firstClassTickets
             ? flightRoute.seat_conf.first
-            : "",
-        business_price: businessClassTickets ? businessClassTickets.price : "",
+            : 0,
+        business_price: businessClassTickets ? businessClassTickets.price : 0,
         business_seat_count: businessClassTickets
             ? flightRoute.seat_conf.business
-            : "",
+            : 0,
         premium_economy_price: premiumEconomyTickets
             ? premiumEconomyTickets.price
-            : "",
+            : 0,
         premium_economy_seat_count: premiumEconomyTickets
             ? flightRoute.seat_conf.premium_economy
-            : "",
-        economy_price: economyTickets ? economyTickets.price : "",
-        economy_seat_count: economyTickets ? flightRoute.seat_conf.economy : "",
+            : 0,
+        economy_price: economyTickets ? economyTickets.price : 0,
+        economy_seat_count: economyTickets ? flightRoute.seat_conf.economy : 0,
         facilities: flightRoute.facilities.map((facility) => facility.id), // Initialize selected facilities
     });
 
-    console.log();
     const handleUpdate = (e) => {
         e.preventDefault();
 
         put(route("admin.routes.update", flightRoute.id), data);
-    };
-
-    // Define a separate function for handling facility changes
-    const handleFacilityChange = (facilityId) => {
-        setData("facilities", (prevFacilities) => {
-            if (prevFacilities.includes(facilityId)) {
-                return prevFacilities.filter((id) => id !== facilityId);
-            } else {
-                return [...prevFacilities, facilityId];
-            }
-        });
     };
 
     return (
@@ -503,7 +497,7 @@ const Edit = ({
                                     )}
                                 </div>
 
-                                <div className="mb-4">
+                                <div className="flex items-center justify-end border-b border-slate-100 p-4 pl-8 text-slate-500">
                                     <button
                                         type="submit"
                                         className="bg-blue-500 text-white px-4 py-2 rounded-md"
@@ -511,7 +505,10 @@ const Edit = ({
                                         Edit Route
                                     </button>
                                     <Link
-                                        href={route("admin.routes")}
+                                       href={route(
+                                        "admin.routes.show",
+                                        flightRoute.id
+                                    )}
                                         className="ml-4 text-blue-500"
                                     >
                                         Cancel

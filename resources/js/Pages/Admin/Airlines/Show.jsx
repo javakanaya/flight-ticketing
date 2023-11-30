@@ -8,7 +8,6 @@ const formatPrice = (price) => {
 };
 
 const ShowAirline = ({ airline, auth }) => {
-    console.log(airline);
 
     return (
         <AdminLayout

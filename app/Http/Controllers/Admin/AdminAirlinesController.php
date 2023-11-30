@@ -17,14 +17,16 @@ class AdminAirlinesController extends Controller
      */
     public function index()
     {
-        $airlines = Airline::all();
-
+        $airlines = Airline::orderBy('IATA')->get();
+    
         return Inertia::render('Admin/Airlines/Index', [
             'airlines' => $airlines,
             'success' => session('success'),
             'errors' => session('error'),
         ]);
     }
+    
+    
 
     /**
      * Show the form for creating a new resource.
