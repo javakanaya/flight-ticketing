@@ -1,7 +1,7 @@
 // resources/js/Pages/Routes/Edit.jsx
 import AdminLayout from "@/Layouts/AdminLayout";
 import { useForm } from "@inertiajs/react";
-import { Link } from "@inertiajs/react";
+import { Link, Head } from "@inertiajs/react";
 
 const Edit = ({
     airports,
@@ -67,6 +67,7 @@ const Edit = ({
                 </h2>
             }
         >
+            <Head title="Edit Route" />
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">

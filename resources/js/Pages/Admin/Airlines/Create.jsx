@@ -1,8 +1,7 @@
 // resources/js/Pages/Airlines/Create.jsx
 import AdminLayout from "@/Layouts/AdminLayout";
-import { Inertia } from "@inertiajs/inertia";
 import { useForm } from "@inertiajs/react";
-import { Link } from "@inertiajs/react";
+import { Link, Head } from "@inertiajs/react";
 
 const CreateAirline = ({ auth }) => {
     const { data, setData, post, errors } = useForm({
@@ -22,19 +21,19 @@ const CreateAirline = ({ auth }) => {
         });
     };
     const handleAddFacility = () => {
-        setData('facilities', [...data.facilities, { name: '', price: 0 }]);
+        setData("facilities", [...data.facilities, { name: "", price: 0 }]);
     };
 
     const handleRemoveFacility = (index) => {
         const updatedFacilities = [...data.facilities];
         updatedFacilities.splice(index, 1);
-        setData('facilities', updatedFacilities);
+        setData("facilities", updatedFacilities);
     };
 
     const handleFacilityChange = (index, key, value) => {
         const updatedFacilities = [...data.facilities];
         updatedFacilities[index][key] = value;
-        setData('facilities', updatedFacilities);
+        setData("facilities", updatedFacilities);
     };
 
     return (
@@ -46,6 +45,7 @@ const CreateAirline = ({ auth }) => {
                 </h2>
             }
         >
+            <Head title="Create Airline" />
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">

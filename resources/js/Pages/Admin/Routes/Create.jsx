@@ -1,7 +1,7 @@
 // resources/js/Pages/Routes/Create.jsx
 import AdminLayout from "@/Layouts/AdminLayout";
 import { useForm } from "@inertiajs/react";
-import { Link } from "@inertiajs/react";
+import { Link, Head } from "@inertiajs/react";
 
 const Create = ({ airports, airlines, auth }) => {
     const { data, setData, post, errors } = useForm({
@@ -29,6 +29,7 @@ const Create = ({ airports, airlines, auth }) => {
                 </h2>
             }
         >
+            <Head title="Create Route" />
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">

@@ -1,5 +1,5 @@
 import AdminLayout from "@/Layouts/AdminLayout";
-import { Link, useForm } from "@inertiajs/react";
+import { Link, useForm, Head } from "@inertiajs/react";
 
 const EditAirline = ({ airline, auth }) => {
     const { data, setData, errors, put, processing } = useForm({
@@ -44,6 +44,7 @@ const EditAirline = ({ airline, auth }) => {
                 </h2>
             }
         >
+            <Head title="Edit Airline" />
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">

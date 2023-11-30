@@ -1,6 +1,6 @@
 // resources/js/Pages/Products/Index.jsx
 import AdminLayout from "@/Layouts/AdminLayout";
-import { Link, router } from "@inertiajs/react";
+import { Link, Head } from "@inertiajs/react";
 import { Inertia } from "@inertiajs/inertia";
 import React from "react";
 
@@ -43,6 +43,7 @@ const Index = ({ flightRoutes, auth, success, errors }) => {
                 </h2>
             }
         >
+            <Head title="Routes" />
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
