@@ -62,7 +62,7 @@ class AdminAirlinesController extends Controller
         $facilities = $request->input('facilities', []);
         $airline->facilities()->createMany($facilities);
 
-        return redirect()->route('admin.airlines')->with('success', 'Airline created successfully');
+        return redirect()->route('admin.airlines')->with('success', 'Airline '. $request->input('name') . ' created successfully');
     }
 
     /**
@@ -117,7 +117,7 @@ class AdminAirlinesController extends Controller
          $airline->facilities()->delete(); // Delete existing facilities
          $airline->facilities()->createMany($facilities);
  
-         return redirect()->route('admin.airlines')->with('success', 'Airline updated successfully');
+         return redirect()->route('admin.airlines')->with('success', 'Airline ' . $request->input('name') .' updated successfully');
      }
 
     /**

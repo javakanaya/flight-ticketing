@@ -109,7 +109,10 @@ class AdminRoutesController extends Controller
 
         // You can add a response or redirect logic here
 
-        return redirect()->route('admin.routes')->with('success', 'Route created successfully, Add facilities via EDIT');
+        return redirect()->route(
+            "admin.routes.show",
+            $route->id
+        )->with('success', 'Route created successfully, Add facilities via EDIT');
 
     }
 
