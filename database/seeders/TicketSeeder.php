@@ -3,16 +3,20 @@
 namespace Database\Seeders;
 
 use App\Models\Ticket;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Database\Factories\TicketFactory;
 use Illuminate\Database\Seeder;
 
 class TicketSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     *
+     * @return void
      */
-    public function run(): void
+    public function run()
     {
-        Ticket::factory()->count(2000)->create();
+        for ($i = 1; $i <= 500; $i++) {
+            Ticket::factory()->create(['route_id' => $i]);
+        }
     }
 }

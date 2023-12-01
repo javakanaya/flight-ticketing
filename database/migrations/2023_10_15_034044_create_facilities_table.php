@@ -16,7 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->string('name');
             $table->double('price', 9, 2);
-            $table->foreignId('route_id');
+            $table->foreignId('airline_id');
         });
     }
 

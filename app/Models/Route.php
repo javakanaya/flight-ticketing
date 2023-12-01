@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Route extends Model
@@ -15,12 +16,12 @@ class Route extends Model
 
     public function source_airport(): BelongsTo
     {
-        return $this->belongsTo(Airport::class);
+        return $this->belongsTo(Airport::class, 'source_airport_id');
     }
 
     public function destination_airport(): BelongsTo
     {
-        return $this->belongsTo(Airport::class);
+        return $this->belongsTo(Airport::class, 'destination_airport_id');
     }
 
     public function airline(): BelongsTo
@@ -38,8 +39,9 @@ class Route extends Model
         return $this->hasMany(Ticket::class);
     }
 
-    public function facilities(): HasMany 
+    public function facilities(): BelongsToMany 
     {
-        return $this->hasMany(Facility::class);
+        return $this->belongsToMany(Facility::class);
     }
+
 }

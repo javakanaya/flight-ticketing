@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'is_admin' => true,
         ]);
 
         $this->call([
@@ -28,6 +29,7 @@ class DatabaseSeeder extends Seeder
             SeatSeeder::class,
             RouteSeeder::class, 
             TicketSeeder::class,
+            FacilitySeeder::class,
         ]);
     }
 }

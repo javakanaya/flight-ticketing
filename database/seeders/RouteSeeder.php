@@ -13,6 +13,8 @@ class RouteSeeder extends Seeder
      */
     public function run(): void
     {
-        Route::factory()->count(500)->create();
+        for ($i = 1; $i <= 500; $i++) {
+            Route::factory()->create(['seat_id' => $i]);
+        }
     }
 }

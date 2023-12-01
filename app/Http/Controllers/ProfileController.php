@@ -66,7 +66,7 @@ class ProfileController extends Controller
         $user = auth()->user(); // Assuming you're using authentication
         $transactions = $user->transactions;
 
-        return Inertia::render('Profile/TransactionList', [
+        return Inertia::render('Profile/Bookings', [
             'user' => $user,
             'transactions' => $transactions,
         ]);

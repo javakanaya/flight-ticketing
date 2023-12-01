@@ -2,11 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Ticket;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Ticket>
- */
 class TicketFactory extends Factory
 {
     /**
@@ -17,11 +15,8 @@ class TicketFactory extends Factory
     public function definition(): array
     {
         return [
-            'route_id' => $this->faker->numberBetween(1, 500),
-            'class' => $this->faker->numberBetween(1, 4),
+            'class' => 4,
             'price' => $this->faker->numberBetween(400000, 3000000),
         ];
     }
-
-
 }
