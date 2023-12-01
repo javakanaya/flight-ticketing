@@ -2,11 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Ticket;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Ticket>
- */
 class TicketFactory extends Factory
 {
     /**
@@ -23,5 +21,18 @@ class TicketFactory extends Factory
         ];
     }
 
-
+    /**
+     * Create tickets for all classes for a specific route.
+     *
+     * @param  int  $routeId
+     * @return \Database\Factories\TicketFactory
+     */
+    public function forAllClasses(int $routeId): TicketFactory
+    {
+        return $this->state(function (array $attributes) use ($routeId) {
+            return [
+                'route_id' => $routeId,
+            ];
+        });
+    }
 }

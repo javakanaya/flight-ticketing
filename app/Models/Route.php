@@ -15,12 +15,12 @@ class Route extends Model
 
     public function source_airport(): BelongsTo
     {
-        return $this->belongsTo(Airport::class);
+        return $this->belongsTo(Airport::class, 'source_airport_id');
     }
 
     public function destination_airport(): BelongsTo
     {
-        return $this->belongsTo(Airport::class);
+        return $this->belongsTo(Airport::class, 'destination_airport_id');
     }
 
     public function airline(): BelongsTo

@@ -5,7 +5,7 @@ import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
 
-export default function Authenticated({ user, header, children }) {
+export default function AdminLayout({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     
     return (
@@ -21,8 +21,20 @@ export default function Authenticated({ user, header, children }) {
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink href={route('dashboard')} active={route().current('dashboard')}>
+                                <NavLink href={route('admin.dashboard')} active={route().current('admin.dashboard')}>
                                     Dashboard
+                                </NavLink>
+                                <NavLink href={route('admin.routes')} active={route().current('admin.routes')}>
+                                    Routes
+                                </NavLink>
+                                <NavLink href={route('admin.airlines')} active={route().current('admin.airliness')}>
+                                    Airlines
+                                </NavLink>
+                                <NavLink href={route('admin.transactions')} active={route().current('admin.transactions')}>
+                                    Transaction
+                                </NavLink>
+                                <NavLink href={route('admin.users')} active={route().current('admin.users')}>
+                                    Users
                                 </NavLink>
                             </div>
                         </div>
@@ -92,7 +104,7 @@ export default function Authenticated({ user, header, children }) {
 
                 <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                     <div className="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
+                        <ResponsiveNavLink href={route('admin.dashboard')} active={route().current('admin.dashboard')}>
                             Dashboard
                         </ResponsiveNavLink>
                     </div>

@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('route_id');
-            $table->integer('class'); // 1: first, 2: business, 3: premEcon, 4: economy
+            $table->foreignId('route_id')->constrained()->onDelete('cascade');;
+            $table->tinyInteger('class'); // 1: first, 2: business, 3: premEcon, 4: economy
             $table->double('price', 11, 2);
             $table->integer('bagage')->default(20);
             $table->integer('cabin_bagage')->default(7);
