@@ -32,7 +32,6 @@ class RouteFactory extends Factory
             'airline_id' => $this->faker->numberBetween(1, 4),
             'source_airport_id' => $sourceAirportId,
             'destination_airport_id' => $destinationAirportId,
-            'seat_id' => $this->faker->unique()->numberBetween(1, 500),
         ];
     }
 }

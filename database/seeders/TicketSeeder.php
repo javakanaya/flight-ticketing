@@ -15,9 +15,8 @@ class TicketSeeder extends Seeder
      */
     public function run()
     {
-        // Assuming you have 500 routes
         for ($i = 1; $i <= 500; $i++) {
-            Ticket::factory()->forAllClasses($i)->count(4)->create();
+            Ticket::factory()->create(['route_id' => $i]);
         }
     }
 }

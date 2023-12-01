@@ -33,11 +33,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/profile/transactions', [ProfileController::class, 'transaction'])->name('profile.transaction');
+    Route::get('/profile/bookings', [ProfileController::class, 'transaction'])->name('profile.transaction');
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
 
     // Route::get('/admin/routes', [AdminRoutesController::class, 'index'])->name('admin.routes');
     Route::resource('/admin/routes', AdminRoutesController::class, [
@@ -63,8 +63,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
             'destroy' => 'admin.airlines.destroy'
         ]
     ]);
-
-    Route::get('/admin/tickets', [AdminController::class, 'index'])->name('admin.tickets');
 
     Route::get('/admin/transaction', [AdminController::class, 'index'])->name('admin.transactions');
 

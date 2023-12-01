@@ -17,4 +17,9 @@ class Airline extends Model
         return $this->hasMany(Route::class);
     }
 
+    public function facilities(): HasMany
+    {
+        return $this->hasMany(Facility::class);
+    }
+
 }

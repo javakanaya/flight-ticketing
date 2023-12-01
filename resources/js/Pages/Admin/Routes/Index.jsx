@@ -1,12 +1,61 @@
 // resources/js/Pages/Products/Index.jsx
 import AdminLayout from "@/Layouts/AdminLayout";
-import { Link, router } from "@inertiajs/react";
+import { Link, Head } from "@inertiajs/react";
 import { Inertia } from "@inertiajs/inertia";
+import React from "react";
 
 const Index = ({ flightRoutes, auth, success, errors }) => {
-    const deletePost = async (id) => {
+    const deleteRoute = async (id) => {
         Inertia.delete(`/admin/routes/${id}`);
     };
+
+    const [confirmDelete, setConfirmDelete] = React.useState(false);
+
+    const handleDeleteClick = (postId) => {
+        // Set postId to delete
+        setConfirmDelete(postId);
+    };
+
+    const handleConfirmDelete = () => {
+        // Perform the actual delete action
+        deleteRoute(confirmDelete);
+        // Reset the confirmation state
+        setConfirmDelete(false);
+    };
+
+    const handleCancelDelete = () => {
+        // Reset the confirmation state
+        setConfirmDelete(false);
+    };
+
+    const renderPaginationLink = (link, index) => (
+        <Link
+            key={index}
+            href={link.url}
+            dangerouslySetInnerHTML={{ __html: link.label }}
+            className={`flex items-center justify-center px-3 h-8 ${
+                link.active
+                    ? "text-blue-600 bg-blue-50 hover:bg-blue-100"
+                    : "text-gray-500 bg-white hover:bg-gray-100"
+            } border border-gray-300 ${
+                index === 0
+                    ? "rounded-s-lg"
+                    : index === flightRoutes.links.length - 1
+                    ? "rounded-e-lg"
+                    : ""
+            }`}
+        />
+    );
+
+    const RenderPagination = () => (
+        <nav aria-label="">
+            <ul className="mt-3 inline-flex -space-x-px text-sm">
+                {flightRoutes.links.map((link, index) =>
+                    renderPaginationLink(link, index)
+                )}
+            </ul>
+        </nav>
+    );
 
     return (
         <AdminLayout
@@ -23,6 +72,7 @@ const Index = ({ flightRoutes, auth, success, errors }) => {
                 </h2>
             }
         >
+            <Head title="Routes" />
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -57,7 +107,7 @@ const Index = ({ flightRoutes, auth, success, errors }) => {
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white">
-                                    {flightRoutes.map((flightRoute) => (
+                                    {flightRoutes.data.map((flightRoute) => (
                                         <tr key={flightRoute.id}>
                                             <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">
                                                 {
@@ -85,20 +135,11 @@ const Index = ({ flightRoutes, auth, success, errors }) => {
                                                 >
                                                     SHOW
                                                 </Link>
-                                                <Link
-                                                    href={route(
-                                                        "admin.routes.edit",
-                                                        flightRoute.id
-                                                    )}
-                                                    className="mx-2 border border-yellow-500 hover:bg-yellow-500 hover:text-white px-4 py-2 rounded-md"
-                                                >
-                                                    EDIT
-                                                </Link>
                                                 <button
-                                                    type="submit"
+                                                    type="button"
                                                     className="mx-2 border border-red-500 hover:bg-red-500 hover:text-white px-4 py-2 rounded-md"
                                                     onClick={() =>
-                                                        deletePost(
+                                                        handleDeleteClick(
                                                             flightRoute.id
                                                         )
                                                     }
@@ -110,10 +151,34 @@ const Index = ({ flightRoutes, auth, success, errors }) => {
                                     ))}
                                 </tbody>
                             </table>
+                            <RenderPagination/>
                         </div>
                     </div>
                 </div>
             </div>
+            {confirmDelete && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="bg-white p-4 rounded-md">
+                        <p className="text-lg font-semibold mb-4">
+                            Are you sure you want to delete this Route?
+                        </p>
+                        <div className="flex justify-end">
+                            <button
+                                className="mr-2 px-4 py-2 bg-red-500 text-white rounded-md"
+                                onClick={handleConfirmDelete}
+                            >
+                                Yes
+                            </button>
+                            <button
+                                className="px-4 py-2 border border-gray-300 rounded-md"
+                                onClick={handleCancelDelete}
+                            >
+                                No
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </AdminLayout>
     );
 };
