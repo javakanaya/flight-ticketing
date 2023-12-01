@@ -1,6 +1,7 @@
 import AdminLayout from "@/Layouts/AdminLayout";
-import { Link } from "@inertiajs/react";
+import { Link, Head } from "@inertiajs/react";
 import { Inertia } from "@inertiajs/inertia";
+import React from "react";
 
 const Index = ({ airlines, auth, success, errors }) => {
     const deleteAirline = async (id) => {
@@ -18,6 +19,25 @@ const Index = ({ airlines, auth, success, errors }) => {
         }
     };
 
+    const [confirmDelete, setConfirmDelete] = React.useState(false);
+
+    const handleDeleteClick = (postId) => {
+        // Set postId to delete
+        setConfirmDelete(postId);
+    };
+
+    const handleConfirmDelete = () => {
+        // Perform the actual delete action
+        deleteAirline(confirmDelete);
+        // Reset the confirmation state
+        setConfirmDelete(false);
+    };
+
+    const handleCancelDelete = () => {
+        // Reset the confirmation state
+        setConfirmDelete(false);
+    };
+
     return (
         <AdminLayout
             user={auth.user}
@@ -33,6 +53,7 @@ const Index = ({ airlines, auth, success, errors }) => {
                 </h2>
             }
         >
+            <Head title="Airlines" />
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -95,7 +116,7 @@ const Index = ({ airlines, auth, success, errors }) => {
                                                     type="submit"
                                                     className="mx-2 border border-red-500 hover:bg-red-500 hover:text-white px-4 py-2 rounded-md"
                                                     onClick={() =>
-                                                        deleteAirline(
+                                                        handleDeleteClick(
                                                             airline.id
                                                         )
                                                     }
@@ -111,6 +132,29 @@ const Index = ({ airlines, auth, success, errors }) => {
                     </div>
                 </div>
             </div>
+            {confirmDelete && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="bg-white p-4 rounded-md">
+                        <p className="text-lg font-semibold mb-4">
+                            Are you sure you want to delete this Airline?
+                        </p>
+                        <div className="flex justify-end">
+                            <button
+                                className="mr-2 px-4 py-2 bg-red-500 text-white rounded-md"
+                                onClick={handleConfirmDelete}
+                            >
+                                Yes
+                            </button>
+                            <button
+                                className="px-4 py-2 border border-gray-300 rounded-md"
+                                onClick={handleCancelDelete}
+                            >
+                                No
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </AdminLayout>
     );
 };

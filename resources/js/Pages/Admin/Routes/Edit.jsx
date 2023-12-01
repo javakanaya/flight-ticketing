@@ -1,24 +1,49 @@
 // resources/js/Pages/Routes/Edit.jsx
 import AdminLayout from "@/Layouts/AdminLayout";
 import { useForm } from "@inertiajs/react";
-import { Link } from "@inertiajs/react";
+import { Link, Head } from "@inertiajs/react";
 
-const Edit = ({ airports, airlines, auth, flightRoute, firstClassTickets, businessClassTickets, premiumEconomyTickets, economyTickets }) => {
+const Edit = ({
+    airports,
+    airlines,
+    auth,
+    flightRoute,
+    firstClassTickets,
+    businessClassTickets,
+    premiumEconomyTickets,
+    economyTickets,
+    facilities,
+}) => {
+
     const { data, setData, put, errors } = useForm({
         departure: flightRoute.departure,
         arrival: flightRoute.arrival,
         source_airport_id: flightRoute.source_airport_id,
         destination_airport_id: flightRoute.destination_airport_id,
         airline_id: flightRoute.airline_id,
-        // Add other fields as needed
-        first_class_price: firstClassTickets ? firstClassTickets.price : '',
-        first_class_seat_count: firstClassTickets ? flightRoute.seat_conf.first : '',
-        business_price: businessClassTickets ? businessClassTickets.price : '',
-        business_seat_count: businessClassTickets ? flightRoute.seat_conf.business : '',
-        premium_economy_price: premiumEconomyTickets ? premiumEconomyTickets.price : '',
-        premium_economy_seat_count: premiumEconomyTickets ? flightRoute.seat_conf.premium_economy : '',
-        economy_price: economyTickets ? economyTickets.price : '',
-        economy_seat_count: economyTickets ? flightRoute.seat_conf.economy : '',
+        first_class_id: firstClassTickets ? firstClassTickets.id : null,
+        business_id: businessClassTickets ? businessClassTickets.id : null,
+        premium_economy_id: premiumEconomyTickets
+            ? premiumEconomyTickets.id
+            : null,
+        economy_id: economyTickets ? economyTickets.id : null,
+        first_class_price: firstClassTickets ? firstClassTickets.price : 0,
+        first_class_seat_count: firstClassTickets
+            ? flightRoute.seat_conf.first
+            : 0,
+        business_price: businessClassTickets ? businessClassTickets.price : 0,
+        business_seat_count: businessClassTickets
+            ? flightRoute.seat_conf.business
+            : 0,
+        premium_economy_price: premiumEconomyTickets
+            ? premiumEconomyTickets.price
+            : 0,
+        premium_economy_seat_count: premiumEconomyTickets
+            ? flightRoute.seat_conf.premium_economy
+            : 0,
+        economy_price: economyTickets ? economyTickets.price : 0,
+        economy_seat_count: economyTickets ? flightRoute.seat_conf.economy : 0,
+        facilities: flightRoute.facilities.map((facility) => facility.id), // Initialize selected facilities
     });
 
     const handleUpdate = (e) => {
@@ -36,6 +61,7 @@ const Edit = ({ airports, airlines, auth, flightRoute, firstClassTickets, busine
                 </h2>
             }
         >
+            <Head title="Edit Route" />
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -204,9 +230,12 @@ const Edit = ({ airports, airlines, auth, flightRoute, firstClassTickets, busine
                                     )}
                                 </div>
 
-                                           {/* Economy Class */}
-                                           <div className="mb-4">
-                                    <label htmlFor="economy_price" className="block text-sm font-medium text-gray-600">
+                                {/* Economy Class */}
+                                <div className="mb-4">
+                                    <label
+                                        htmlFor="economy_price"
+                                        className="block text-sm font-medium text-gray-600"
+                                    >
                                         Economy Class Price
                                     </label>
                                     <input
@@ -214,13 +243,25 @@ const Edit = ({ airports, airlines, auth, flightRoute, firstClassTickets, busine
                                         id="economy_price"
                                         name="economy_price"
                                         value={data.economy_price}
-                                        onChange={(e) => setData("economy_price", e.target.value)}
+                                        onChange={(e) =>
+                                            setData(
+                                                "economy_price",
+                                                e.target.value
+                                            )
+                                        }
                                         className="mt-1 p-2 w-full border rounded-md"
                                     />
-                                    {errors.economy_price && <p className="text-red-500 text-xs mt-1">{errors.economy_price}</p>}
+                                    {errors.economy_price && (
+                                        <p className="text-red-500 text-xs mt-1">
+                                            {errors.economy_price}
+                                        </p>
+                                    )}
                                 </div>
                                 <div className="mb-4">
-                                    <label htmlFor="economy_seat_count" className="block text-sm font-medium text-gray-600">
+                                    <label
+                                        htmlFor="economy_seat_count"
+                                        className="block text-sm font-medium text-gray-600"
+                                    >
                                         Economy Class Seat Count
                                     </label>
                                     <input
@@ -228,15 +269,27 @@ const Edit = ({ airports, airlines, auth, flightRoute, firstClassTickets, busine
                                         id="economy_seat_count"
                                         name="economy_seat_count"
                                         value={data.economy_seat_count}
-                                        onChange={(e) => setData("economy_seat_count", e.target.value)}
+                                        onChange={(e) =>
+                                            setData(
+                                                "economy_seat_count",
+                                                e.target.value
+                                            )
+                                        }
                                         className="mt-1 p-2 w-full border rounded-md"
                                     />
-                                    {errors.economy_seat_count && <p className="text-red-500 text-xs mt-1">{errors.economy_seat_count}</p>}
+                                    {errors.economy_seat_count && (
+                                        <p className="text-red-500 text-xs mt-1">
+                                            {errors.economy_seat_count}
+                                        </p>
+                                    )}
                                 </div>
 
                                 {/* Premium Economy Class */}
                                 <div className="mb-4">
-                                    <label htmlFor="premium_economy_price" className="block text-sm font-medium text-gray-600">
+                                    <label
+                                        htmlFor="premium_economy_price"
+                                        className="block text-sm font-medium text-gray-600"
+                                    >
                                         Premium Economy Class Price
                                     </label>
                                     <input
@@ -244,13 +297,25 @@ const Edit = ({ airports, airlines, auth, flightRoute, firstClassTickets, busine
                                         id="premium_economy_price"
                                         name="premium_economy_price"
                                         value={data.premium_economy_price}
-                                        onChange={(e) => setData("premium_economy_price", e.target.value)}
+                                        onChange={(e) =>
+                                            setData(
+                                                "premium_economy_price",
+                                                e.target.value
+                                            )
+                                        }
                                         className="mt-1 p-2 w-full border rounded-md"
                                     />
-                                    {errors.premium_economy_price && <p className="text-red-500 text-xs mt-1">{errors.premium_economy_price}</p>}
+                                    {errors.premium_economy_price && (
+                                        <p className="text-red-500 text-xs mt-1">
+                                            {errors.premium_economy_price}
+                                        </p>
+                                    )}
                                 </div>
                                 <div className="mb-4">
-                                    <label htmlFor="premium_economy_seat_count" className="block text-sm font-medium text-gray-600">
+                                    <label
+                                        htmlFor="premium_economy_seat_count"
+                                        className="block text-sm font-medium text-gray-600"
+                                    >
                                         Premium Economy Class Seat Count
                                     </label>
                                     <input
@@ -258,15 +323,27 @@ const Edit = ({ airports, airlines, auth, flightRoute, firstClassTickets, busine
                                         id="premium_economy_seat_count"
                                         name="premium_economy_seat_count"
                                         value={data.premium_economy_seat_count}
-                                        onChange={(e) => setData("premium_economy_seat_count", e.target.value)}
+                                        onChange={(e) =>
+                                            setData(
+                                                "premium_economy_seat_count",
+                                                e.target.value
+                                            )
+                                        }
                                         className="mt-1 p-2 w-full border rounded-md"
                                     />
-                                    {errors.premium_economy_seat_count && <p className="text-red-500 text-xs mt-1">{errors.premium_economy_seat_count}</p>}
+                                    {errors.premium_economy_seat_count && (
+                                        <p className="text-red-500 text-xs mt-1">
+                                            {errors.premium_economy_seat_count}
+                                        </p>
+                                    )}
                                 </div>
 
                                 {/* Business Class */}
                                 <div className="mb-4">
-                                    <label htmlFor="business_price" className="block text-sm font-medium text-gray-600">
+                                    <label
+                                        htmlFor="business_price"
+                                        className="block text-sm font-medium text-gray-600"
+                                    >
                                         Business Class Price
                                     </label>
                                     <input
@@ -274,13 +351,25 @@ const Edit = ({ airports, airlines, auth, flightRoute, firstClassTickets, busine
                                         id="business_price"
                                         name="business_price"
                                         value={data.business_price}
-                                        onChange={(e) => setData("business_price", e.target.value)}
+                                        onChange={(e) =>
+                                            setData(
+                                                "business_price",
+                                                e.target.value
+                                            )
+                                        }
                                         className="mt-1 p-2 w-full border rounded-md"
                                     />
-                                    {errors.business_price && <p className="text-red-500 text-xs mt-1">{errors.business_price}</p>}
+                                    {errors.business_price && (
+                                        <p className="text-red-500 text-xs mt-1">
+                                            {errors.business_price}
+                                        </p>
+                                    )}
                                 </div>
                                 <div className="mb-4">
-                                    <label htmlFor="business_seat_count" className="block text-sm font-medium text-gray-600">
+                                    <label
+                                        htmlFor="business_seat_count"
+                                        className="block text-sm font-medium text-gray-600"
+                                    >
                                         Business Class Seat Count
                                     </label>
                                     <input
@@ -288,15 +377,27 @@ const Edit = ({ airports, airlines, auth, flightRoute, firstClassTickets, busine
                                         id="business_seat_count"
                                         name="business_seat_count"
                                         value={data.business_seat_count}
-                                        onChange={(e) => setData("business_seat_count", e.target.value)}
+                                        onChange={(e) =>
+                                            setData(
+                                                "business_seat_count",
+                                                e.target.value
+                                            )
+                                        }
                                         className="mt-1 p-2 w-full border rounded-md"
                                     />
-                                    {errors.business_seat_count && <p className="text-red-500 text-xs mt-1">{errors.business_seat_count}</p>}
+                                    {errors.business_seat_count && (
+                                        <p className="text-red-500 text-xs mt-1">
+                                            {errors.business_seat_count}
+                                        </p>
+                                    )}
                                 </div>
 
                                 {/* First Class */}
                                 <div className="mb-4">
-                                    <label htmlFor="first_class_price" className="block text-sm font-medium text-gray-600">
+                                    <label
+                                        htmlFor="first_class_price"
+                                        className="block text-sm font-medium text-gray-600"
+                                    >
                                         First Class Price
                                     </label>
                                     <input
@@ -304,13 +405,25 @@ const Edit = ({ airports, airlines, auth, flightRoute, firstClassTickets, busine
                                         id="first_class_price"
                                         name="first_class_price"
                                         value={data.first_class_price}
-                                        onChange={(e) => setData("first_class_price", e.target.value)}
+                                        onChange={(e) =>
+                                            setData(
+                                                "first_class_price",
+                                                e.target.value
+                                            )
+                                        }
                                         className="mt-1 p-2 w-full border rounded-md"
                                     />
-                                    {errors.first_class_price && <p className="text-red-500 text-xs mt-1">{errors.first_class_price}</p>}
+                                    {errors.first_class_price && (
+                                        <p className="text-red-500 text-xs mt-1">
+                                            {errors.first_class_price}
+                                        </p>
+                                    )}
                                 </div>
                                 <div className="mb-4">
-                                    <label htmlFor="first_class_seat_count" className="block text-sm font-medium text-gray-600">
+                                    <label
+                                        htmlFor="first_class_seat_count"
+                                        className="block text-sm font-medium text-gray-600"
+                                    >
                                         First Class Seat Count
                                     </label>
                                     <input
@@ -318,13 +431,73 @@ const Edit = ({ airports, airlines, auth, flightRoute, firstClassTickets, busine
                                         id="first_class_seat_count"
                                         name="first_class_seat_count"
                                         value={data.first_class_seat_count}
-                                        onChange={(e) => setData("first_class_seat_count", e.target.value)}
+                                        onChange={(e) =>
+                                            setData(
+                                                "first_class_seat_count",
+                                                e.target.value
+                                            )
+                                        }
                                         className="mt-1 p-2 w-full border rounded-md"
                                     />
-                                    {errors.first_class_seat_count && <p className="text-red-500 text-xs mt-1">{errors.first_class_seat_count}</p>}
+                                    {errors.first_class_seat_count && (
+                                        <p className="text-red-500 text-xs mt-1">
+                                            {errors.first_class_seat_count}
+                                        </p>
+                                    )}
                                 </div>
 
+                                {/* Facilities */}
                                 <div className="mb-4">
+                                    <label
+                                        htmlFor="facilities"
+                                        className="block text-sm font-medium text-gray-600"
+                                    >
+                                        Facilities
+                                    </label>
+                                    <select
+                                        id="facilities"
+                                        name="facilities"
+                                        value={data.facilities}
+                                        onChange={(e) =>
+                                            setData(
+                                                "facilities",
+                                                Array.from(
+                                                    e.target.selectedOptions,
+                                                    (option) => option.value
+                                                )
+                                            )
+                                        }
+                                        multiple
+                                        className="mt-1 p-2 w-full border rounded-md"
+                                    >
+                                        {facilities.map((facility) => (
+                                            <option
+                                                key={facility.id}
+                                                value={facility.id}
+                                            >
+                                                {facility.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <small className="text-gray-500 text-xs mt-1">
+                                        Hold{" "}
+                                        <span className="font-semibold">
+                                            Ctrl
+                                        </span>{" "}
+                                        (or{" "}
+                                        <span className="font-semibold">
+                                            Command
+                                        </span>{" "}
+                                        on macOS) to select multiple facilities
+                                    </small>
+                                    {errors.facilities && (
+                                        <p className="text-red-500 text-xs mt-1">
+                                            {errors.facilities}
+                                        </p>
+                                    )}
+                                </div>
+
+                                <div className="flex items-center justify-end border-b border-slate-100 p-4 pl-8 text-slate-500">
                                     <button
                                         type="submit"
                                         className="bg-blue-500 text-white px-4 py-2 rounded-md"
@@ -332,7 +505,10 @@ const Edit = ({ airports, airlines, auth, flightRoute, firstClassTickets, busine
                                         Edit Route
                                     </button>
                                     <Link
-                                        href={route("admin.routes")}
+                                       href={route(
+                                        "admin.routes.show",
+                                        flightRoute.id
+                                    )}
                                         className="ml-4 text-blue-500"
                                     >
                                         Cancel

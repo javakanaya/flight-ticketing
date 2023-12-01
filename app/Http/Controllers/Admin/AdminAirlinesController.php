@@ -17,14 +17,16 @@ class AdminAirlinesController extends Controller
      */
     public function index()
     {
-        $airlines = Airline::all();
-
+        $airlines = Airline::orderBy('IATA')->get();
+    
         return Inertia::render('Admin/Airlines/Index', [
             'airlines' => $airlines,
             'success' => session('success'),
             'errors' => session('error'),
         ]);
     }
+    
+    
 
     /**
      * Show the form for creating a new resource.
@@ -43,17 +45,24 @@ class AdminAirlinesController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'IATA' => 'required|string|max:3|unique:airlines,IATA',
+            'facilities' => 'nullable|array',
+            'facilities.*.name' => 'required|string|max:255',
+            'facilities.*.price' => 'required|numeric',
             // Add other validation rules for additional fields
         ]);
 
         // Create a new airline
-        Airline::create([
+        $airline = Airline::create([
             'name' => $request->input('name'),
             'IATA' => strtoupper($request->input('IATA')),
             // Add other fields as needed
         ]);
 
-        return redirect()->route('admin.airlines')->with('success', 'Airline created successfully');
+        // Attach facilities to the created airline
+        $facilities = $request->input('facilities', []);
+        $airline->facilities()->createMany($facilities);
+
+        return redirect()->route('admin.airlines')->with('success', 'Airline '. $request->input('name') . ' created successfully');
     }
 
     /**
@@ -61,6 +70,8 @@ class AdminAirlinesController extends Controller
      */
     public function show(Airline $airline)
     {
+        $airline->load('facilities');
+
         return Inertia::render('Admin/Airlines/Show', [
             'airline' => $airline
         ]);
@@ -72,6 +83,7 @@ class AdminAirlinesController extends Controller
 
     public function edit(Airline $airline)
     {
+        $airline->load('facilities');
         return Inertia::render('Admin/Airlines/Edit', [
             'airline' => $airline,
         ]);
@@ -81,18 +93,32 @@ class AdminAirlinesController extends Controller
      * Update the specified resource in storage.
      */
 
-    public function update(Request $request, Airline $airline)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'IATA' => 'required|string|size:2',
-            // Add other validation rules for additional fields
-        ]);
-
-        $airline->update($request->all());
-
-        return redirect()->route('admin.airlines')->with('success', 'Airline updated successfully');
-    }
+     public function update(Request $request, Airline $airline)
+     {
+         // Validate the incoming request data
+         $request->validate([
+             'name' => 'required|string|max:255',
+             'IATA' => 'required|string|max:3',
+             'facilities' => 'nullable|array',
+             'facilities.*.name' => 'required|string|max:255',
+             'facilities.*.price' => 'required|numeric',
+             // Add other validation rules for additional fields
+         ]);
+ 
+         // Update the airline
+         $airline->update([
+             'name' => $request->input('name'),
+             'IATA' => strtoupper($request->input('IATA')),
+             // Add other fields as needed
+         ]);
+ 
+         // Sync facilities for the updated airline
+         $facilities = $request->input('facilities', []);
+         $airline->facilities()->delete(); // Delete existing facilities
+         $airline->facilities()->createMany($facilities);
+ 
+         return redirect()->route('admin.airlines')->with('success', 'Airline ' . $request->input('name') .' updated successfully');
+     }
 
     /**
      * Remove the specified resource from storage.
