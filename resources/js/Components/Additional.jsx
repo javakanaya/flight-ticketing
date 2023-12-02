@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { IoIosCheckmark } from 'react-icons/io';
 
-const Additional = ({ items }) => {
+const Additional = ({ items, updatePriceBar, length, passengerCount}) => {
   const { name, desc, features } = items;
 
   function formatPrice(price) {
@@ -10,13 +10,25 @@ const Additional = ({ items }) => {
     const formattedDecimal = parts[1] ? `.${parts[1].substring(0, 2)}` : '';
 
     return `Rp ${formattedInteger}${formattedDecimal}/pax`;
-    }
+  }
 
-    
+    const [isChecked, setIsChecked] = useState(false);
+    const handleCheckboxChange = () => {
+      setIsChecked(!isChecked);
+      
+      if (!isChecked) {
+        updatePriceBar(length, name, 0);
+      }
+      console.log(length);
+      updatePriceBar(length, -1, name, isChecked ? 0 : items.price * passengerCount);
+    };
+  
   return (
     <div className='mb-5 w-full gap-4 p-3 border-2 border-slate-100 shadow-lg '>
       <div className='flex items-center gap-3'>
-        <input type="checkbox" className='border-1 border-slate-300 rounded-md w-[20px] h-[20px]' />
+        <input type="checkbox" className='border-1 border-slate-300 rounded-md w-[20px] h-[20px]' 
+        onChange={handleCheckboxChange}
+        />
         <h1>{name}</h1>
       </div>
       <h1 className='text-sm mt-2 text-slate-400'>{desc}</h1>

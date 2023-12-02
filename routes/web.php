@@ -84,7 +84,12 @@ Route::get('/search', [TicketController::class, 'search'])->name('tickets.search
 
 Route::get('/booking', [TransactionController::class, 'show'])->name('bookings.show')->middleware(['auth', 'verified']);
 Route::get('/facilities', [TransactionController::class, 'show'])->name('facilities.add');
-Route::post('/transaction', [TransactionController::class, 'storeTransaction'])->name('bookings.show');
+Route::post('/transaction', [TransactionController::class, 'storeTransaction'])->name('bookings.store');
+Route::post('/store', [TransactionController::class, 'editTransaction'])->name('bookings.edit');
+
+Route::get('/paying', function () {
+    return Inertia::render('LoadingScreen');
+});
 
 Route::get('/flights/transaction/payment', function () {
     return Inertia::render('Payment');

@@ -38,7 +38,6 @@ class TransactionController extends Controller
 
         // Extract arrival time (hours and minutes)
         $arrivalTime = $arrivalTimestamp->format('H:i');
-
         return Inertia::render($request['routeTo'], [
             'ticketId' => $ticket->id,
             'source_city' => $ticket->route->source_airport->city->name,
@@ -50,53 +49,62 @@ class TransactionController extends Controller
             'departureTime' => $departureTime,
             'arrivalTime' => $arrivalTime,
             'classtype' => $classType,
-            'passengerCount' => $request['passengerCount'],
             'nationalities' => $countries,
             'price' => $ticket->price,
+            'adultCount' => $request['adultCount'],
+            'kidCount' => $request['kidCount'],
+            'infantCount' => $request['infantCount'],
             'travellers' => $request['travellers'] ? $request['travellers'] : null,
+            'facilities' => $request['facilities'] ? $request['facilities'] : null, 
         ]);
     }
 
-    public function storeTransaction($request)
+    public function storeTransaction(Request $request)
     {
 
-        dd($request);
-        $request->validate([
-            'ticket_id' => 'required|integer', // Assuming 'ticket_id' is in the request
+        // dd($request);
+        // $request->validate([
+        //     'ticket_id' => 'required|integer', // Assuming 'ticket_id' is in the request
 
-            'passenger.*.first_name' => 'required|string',
-            'passenger.*.last_name' => 'required|string',
-        ]);
+        //     'passenger.*.first_name' => 'required|string',
+        //     'passenger.*.last_name' => 'required|string',
+        // ]);
 
-        // Create a transaction
-        $transaction = Transaction::create([
-            'count' => count($request['passenger']),
-            'ticket_id' => $request['ticket_id'], // Replace with the actual ticket ID
-            'user_id' => auth()->user()->id, // Assuming the user is authenticated
-        ]);
+        // // Create a transaction
+        // $transaction = Transaction::create([
+        //     'count' => count($request['passenger']),
+        //     'ticket_id' => $request['ticket_id'], // Replace with the actual ticket ID
+        //     'user_id' => auth()->user()->id, // Assuming the user is authenticated
+        // ]);
 
-        // Get the transaction ID
-        $transactionId = $transaction->id;
+        // // Get the transaction ID
+        // $transactionId = $transaction->id;
 
-        // Iterate through passengers and insert into the passenger table
-        foreach ($request['passenger'] as $passengerData) {
-            Passenger::create([
-                'title' => $passengerData['title'],
-                'first_name' => $passengerData['first_name'],
-                'last_name' => $passengerData['last_name'],
-                'transaction_id' => $transactionId,
-            ]);
+        // // Iterate through passengers and insert into the passenger table
+        // foreach ($request['passenger'] as $passengerData) {
+        //     Passenger::create([
+        //         'title' => $passengerData['title'],
+        //         'first_name' => $passengerData['first_name'],
+        //         'last_name' => $passengerData['last_name'],
+        //         'transaction_id' => $transactionId,
+        //     ]);
 
             
-        }
+        // }
 
-        return redirect('/');
+        // return redirect('/');
     }
 
 
     public function addFacilities(Request $request)
     {
 
+    }
+
+    public function editTransaction(Request $request)
+    {
+        // dd($request);
+        return redirect('/');
     }
 
 }

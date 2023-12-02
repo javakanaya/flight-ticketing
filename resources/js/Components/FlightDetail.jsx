@@ -13,11 +13,15 @@ const FlightDetail = ({
     arrivalTime,
     classtype,
 }) => {
+    function formatClassType(classType) {
+        const formattedString = classType.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
+        return formattedString;
+      }
     return (
         <>
-            <div className="w-full flex items-center justify-between">
+            <div className="w-full flex items-center justify-between gap-3">
                 <BiSolidPlaneAlt className="text-3xl text-[#60cff4]" />
-                <h1 className="font-medium">{`${source_city} → ${destination_city}`}</h1>
+                <h1 className="font-medium text-sm">{`${source_city} → ${destination_city}`}</h1>
                 <h1 className="text-sm text-[#60cff4]">Details</h1>
             </div>
             <hr className="mt-5 border-1 border-slate-300" />
@@ -26,7 +30,7 @@ const FlightDetail = ({
                     <FaRegPaperPlane className="text-lg" />
                     <div>
                         <h1 className="text-[15px] font-semibold">{airline}</h1>
-                        <h3 className="text-[13px] text-slate-500">{classtype}</h3>
+                        <h3 className="text-[13px] text-slate-500">{formatClassType(classtype)}</h3>
                     </div>
                 </div>
                 <div className="relative mt-5 w-[60%] grid grid-cols-3">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Airline;
 use App\Models\Airport;
+use App\Models\Facility;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -29,7 +30,6 @@ class TicketController extends Controller
             $destinationAirportId = 2;
             $departureDate = now()->format('Y-m-d');
             $countTicket = 1;
-            $classNum = 4;
         } else {
             // Validate the request
             $validatedRequest = $request->validate([
@@ -45,15 +45,13 @@ class TicketController extends Controller
             $sourceAirportId = intval($validatedRequest['sourceAirport']);
             $destinationAirportId = intval($validatedRequest['destAirport']);
             $departureDate = strval($validatedRequest['departureDate']);
-            $countTicket = ($validatedRequest['adultCount'] + $validatedRequest['kidCount']);
+            $countTicket = ($validatedRequest['adultCount'] + $validatedRequest['kidCount'] + $validatedRequest['infantCount']);
             // $classNum = intval($validatedRequest['class']);
         }
 
         // Map class number to class type
         $classTypes = [1 => 'first', 2 => 'business', 3 => 'premium_economy', 4 => 'economy'];
         // $classType = $classTypes[$classNum] ?? 'economy';
-        $classType = 'economy';
-        $classNum = 4;
 
 
         // Retrieve all tickets based on the input
@@ -64,8 +62,10 @@ class TicketController extends Controller
             ->whereDate('routes.departure', $departureDate)
             ->where('routes.source_airport_id', '=', $sourceAirportId)
             ->where('routes.destination_airport_id', '=', $destinationAirportId)
-            ->where('tickets.class', '=', $classNum)
-            ->where('seats.' . $classType, '>', $countTicket)
+            ->where('seats.' . $classTypes[1], '>', $countTicket) // first class
+            ->orWhere('seats.' . $classTypes[2], '>', $countTicket) // business class
+            ->orWhere('seats.' . $classTypes[3], '>', $countTicket) // premium economy class
+            ->orWhere('seats.' . $classTypes[4], '>', $countTicket) // economy class
             ->get();
 
         // Retrieve source and destination airports
@@ -88,13 +88,28 @@ class TicketController extends Controller
 
             // Fetch airline information
             $ticket->airline = Airline::select('name')->find($ticket->airline_id);
+
+            $ticket->facilities = DB::table('facilities')
+            ->select('facilities.id', 'facilities.name', 'facilities.price')
+            ->where('facilities.airline_id', '=', $ticket->airline_id)
+            ->get();
+
         }
+
+        $allTicket = collect($allTicket)
+            ->sortBy('duration')
+            ->sortBy('price')
+            ->values()
+            ->all();
+        
 
         return Inertia::render('Flights', [
             'sourceAirport' => $sourceAirport,
             'destinationAirport' => $destinationAirport,
             'tickets' => $allTicket,
-            'passengerCount' => $countTicket,
+            'adultCount' => $validatedRequest['adultCount'],
+            'kidCount' => $validatedRequest['kidCount'],
+            'infantCount' => $validatedRequest['infantCount'],
         ]);
     }
 

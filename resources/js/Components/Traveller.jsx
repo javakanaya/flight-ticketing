@@ -3,20 +3,22 @@ import Navbar from "@/Components/Navbar";
 import { Disclosure } from "@headlessui/react";
 import React, { useState} from "react";
 
-const Traveller_Detail = ({ header, open, nationalities, onUpdate, title, first_name, last_name, nationality, ticked}) => {
+const Traveller_Detail = ({ header, open, nationalities, onUpdate, title, first_name, last_name, nationality, ticked,  isAdult}) => {
     const [lastnameDisabled, setlastnameDisabled] = useState(ticked);
     const [lastnameValue, setlastnameValue] = useState(last_name);
     const [firstnameValue, setfirstnameValue] = useState(first_name);
     const [natValue, setnatValue] = useState(nationality);
     const [titleValue, settitleValue] = useState(title);
     const [isOpenDisclosure, setOpenDisclosure] = useState(open);
+    const [isAdultVal, setAdult] = useState(isAdult);
 
     const [formData, setFormData] = useState({
         title: "Mr",
         first_name: "",
         last_name: "",
         nationality: "1",
-        ticked: lastnameDisabled
+        ticked: lastnameDisabled,
+        isAdult: isAdultVal,
     });
 
     const handleCheckboxChange = () => {
@@ -135,7 +137,9 @@ const Traveller_Detail = ({ header, open, nationalities, onUpdate, title, first_
                             required
                         >
                             <option value="Mr">Mr</option>
-                            <option value="Mrs">Mrs</option>
+                            {isAdult && isAdult.toString().toLowerCase() === 'true' ? (
+                                <option value="Mrs">Mrs</option>
+                                ): <div></div>}
                             <option value="Ms">Ms</option>
                         </select>
                     </div>

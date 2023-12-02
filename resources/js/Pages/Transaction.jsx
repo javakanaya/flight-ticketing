@@ -1,5 +1,4 @@
 import Navbar from "../Components/Navbar";
-import TransactionComp from "@/Components/TransactionComp";
 import "../../css/home.css";
 import FlightDetail from "@/Components/FlightDetail";
 import { Head } from "@inertiajs/react";
@@ -19,12 +18,15 @@ const Transaction = ({
     departureTime,
     arrivalTime,
     classtype,
-    passengerCount,
+    adultCount,
+    kidCount,
+    infantCount,
     nationalities,
     ticketId,
     contactDetailOpen = true,
     travDetailOpen = true,
-    travellers
+    travellers,
+    facilities,
 }) => {
 
 
@@ -42,26 +44,54 @@ const Transaction = ({
             return { ...prevFormData, travellers: updatedTravellers };
         });
     };
-
+    
     // Step 3: Function to handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
-  
+        console.log(facilities);
         router.get(route("facilities.add"), {
             ticketId: ticketId,
-            passengerCount: passengerCount,
+            adultCount: adultCount,
+            kidCount:kidCount,
+            infantCount: infantCount,
             travellers: formData.travellers,
+            facilities: facilities,
             routeTo: 'Payment'
         });
     };
 
     const generateTravellerForms = (travellers) => {
         const forms = [];
-
-        // console.log("Save Info", travellers);
-        for (let i = 0; i < passengerCount; i++) {
+    
+        console.log("Adult ", adultCount);
+        console.log("Kid ", kidCount);
+        console.log("Infant ", infantCount);
+    
+        let j = 0; // Declare j outside the loop
+    
+        for (let i = 0; i < (+adultCount + +kidCount + +infantCount); i++) {
             const traveler = travellers ? travellers[i] : null;
-            // console.log(traveler);
+    
+            let travelerType = 'Adult';
+    
+            if (i < +adultCount) {
+                travelerType = 'Adult';
+            } else if (i < (+adultCount + +kidCount)) {
+                if (travelerType !== 'Kid') {
+                    travelerType = 'Kid';
+                    j = 0;
+                }
+            } else {
+                if (travelerType !== 'Infant') {
+                    travelerType = 'Infant';
+                    j = 0;
+                }
+            }
+
+            j++;
+    
+            const header = `${travelerType} ${j}`;
+    
             forms.push(
                 <div
                     key={i}
@@ -69,7 +99,7 @@ const Transaction = ({
                 >
                     {/* Step 2: Pass the callback function to update form data */}
                     <Traveller_Detail
-                        header={`Adult ${i + 1}`}
+                        header={header}
                         open={travDetailOpen}
                         nationalities={nationalities}
                         title={traveler ? traveler.title : "Mr"}
@@ -78,12 +108,16 @@ const Transaction = ({
                         nationality={traveler ? traveler.nationality : "1"}
                         ticked={traveler ? traveler.ticked : false}
                         onUpdate={(data) => updateTravellerData(i, data)}
+                        isAdult={travelerType === 'Adult'}
                     />
                 </div>
             );
         }
+    
         return forms;
     };
+    
+    
   
     return (
         <>

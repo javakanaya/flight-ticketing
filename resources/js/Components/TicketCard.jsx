@@ -4,15 +4,19 @@ import { router } from '@inertiajs/react'
 
 function TicketCard(props) {
     const handleChoose = () => {
-        router.visit("/booking", {
+            router.visit("/booking", {
             data: {
                 ticketId: props.id,
-                passengerCount: props.passengerCount,
+                adultCount : props.adultCount,
+                kidCount : props.kidCount,
+                infantCount : props.infantCount,
+                facilities :  props.facilities,
                 routeTo : "Transaction",
             },
         });
     };
 
+    const  classTypes = {1 : 'First', 2 :'Business', 3: 'Premium Economy', 4: 'Economy'};
     return (
         <>
             <div className="w-full grid gap-3 grid-rows-1 grid-cols-8 py-5">
@@ -62,12 +66,9 @@ function TicketCard(props) {
                     </button>
                 </div>
             </div>
-            <div className="grid grid-cols-3 w-[45%] text-slate-700 mb-2">
+            <div className="grid grid-cols-3 w-[50%] text-slate-700 mb-2">
                 <div className="grid text-sm hover:txt-blue-color cursor-pointer">
-                    Flights Detail
-                </div>
-                <div className="grid text-sm hover:txt-blue-color cursor-pointer">
-                    Fare & Benefits
+                    {classTypes[props.classType]} Class
                 </div>
             </div>
             <hr className="border-solid-border-t-4 border-gray-300 rounded-sm" />

@@ -4,6 +4,7 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 
 
 const PriceBar = ({ items }) => {
+  console.log(items);
   function formatRupiah(number) {
     const formatter = new Intl.NumberFormat("id-ID", {
       style: "currency",
@@ -29,10 +30,10 @@ const PriceBar = ({ items }) => {
         <hr className='my-2' />
         <Disclosure.Panel className="text-gray-500">
           {items.map((item, index) => (
-            <div key={index} className="w-full grid grid-cols-2 py-2 items-center">
+            item.price > 0 && (<div key={index} className="w-full grid grid-cols-2 py-2 items-center">
               <h1 className='grid text-left'>{item.name}</h1>
               <h1 className='grid text-right text-base'>{formatRupiah(item.price)}</h1>
-            </div>
+            </div>)
           ))}
         </Disclosure.Panel>
       </Disclosure>

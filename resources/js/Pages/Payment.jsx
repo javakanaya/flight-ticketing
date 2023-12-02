@@ -7,6 +7,8 @@ import FlightDetail from "@/Components/FlightDetail";
 import PriceBar from "@/Components/PriceBar";
 import Traveller_Detail from "../Components/Traveller";
 import AddBaggage from "@/Components/AddBaggage";
+import { AddItems } from "@/Components/AddItems";
+import ConfirmationButton from "@/Components/ConfirmationButton";
 
 const Payment = ({
     auth,
@@ -23,19 +25,50 @@ const Payment = ({
     nationalities,
     ticketId,
     travellers,
+    adultCount,
+    kidCount,
+    infantCount,
     contactDetailOpen = false,
     travDetailOpen = false,
-    price
+    price,
+    facilities,
 }) => {
+    const result = []
+    const [selectedBaggage, setSelectedBaggage] = useState([]);
+    const [priceBar, setPriceBar] = useState(() => {
+        const ticketPrice = price * (+adultCount + +kidCount + +infantCount);
+      
+        const initialPriceBar = AddItems.map((item) => ({
+          name: null,
+          price: 0,
+        }));
 
-    function formatRupiah(number) {
-        const formatter = new Intl.NumberFormat("id-ID", {
-            style: "currency",
-            currency: "IDR",
-            minimumFractionDigits: 0, // Minimum number of decimal places
-        })};
+        initialPriceBar.unshift({ id:ticketId, name: "Ticket", price: ticketPrice });
+        
+        return initialPriceBar;
+    });
+      
+      const updatePriceBar = (index, id, name, price) => {
+        setPriceBar((prevPriceBar) => {
+          const updatedPrice = [...prevPriceBar];
+          updatedPrice[index] = { id: id, name: name, price: parseInt(price, 10)};
 
-    console.log("Price", price);
+          return updatedPrice;
+        });
+      };
+    // Function to update selected baggage
+    const updateSelectedBaggage = (index, baggageInfo) => {
+        const updatedBaggage = [...selectedBaggage];
+        updatedBaggage[index] = baggageInfo;
+        setSelectedBaggage(updatedBaggage);
+        updatePriceBar(index+(AddItems.length)+1, updatedBaggage[index].id, updatedBaggage[index].name,  updatedBaggage[index].price)
+    };
+    
+    console.log('Facilities', selectedBaggage);
+    // console.log('baggage', selectedBaggage);
+   
+
+    // console.log("Price", price);
     // Step 1: Maintain state to store form data
     const [formData, setFormData] = useState({
         // Add other fields as needed
@@ -54,11 +87,9 @@ const Payment = ({
 
     const generateTravellerForms = (travellers) => {
         const forms = [];
-
         // console.log("Save Info", travellers);
-
-        const result = []
-        for (let i = 0; i < travellers.length; i += 5) {
+        console.log(travellers);
+        for (let i = 0; i < travellers.length; i += 6) {
             const resultObject = {};
 
             if (travellers[i].title) resultObject.title = travellers[i].title;
@@ -66,12 +97,13 @@ const Payment = ({
             if (travellers[i + 2].last_name) resultObject.last_name = travellers[i + 2].last_name;
             if (travellers[i + 3].nationality) resultObject.nationality = travellers[i + 3].nationality;
             if (travellers[i + 4].ticked) resultObject.ticked = travellers[i + 4].ticked;
+            if (travellers[i + 5].isAdult) resultObject.isAdult = travellers[i + 5].isAdult;
 
             result.push(resultObject);
         }
 
 
-        for (let i = 0; i < passengerCount; i++) {
+        for (let i = 0; i < (+adultCount + +kidCount + +infantCount); i++) {
             const traveler = result ? result[i] : null;
             console.log(traveler);
             forms.push(
@@ -81,7 +113,6 @@ const Payment = ({
                 >
                     {/* Step 2: Pass the callback function to update form data */}
                     <Traveller_Detail
-                        header={`Adult ${i + 1}`}
                         open={travDetailOpen}
                         nationalities={nationalities}
                         title={traveler ? traveler.title : "Mr"}
@@ -89,13 +120,19 @@ const Payment = ({
                         last_name={traveler ? traveler.last_name : ""}
                         nationality={traveler ? traveler.nationality : "1"}
                         ticked={traveler ? traveler.ticked : false}
+                        adultCount={adultCount}
+                        kidCount={kidCount}
+                        infantCount={infantCount}
                         onUpdate={(data) => updateTravellerData(i, data)}
+                        isAdult={traveler ? traveler.isAdult : false}
                     />
                 </div>
             );
         }
         return forms;
-    };
+    }; 
+
+   
 
     return (
         <>
@@ -135,58 +172,38 @@ const Payment = ({
                         <h1 className="text-xl my-3 font-medium">
                             Flight Facilities
                         </h1>
-                        <AddBaggage 
+                        <AddBaggage
                             source_IATA={source_IATA}
                             destination_IATA={destination_IATA}
                             source_city={source_city}
                             destination_city={destination_city}
-                            traveler = {travellers}
-                            passengerCount={passengerCount}
-                            />
+                            traveler={travellers}
+                            facilities={facilities}
+                            passengerCount={(+adultCount + +kidCount + +infantCount)}
+                            updateSelectedBaggage={updateSelectedBaggage}
+                        />
                     </div>
                     <div className="mt-10">
                         <h1 className="my-5 text-lg font-[1.5rem]">Frequently Added to Booking</h1>
-                        <Additional
-                            items={{
-                                name: "Travel Insurance",
-                                desc: "Protection for accidents, trip cancellation, flight delay, and baggage delay",
-                                features: [
-                                    "Up to Rp 500.000.000 for accidents and other unforeseen events",
-                                    "Up to Rp 30.000.000 for trip cancellation (due to specified causes)",
-                                    "Up to Rp 7.500.000 for flight and baggage delay"
-                                ],
-                                price: "100000"
-                            }}
-                        />
-                        <Additional
-                            items={{
-                                name: "Travel Insurance",
-                                desc: "Protection for accidents, trip cancellation, flight delay, and baggage delay",
-                                features: [
-                                    "Up to Rp 500.000.000 for accidents and other unforeseen events",
-                                    "Up to Rp 30.000.000 for trip cancellation (due to specified causes)",
-                                    "Up to Rp 7.500.000 for flight and baggage delay"
-                                ],
-                                price: 100000
-                            }}
-                        />
-
+                        {AddItems.map((addItem, index) => (
+                            <Additional
+                                key={index}
+                                items={addItem.items}
+                                updatePriceBar={updatePriceBar}
+                                passengerCount={(+adultCount + +kidCount + +infantCount)}
+                                length={addItem.length}
+                            />
+                        ))}
                     </div>
                     <div className="mt-14">
                         <h1 className="">Price Details</h1>
-                        <PriceBar items={[
-                            { name: "Ticket", price: price * passengerCount},
-                            { name: "Super Air Jet", price: 1000000 },
-                            { name: "Super Air Jet", price: 1000000 }
-                        ]}
-                        />
+                        <PriceBar items={priceBar}/>
                     </div>
-                    <button
-                            type="submit"
-                            className="my-7 w-[20%] text-white h-14 absolute left-[80%] bg-[#60cff4] rounded-xl hover:text-[#60cff4] hover:bg-[#f8f8f8]"
-                        >
-                            Continue
-                    </button>
+                    <ConfirmationButton
+                        priceBar={priceBar}
+                        travellers={result}
+                        facilities={selectedBaggage}
+                    />
                 </form>
             </div>
 
