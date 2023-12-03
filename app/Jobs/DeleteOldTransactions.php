@@ -9,7 +9,9 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Transaction;
+use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+
 
 class DeleteOldTransactions implements ShouldQueue
 {
@@ -28,7 +30,8 @@ class DeleteOldTransactions implements ShouldQueue
      */
     public function handle(): void
     {
-        $thresholdDate = Carbon::now()->subMinutes(1);
+        Log::info('DeleteOldTransactions job is running.');
+        $thresholdDate = Carbon::now()->subDays(90);
 
         Transaction::where('created_at', '<', $thresholdDate)->delete();
     }

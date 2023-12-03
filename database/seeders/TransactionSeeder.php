@@ -16,15 +16,15 @@ class TransactionSeeder extends Seeder
         $faker = Faker::create();
 
         // Let's seed 50 transactions for demonstration purposes
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 1; $i++) {
             Transaction::create([
                 'count' => $faker->numberBetween(1, 10),
                 'ticket_id' => $faker->numberBetween(1, 10),
                 'user_id' => $faker->numberBetween(1, 10),
-                'external_id' => $faker->uuid,
-                'status' => $faker->randomElement(['pending', 'success', 'failure']),
-                'payment_url' => $faker->url,
-                'created_at' => $faker->dateTimeBetween('-90 days', 'now'), // Random date within the last 90 days
+                'status' => $faker->randomElement([0, 1, 2]), // Assuming 0: pending, 1: success, 2: failure
+                'total_price' => $faker->randomFloat(2, 10, 1000),
+                'is_travel_assurance' => $faker->boolean,
+                'is_delay_assurance' => $faker->boolean,
             ]);
         }
     }
