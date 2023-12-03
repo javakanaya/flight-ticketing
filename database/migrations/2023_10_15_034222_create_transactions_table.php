@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('count');
             $table->foreignId('ticket_id');
             $table->foreignId('user_id');
-            $table->tinyInteger('status');// 0 unpaid, 1 Paid, 3 canceled
+            $table->tinyInteger('status');// 0 unpaid, 1 Processing,  2 Paid, 3 canceled
             $table->integer('total_price');
             $table->boolean('is_travel_assurance');
             $table->boolean('is_delay_assurance');

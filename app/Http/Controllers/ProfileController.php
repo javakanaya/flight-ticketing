@@ -160,7 +160,7 @@ class ProfileController extends Controller
 
         // Fetch assurance prices
         $travelAssurancePrice = $transaction[0]->is_travel_assurance ? 100000 : 0;
-        $delayAssurancePrice =  $transaction[0]->is_delay_assurance  ? 100000 : 0;
+        $delayAssurancePrice = $transaction[0]->is_delay_assurance ? 100000 : 0;
 
         // dd($passengers);
 
@@ -170,7 +170,9 @@ class ProfileController extends Controller
             'passengers' => $passengers,
             'travelAssurancePrice' => $travelAssurancePrice,
             'delayAssurancePrice' => $delayAssurancePrice,
+            'message' => session()->pull('payment_message', null), // Retrieve and clear the payment message from the session
         ]);
+
 
     }
 }

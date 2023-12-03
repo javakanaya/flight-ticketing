@@ -21,11 +21,17 @@ const getStatusBadge = (status) => {
             );
         case 1:
             return (
+                <span className="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">
+                    Processing
+                </span>
+            );
+        case 2:
+            return (
                 <span className="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
                     Paid
                 </span>
             );
-        case 2:
+        case 3:
             return (
                 <span className="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">
                     Canceled
@@ -36,19 +42,21 @@ const getStatusBadge = (status) => {
     }
 };
 
-const BookingDetails = ({ auth, transaction, passengers, totalPrice }) => {
+const BookingDetails = ({ auth, transaction, passengers }) => {
     console.log(transaction);
 
     // Calculate ticket price based on passenger count
 
     // Calculate total facility price
     const facilityPrice = passengers.reduce((total, passenger) => {
-        return total + (passenger.facility_price || 0); // Make sure to adjust this based on the actual field name for facility price
+        return total + parseInt(passenger.facility_price || 0); // Make sure to adjust this based on the actual field name for facility price
     }, 0);
 
     // Calculate total assurance price
-    const travelAssurancePrice = transaction.is_travel_asurance ? 100000 : 0;
-    const delayAssurancePrice = transaction.is_delay_asurance ? 100000 : 0;
+    const travelAssurancePrice =
+        transaction.is_travel_assurance == true ? 100000 : 0;
+    const delayAssurancePrice =
+        transaction.is_delay_assurance === true ? 100000 : 0;
 
     // Calculate the breakdown of prices
     const ticketPriceBreakdown =
@@ -60,20 +68,19 @@ const BookingDetails = ({ auth, transaction, passengers, totalPrice }) => {
         transaction.count +
         " passengers";
 
-    const handlePayment = () => {
-        // Your logic to update the payment status in the database (e.g., using an API call)
-        console.log("Payment processed!");
-        // You may want to fetch the updated transaction details after payment
-        // For simplicity, you can reload the page or update the data using Inertia
-    };
+    const delayAssurancePriceBreakdown =
+        "Rp " +
+        new Intl.NumberFormat("id-ID").format(parseInt(delayAssurancePrice)) +
+        " x " +
+        transaction.count +
+        " passengers";
 
-    // Function to handle cancellation
-    const handleCancellation = () => {
-        // Your logic to update the cancellation status in the database (e.g., using an API call)
-        console.log("Booking canceled!");
-        // You may want to fetch the updated transaction details after cancellation
-        // For simplicity, you can reload the page or update the data using Inertia
-    };
+    const travelAssurancePriceBreakdown =
+        "Rp " +
+        new Intl.NumberFormat("id-ID").format(parseInt(travelAssurancePrice)) +
+        " x " +
+        transaction.count +
+        " passengers";
 
     return (
         <ProfileLayout user={auth.user}>
@@ -96,10 +103,12 @@ const BookingDetails = ({ auth, transaction, passengers, totalPrice }) => {
                                     Booked on: {""}
                                     {new Date(
                                         transaction.created_date
-                                    ).toLocaleString("id-ID", {
+                                    ).toLocaleString("en-US", {
                                         year: "numeric",
                                         month: "long",
                                         day: "numeric",
+                                        hour: "numeric",
+                                        minute: "numeric",
                                     })}
                                 </p>
                             </div>
@@ -128,7 +137,7 @@ const BookingDetails = ({ auth, transaction, passengers, totalPrice }) => {
                                 Departure Date:{" "}
                                 {new Date(
                                     transaction.departure_date
-                                ).toLocaleString("id-ID", {
+                                ).toLocaleString("en-US", {
                                     weekday: "long",
                                     year: "numeric",
                                     month: "long",
@@ -141,7 +150,7 @@ const BookingDetails = ({ auth, transaction, passengers, totalPrice }) => {
                                 Arrival Date:{" "}
                                 {new Date(
                                     transaction.arrival_date
-                                ).toLocaleString("id-ID", {
+                                ).toLocaleString("en-US", {
                                     weekday: "long",
                                     year: "numeric",
                                     month: "long",
@@ -213,38 +222,45 @@ const BookingDetails = ({ auth, transaction, passengers, totalPrice }) => {
                                         )}
                                     </td>
                                 </tr>
-                                {transaction.is_travel_asurance > 0 ? (
+                                {travelAssurancePrice > 0 ? (
                                     <tr>
                                         <td className="text-gray-500">
                                             Travel Assurance:
                                         </td>
                                         <>
-                                            <td />
+                                            <td className="text-gray-500">
+                                                {travelAssurancePriceBreakdown}
+                                            </td>
                                             <td className="text-right">
                                                 Rp{" "}
                                                 {new Intl.NumberFormat(
                                                     "id-ID"
-                                                ).format(travelAssurancePrice)}
+                                                ).format(travelAssurancePrice * transaction.count)}
                                             </td>
                                         </>
                                     </tr>
                                 ) : null}
-                                {transaction.is_delay_asurance > 0 ? (
+                                {delayAssurancePrice > 0 && (
                                     <tr>
                                         <td className="text-gray-500">
                                             Delay Assurance:
                                         </td>
                                         <>
-                                            <td />
+                                            <td className="text-gray-500">
+                                                {delayAssurancePriceBreakdown}
+                                            </td>
                                             <td className="text-right">
                                                 Rp{" "}
                                                 {new Intl.NumberFormat(
                                                     "id-ID"
-                                                ).format(delayAssurancePrice)}
+                                                ).format(
+                                                    delayAssurancePrice *
+                                                        transaction.count
+                                                )}
                                             </td>
                                         </>
                                     </tr>
-                                ) : null}
+                                )}
                                 <tr>
                                     <td className="text-gray-500 font-semibold">
                                         Total Price
@@ -261,28 +277,39 @@ const BookingDetails = ({ auth, transaction, passengers, totalPrice }) => {
                         </table>
                     </div>
                     <div className="bg-white p-4 rounded-lg shadow-md">
-                        {/* ... (previous details) */}
                         <div className="mt-4">
                             {/* Payment button */}
                             {transaction.status === 0 && (
-                                <button
-                                    onClick={handlePayment}
+                                <Link
+                                    href={route("profile.transaction.pay", {
+                                        id: transaction.id,
+                                    })}
                                     className="bg-blue-500 text-white px-4 py-2 rounded"
                                 >
                                     Pay Now
-                                </button>
+                                </Link>
                             )}
                             {/* Cancellation button */}
                             {transaction.status === 0 && (
-                                <button
-                                    onClick={handleCancellation}
+                                <Link
+                                    href={route("profile.transaction.cancel", {
+                                        id: transaction.id,
+                                    })}
                                     className="bg-red-500 text-white px-4 py-2 rounded ml-2"
                                 >
                                     Cancel
-                                </button>
+                                </Link>
+                            )}
+                            {/* Display Procesing */}
+                            {transaction.status === 1 && (
+                                <div className="mt-2">
+                                    <span className="text-gray-500 font-semibold">
+                                        Processing
+                                    </span>
+                                </div>
                             )}
                             {/* Display paid status and date */}
-                            {transaction.status === 1 && (
+                            {transaction.status === 2 && (
                                 <div className="mt-2">
                                     <span className="text-green-500 font-semibold">
                                         Paid

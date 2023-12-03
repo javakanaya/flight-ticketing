@@ -10,6 +10,7 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
+use App\Jobs\ProcessTransactionPayment;
 
 class TransactionController extends Controller
 {
@@ -126,15 +127,30 @@ class TransactionController extends Controller
     }
 
 
-    public function addFacilities(Request $request)
-    {
 
+    public function payTransaction($id)
+    {
+        // Retrieve the transaction by ID
+        $transaction = Transaction::find($id);
+
+        // Update the status from 0 (unpaid) to 1 (processing)
+        $transaction->update(['status' => 1]);
+
+        // Dispatch the job with the transaction ID
+        ProcessTransactionPayment::dispatch($transaction->id);
+
+        // Return a response to the frontend
+        // Set a message in the session
+        session()->flash('payment_message', 'Payment processing initiated');
+
+        // Redirect back to the booking details page
+        return redirect()->route('profile.transaction.detail', ['id' => $id]);
     }
 
-    public function editTransaction(Request $request)
+
+    public function cancelTransaction($id)
     {
-        // dd($request);
-        return redirect('/');
+
     }
 
 }
