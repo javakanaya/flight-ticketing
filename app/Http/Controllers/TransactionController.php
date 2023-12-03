@@ -15,9 +15,8 @@ class TransactionController extends Controller
 {
     public function show(Request $request)
     {
-        // dd($request);
-        dd($request['facilities']);
-        
+        // dd($request['facilities']);
+
         $ticket = Ticket::find($request['ticketId']);
         $countries = Country::all();
 
@@ -56,44 +55,72 @@ class TransactionController extends Controller
             'infantCount' => $request['infantCount'],
             'travellers' => $request['travellers'] ? $request['travellers'] : null,
             // 'facilities' => $ticket->route->facilites,
-            'facilities' => $request['facilities'] ? $request['facilities'] : null, 
+            'facilities' => $request['facilities'] ? $request['facilities'] : null,
         ]);
     }
 
     public function storeTransaction(Request $request)
     {
+        $data = $request->input('data');
+        // dd($data);
+        // Get the facilities and travellers arrays
+        $facilities = $data['facilities'];
+        $travellers = $data['travellers'];
 
-        dd($request);
-        // $request->validate([
-        //     'ticket_id' => 'required|integer', // Assuming 'ticket_id' is in the request
+    
+        // Calculate total price based on ticket price, assurance, and facilities
+        $ticketPrice = (Ticket::findOrFail($data['priceBar'][0]['id'])->price) * count($travellers);
+        $assurancePrice = (($data['priceBar'][1]['name'] !== null ? 1 : 0) * 100000) * count($travellers);
+        $travelAssurancePrice = (($data['priceBar'][2]['name'] !== null ? 1 : 0) * 100000) * count($travellers);
+    
+        // Calculate facilities price
+        $facilitiesPrice = 0;
+        foreach ($facilities as $facility) {
+            $facilitiesPrice += $facility['price'] * $facility['isChecked'];
+        }
+    
+        // Calculate total price
+        $totalPrice = $ticketPrice + $assurancePrice + $travelAssurancePrice + $facilitiesPrice;
+        // dd($totalPrice, $ticketPrice, $assurancePrice, $travelAssurancePrice,  $facilitiesPrice);
+        // dd($totalPrice);
 
-        //     'passenger.*.first_name' => 'required|string',
-        //     'passenger.*.last_name' => 'required|string',
-        // ]);
+        // Create a new transaction record
+        $transaction = Transaction::create([
+            'count' => count($travellers),
+            'ticket_id' => $data['priceBar'][0]['id'],
+            'user_id' => auth()->user()->id,
+            'status' => 0, // Set the initial status as unpaid or as needed
+            'total_price' => $totalPrice,
+            'is_travel_assurance' => $data['priceBar'][1]['name'] !== null,
+            'is_delay_assurance' => $data['priceBar'][2]['name'] !== null,
+        ]);
 
-        // // Create a transaction
-        // $transaction = Transaction::create([
-        //     'count' => count($request['passenger']),
-        //     'ticket_id' => $request['ticket_id'], // Replace with the actual ticket ID
-        //     'user_id' => auth()->user()->id, // Assuming the user is authenticated
-        // ]);
+        // dd($data);
+        // Iterate through the facilities and associate them with passengers
+        foreach ($travellers as $index => $passenger) {
+            $passengerData = $passenger; // Convert the passenger model to an array
+        
+            // Add the transaction_id to the passenger data
+            $passengerData['transaction_id'] = $transaction->id;
+        
+            // Create the updated passenger with transaction_id
+            $updatedPassenger = Passenger::create($passengerData);
+            // dd($updatedPassenger);
+            // Check if $facilities is not empty and if the index exists in $facilities
+            if (!empty($facilities) && array_key_exists($index, $facilities)) {
+                $facility = $facilities[$index];
+                $facilityId = $facility['id'];
+                $isChecked = $facility['isChecked'];
+        
+                // Check if the facility is selected
+                if ($isChecked) {
+                    $updatedPassenger->facilities()->attach($facilityId);
+                }
+            }
+        }
 
-        // // Get the transaction ID
-        // $transactionId = $transaction->id;
-
-        // // Iterate through passengers and insert into the passenger table
-        // foreach ($request['passenger'] as $passengerData) {
-        //     Passenger::create([
-        //         'title' => $passengerData['title'],
-        //         'first_name' => $passengerData['first_name'],
-        //         'last_name' => $passengerData['last_name'],
-        //         'transaction_id' => $transactionId,
-        //     ]);
-
-            
-        // }
-
-        // return redirect('/');
+        // Continue processing the transaction and storing data...
+        return response()->json(['message' => 'Transaction stored successfully']);
     }
 
 

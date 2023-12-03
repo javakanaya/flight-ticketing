@@ -43,13 +43,25 @@ function ConfirmationButton({ priceBar, travellers, facilities }) {
         }
     };
 
+    const redirectToHome = () => {
+        setOpen(false);
+        // Redirect to the home page
+        // route("home");
+    };
+
+    const redirectToPayment = () => {
+        setOpen(false);
+        // Redirect to the payment page or any other relevant page
+        // route("payment.page");
+    };
+
     return (
         <>
             <div
                 className="flex items-center justify-center text-lg font-bold w-[20%] text-white h-14 absolute left-[80%] bg-[#60cff4] rounded-xl hover:text-[#60cff4] hover:bg-[#f8f8f8] hover:cursor-pointer"
                 onClick={handleOpen}
             >
-                <h1>Continue</h1>
+                <h1>Make Transaction</h1>
             </div>
 
             <Dialog open={open} handler={() => setOpen(false)}>
@@ -70,13 +82,12 @@ function ConfirmationButton({ priceBar, travellers, facilities }) {
                 <DialogFooter>
                     <Button
                         variant="text"
-                        color=""
-                        onClick={handleOpen}
+                        onClick={redirectToHome}
                         className="mr-1 border-1 "
                     >
                         <span>Pay Later</span>
                     </Button>
-                    <Button onClick={handleOpen} className="bg-[#60cff4]"  disabled={loading}>
+                    <Button onClick={redirectToPayment} className="bg-[#60cff4]"  disabled={loading}>
                         <span>Pay Now</span>
                     </Button>
                 </DialogFooter>

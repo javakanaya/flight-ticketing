@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('passengers', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->tinyInteger('title'); // 1 Mr, 2  Mrs, 3, Mrs
+            $table->string('title', 5); // 1 Mr, 2  Mrs, 3, Mrs
             $table->string('first_name');
             $table->string('last_name');
             $table->foreignId('transaction_id');

@@ -53,23 +53,24 @@ const AddBaggage = ({
       result.push(resultObject);
     }
 
-    const baggageOptions = [{ name: "No Baggage Added", price: null }];
+    const baggageOptions = [];
 
     for (let i = 0; i < facilities.length; i += 3) {
       const idObject = facilities[i];
       const nameObject = facilities[i + 1];
       const priceObject = facilities[i + 2];
-
+      
       if (nameObject && priceObject) {
         const baggageOption = {
           id : idObject.id,
           name: nameObject.name,
           price: priceObject.price
         };
-
+        
         baggageOptions.push(baggageOption);
       }
     }
+    console.log(baggageOptions);
 
     for (let i = 0; i < passengerCount; i++) {
       const traveler = result ? result[i] : null;
