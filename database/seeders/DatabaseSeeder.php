@@ -14,6 +14,9 @@ use Database\Seeders\AirportSeeder;
 use Database\Seeders\CountrySeeder;
 use Database\Seeders\FacilitySeeder;
 use Database\Seeders\ProvinceSeeder;
+use Database\Seeders\PassengerSeeder;
+use Database\Seeders\TransactionSeeder;
+use Database\Seeders\FacilityPassengerSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -42,6 +45,9 @@ class DatabaseSeeder extends Seeder
             RouteSeeder::class,
             TicketSeeder::class,
             FacilitySeeder::class,
+            PassengerSeeder::class,
+            FacilityPassengerSeeder::class,
+            TransactionSeeder::class,
         ]);
     }
 }

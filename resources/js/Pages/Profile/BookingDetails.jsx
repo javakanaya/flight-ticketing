@@ -2,7 +2,7 @@ import React from "react";
 import { Link, Head, router } from "@inertiajs/react";
 import ProfileLayout from "@/Layouts/ProfileLayout";
 import { useState } from "react";
-import { Inertia } from '@inertiajs/inertia';
+import { Inertia } from "@inertiajs/inertia";
 
 function capitalizeCity(city) {
     return city
@@ -91,6 +91,10 @@ const BookingDetails = ({ auth, transaction, passengers, message }) => {
     // Function to handle cancellation
     const handleCancellation = (transactionId) => {
         router.post(route("profile.transaction.cancel", { id: transactionId }));
+    };
+
+    const handleBackToBookings = () => {
+        router.get(route("profile.transaction"));
     };
 
     return (
@@ -283,7 +287,13 @@ const BookingDetails = ({ auth, transaction, passengers, message }) => {
                                     <td className="text-right font-semibold">
                                         Rp{" "}
                                         {new Intl.NumberFormat("id-ID").format(
-                                            transaction.total_price
+                                            transaction.ticket_price *
+                                                transaction.count +
+                                                travelAssurancePrice *
+                                                    transaction.count +
+                                                delayAssurancePrice *
+                                                    transaction.count +
+                                                facilityPrice
                                         )}
                                     </td>
                                 </tr>
@@ -298,7 +308,7 @@ const BookingDetails = ({ auth, transaction, passengers, message }) => {
                                     onClick={() =>
                                         handlePayment(transaction.id)
                                     }
-                                    className="bg-blue-500 text-white px-4 py-2 rounded"
+                                    className="bg-green-500 text-white px-4 py-2 rounded"
                                 >
                                     Pay Now
                                 </button>
@@ -315,6 +325,12 @@ const BookingDetails = ({ auth, transaction, passengers, message }) => {
                                     Cancel
                                 </button>
                             )}
+                            <button
+                                onClick={() => handleBackToBookings()}
+                                className="bg-blue-500 text-white px-4 py-2 rounded ml-2"
+                            >
+                                Back
+                            </button>
                             {/* Display Procesing */}
                             {transaction.status === 1 && (
                                 <div className="mt-2">
