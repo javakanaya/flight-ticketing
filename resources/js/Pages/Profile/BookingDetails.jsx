@@ -1,6 +1,8 @@
 import React from "react";
 import { Link, Head } from "@inertiajs/react";
 import ProfileLayout from "@/Layouts/ProfileLayout";
+import { useState } from "react";
+import { useEffect } from "react";
 
 function capitalizeCity(city) {
     return city
@@ -15,25 +17,25 @@ const getStatusBadge = (status) => {
     switch (status) {
         case 0:
             return (
-                <span className="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">
+                <span className="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded ">
                     Unpaid
                 </span>
             );
         case 1:
             return (
-                <span className="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">
+                <span className="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded ">
                     Processing
                 </span>
             );
         case 2:
             return (
-                <span className="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
+                <span className="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded ">
                     Paid
                 </span>
             );
         case 3:
             return (
-                <span className="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">
+                <span className="bg-orange-100 text-orange-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded ">
                     Canceled
                 </span>
             );
@@ -42,8 +44,7 @@ const getStatusBadge = (status) => {
     }
 };
 
-const BookingDetails = ({ auth, transaction, passengers }) => {
-    console.log(transaction);
+const BookingDetails = ({ auth, transaction, passengers, message }) => {
 
     // Calculate ticket price based on passenger count
 
@@ -81,6 +82,24 @@ const BookingDetails = ({ auth, transaction, passengers }) => {
         " x " +
         transaction.count +
         " passengers";
+
+    const [notification, setNotification] = useState(null);
+
+    // Effect to show notification when the message changes
+    useEffect(() => {
+        if (message) {
+            showNotification(message);
+        }
+    }, [message]);
+
+    const showNotification = (message) => {
+        setNotification(message);
+
+        // Hide the notification after a certain time (e.g., 5 seconds)
+        setTimeout(() => {
+            setNotification(null);
+        }, 5000);
+    };
 
     return (
         <ProfileLayout user={auth.user}>
@@ -235,7 +254,10 @@ const BookingDetails = ({ auth, transaction, passengers }) => {
                                                 Rp{" "}
                                                 {new Intl.NumberFormat(
                                                     "id-ID"
-                                                ).format(travelAssurancePrice * transaction.count)}
+                                                ).format(
+                                                    travelAssurancePrice *
+                                                        transaction.count
+                                                )}
                                             </td>
                                         </>
                                     </tr>
@@ -317,8 +339,29 @@ const BookingDetails = ({ auth, transaction, passengers }) => {
                                     <span className="text-gray-500 ml-2">
                                         (Paid on{" "}
                                         {new Date(
-                                            transaction.updated_at
-                                        ).toLocaleString("id-ID", {
+                                            transaction.updated_date
+                                        ).toLocaleString("en-US", {
+                                            year: "numeric",
+                                            month: "long",
+                                            day: "numeric",
+                                            hour: "numeric",
+                                            minute: "numeric",
+                                        })}
+                                        )
+                                    </span>
+                                </div>
+                            )}
+                            {/* Display paid status and date */}
+                            {transaction.status === 3 && (
+                                <div className="mt-2">
+                                    <span className="text-orange-500 font-semibold">
+                                        Canceled
+                                    </span>
+                                    <span className="text-gray-500 ml-2">
+                                        (Canceled on{" "}
+                                        {new Date(
+                                            transaction.updated_date
+                                        ).toLocaleString("en-US", {
                                             year: "numeric",
                                             month: "long",
                                             day: "numeric",
@@ -333,6 +376,83 @@ const BookingDetails = ({ auth, transaction, passengers }) => {
                     </div>
                 </div>
             </div>
+            {notification && (
+                <div
+                    className={`flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow ${
+                        notification.type === "success"
+                            ? "dark:text-gray-400 dark:bg-gray-800"
+                            : "dark:text-gray-500 dark:bg-red-800"
+                    }`}
+                    role="alert"
+                >
+                    {/* Notification content based on the message type */}
+                    <div
+                        className={`inline-flex items-center justify-center flex-shrink-0 w-8 h-8 ${
+                            notification.type === "success"
+                                ? "text-green-500 bg-green-100"
+                                : "text-red-500 bg-red-100"
+                        } rounded-lg dark:bg-green-800 dark:text-green-200`}
+                    >
+                        {/* Notification icon */}
+                        {notification.type === "success" ? (
+                            <svg
+                                className="w-5 h-5"
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+                            </svg>
+                        ) : (
+                            <svg
+                                className="w-5 h-5"
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM10 15a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm1-4a1 1 0 0 1-2 0V6a1 1 0 0 1 2 0v5Z" />
+                            </svg>
+                        )}
+                        <span className="sr-only">
+                            {notification.type === "success"
+                                ? "Check icon"
+                                : "Error icon"}
+                        </span>
+                    </div>
+
+                    {/* Notification message */}
+                    <div className="ms-3 text-sm font-normal">
+                        {notification.content}
+                    </div>
+
+                    {/* Close button */}
+                    <button
+                        type="button"
+                        className="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
+                        onClick={() => setNotification(null)}
+                        aria-label="Close"
+                    >
+                        <span className="sr-only">Close</span>
+                        <svg
+                            className="w-3 h-3"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 14 14"
+                        >
+                            <path
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                            />
+                        </svg>
+                    </button>
+                </div>
+            )}
         </ProfileLayout>
     );
 };

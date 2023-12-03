@@ -4,19 +4,20 @@ namespace App\Jobs;
 
 use App\Models\Transaction;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
-class ProcessTransactionPayment implements ShouldQueue
+class ProcessTransactionCancelation implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * Create a new job instance.
      */
+
     private $transactionId;
 
     public function __construct($transactionId)
@@ -32,8 +33,8 @@ class ProcessTransactionPayment implements ShouldQueue
         sleep(5);
         $transaction = Transaction::find($this->transactionId);
 
-        // Update the status from 1 (processing) to 2 (paid)
-        $transaction->update(['status' => 2]);
+        // Update the status from 1 (processing) to 3 (canceled)
+        $transaction->update(['status' => 3]);
 
     }
 }

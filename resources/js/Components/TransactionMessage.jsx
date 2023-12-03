@@ -9,19 +9,13 @@ function TransactionMessage({ transactionId }) {
     const redirectToHome = () => {
         setOpen(false);
         // Redirect to the home page or handle as needed
-        // Inertia.visit(route("home"));
+        Inertia.visit(route("home"));
     };
 
     const redirectToPayment = () => {
         setOpen(false);
         // Redirect to the payment page or handle as needed
-        // Inertia.visit(route("payment.page"));
-    };
-
-    const redirectToUnpaidTransaction = () => {
-        setOpen(false);
-        // Redirect to the unpaid transaction page with the transaction_id
-        Inertia.visit(`/profile/bookings/${transactionId}`);
+        Inertia.visit(route("profile.transaction.detail", {id: transactionId}));
     };
 
     return (
@@ -49,13 +43,6 @@ function TransactionMessage({ transactionId }) {
                     disabled={loading}
                 >
                     <span>Pay Now</span>
-                </Button>
-                <Button
-                    onClick={redirectToUnpaidTransaction}
-                    className="bg-[#ff5252] ml-1"
-                    disabled={loading}
-                >
-                    <span>View Unpaid Transaction</span>
                 </Button>
             </DialogFooter>
         </Dialog>

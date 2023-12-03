@@ -126,6 +126,7 @@ class ProfileController extends Controller
                 'destination_airport.timezone as destination_airport_timezone',
                 'destination_city.name as destination_city_name',
                 'transactions.created_at as created_date',
+                'transactions.updated_at as updated_date',
                 'transactions.status as status',
                 'transactions.total_price as total_price',
                 'tickets.price as ticket_price',
@@ -140,6 +141,11 @@ class ProfileController extends Controller
                 'airlines.IATA as airline_IATA',
             )
             ->get();
+
+        if (!$transaction) {
+            // Handle the case where the transaction is not found
+            abort(404);
+        }
 
         // dd($transaction[0]->is_delay_assurance);
 
@@ -172,8 +178,6 @@ class ProfileController extends Controller
             'delayAssurancePrice' => $delayAssurancePrice,
             'message' => session()->pull('payment_message', null), // Retrieve and clear the payment message from the session
         ]);
-
-
     }
 }
 

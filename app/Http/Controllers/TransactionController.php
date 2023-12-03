@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessTransactionCancelation;
 use Inertia\Inertia;
 use App\Models\Ticket;
 use App\Models\Country;
@@ -123,7 +124,7 @@ class TransactionController extends Controller
         // Continue processing the transaction and storing data...
 
         // Pass the transaction ID to the next request using the with method
-        return redirect()->route('home')->with(['showTransactionMessage' => true, 'transaction_id' => $transaction->id]);
+        return redirect()->route('home')->with(['showTransactionMessage' => true, 'transactionId' => $transaction->id]);
     }
 
 
@@ -141,7 +142,11 @@ class TransactionController extends Controller
 
         // Return a response to the frontend
         // Set a message in the session
-        session()->flash('payment_message', 'Payment processing initiated');
+        session()->flash('payment_message', [
+            'type' => 'success', // or 'error' for example
+            'content' => 'Payment process initiated',
+        ]);
+
 
         // Redirect back to the booking details page
         return redirect()->route('profile.transaction.detail', ['id' => $id]);
@@ -150,6 +155,25 @@ class TransactionController extends Controller
 
     public function cancelTransaction($id)
     {
+        // Retrieve the transaction by ID
+        $transaction = Transaction::find($id);
+
+        // Update the status from 0 (unpaid) to 1 (processing)
+        $transaction->update(['status' => 1]);
+
+        // Dispatch the job with the transaction ID
+        ProcessTransactionCancelation::dispatch($transaction->id);
+
+        // Return a response to the frontend
+        // Set a message in the session
+        session()->flash('payment_message', [
+            'type' => 'success', // or 'error' for example
+            'content' => 'Cancelation process initiated',
+        ]);
+
+
+        // Redirect back to the booking details page
+        return redirect()->route('profile.transaction.detail', ['id' => $id]);
 
     }
 
