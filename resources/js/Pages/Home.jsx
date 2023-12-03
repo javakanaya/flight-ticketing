@@ -21,7 +21,7 @@ const Home = ({ auth, airports, showTransactionMessage, transactionId }) => {
                             Less Worry
                         </>
                     }
-                    text="Find hotel and ticket with best experience"
+                    text="Find ticket with best experience"
                 />
             </div>
 

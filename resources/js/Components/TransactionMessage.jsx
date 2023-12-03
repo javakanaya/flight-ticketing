@@ -23,9 +23,9 @@ function TransactionMessage({ transactionId }) {
             <DialogBody>
                 {
                     <>
-                        Transaction has been saved
+                        Transaction has been created
                         <br />
-                        Do you want to make a payment ?
+                        Do you want to continue to payment ?
                     </>
                 }
             </DialogBody>
