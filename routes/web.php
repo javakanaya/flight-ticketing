@@ -32,8 +32,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/profile/bookings', [ProfileController::class, 'transaction'])->name('profile.transaction');
     Route::get('/profile/bookings/{id}', [ProfileController::class, 'showTransaction'])->name('profile.transaction.detail');
-    Route::get('/profile/bookings/pay/{id}', [TransactionController::class, 'payTransaction'])->name('profile.transaction.pay');
-    Route::get('/profile/bookings/cancel/{id}', [TransactionController::class, 'cancelTransaction'])->name('profile.transaction.cancel');
+    Route::post('/profile/bookings/pay', [TransactionController::class, 'payTransaction'])->name('profile.transaction.pay');
+    Route::post('/profile/bookings/cancel', [TransactionController::class, 'cancelTransaction'])->name('profile.transaction.cancel');
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {

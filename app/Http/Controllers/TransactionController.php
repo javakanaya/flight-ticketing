@@ -129,8 +129,9 @@ class TransactionController extends Controller
 
 
 
-    public function payTransaction($id)
+    public function payTransaction(request $request)
     {
+        $id = intval($request->input('id'));
         // Retrieve the transaction by ID
         $transaction = Transaction::find($id);
 
@@ -153,8 +154,10 @@ class TransactionController extends Controller
     }
 
 
-    public function cancelTransaction($id)
+    public function cancelTransaction(request $request)
     {
+        $id = intval($request->input('id'));
+
         // Retrieve the transaction by ID
         $transaction = Transaction::find($id);
 

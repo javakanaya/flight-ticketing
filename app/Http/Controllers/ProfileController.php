@@ -66,9 +66,11 @@ class ProfileController extends Controller
 
     public function transaction()
     {
+
         $user = auth()->user();
 
         $transactions = DB::table('transactions')
+            ->where('transactions.user_id', '=', $user->id)
             ->join('tickets', 'transactions.ticket_id', '=', 'tickets.id')
             ->join('routes', 'tickets.route_id', '=', 'routes.id')
             ->join('airports as source_airport', 'routes.source_airport_id', '=', 'source_airport.id')
@@ -92,7 +94,7 @@ class ProfileController extends Controller
                 'transactions.count as count',
                 'transactions.id as id'
             )
-            ->where('transactions.user_id', '=', $user->id)
+            ->orderBy('transactions.updated_at', 'desc') // Order by updated_at in descending order
             ->get();
 
         return Inertia::render('Profile/Bookings', [
@@ -103,6 +105,10 @@ class ProfileController extends Controller
 
     public function showTransaction($id)
     {
+        // Check if $id is not an integer
+        if (!ctype_digit($id)) {
+            abort(404);
+        }
         $user = auth()->user();
 
         $transaction = DB::table('transactions')

@@ -1,8 +1,8 @@
 import React from "react";
-import { Link, Head } from "@inertiajs/react";
+import { Link, Head, router } from "@inertiajs/react";
 import ProfileLayout from "@/Layouts/ProfileLayout";
 import { useState } from "react";
-import { useEffect } from "react";
+import { Inertia } from '@inertiajs/inertia';
 
 function capitalizeCity(city) {
     return city
@@ -45,7 +45,6 @@ const getStatusBadge = (status) => {
 };
 
 const BookingDetails = ({ auth, transaction, passengers, message }) => {
-
     // Calculate ticket price based on passenger count
 
     // Calculate total facility price
@@ -83,22 +82,15 @@ const BookingDetails = ({ auth, transaction, passengers, message }) => {
         transaction.count +
         " passengers";
 
-    const [notification, setNotification] = useState(null);
+    // Function to handle payment
+    const handlePayment = (transactionId) => {
+        console.log(transactionId);
+        router.post(route("profile.transaction.pay", { id: transactionId }));
+    };
 
-    // Effect to show notification when the message changes
-    useEffect(() => {
-        if (message) {
-            showNotification(message);
-        }
-    }, [message]);
-
-    const showNotification = (message) => {
-        setNotification(message);
-
-        // Hide the notification after a certain time (e.g., 5 seconds)
-        setTimeout(() => {
-            setNotification(null);
-        }, 5000);
+    // Function to handle cancellation
+    const handleCancellation = (transactionId) => {
+        router.post(route("profile.transaction.cancel", { id: transactionId }));
     };
 
     return (
@@ -302,25 +294,26 @@ const BookingDetails = ({ auth, transaction, passengers, message }) => {
                         <div className="mt-4">
                             {/* Payment button */}
                             {transaction.status === 0 && (
-                                <Link
-                                    href={route("profile.transaction.pay", {
-                                        id: transaction.id,
-                                    })}
+                                <button
+                                    onClick={() =>
+                                        handlePayment(transaction.id)
+                                    }
                                     className="bg-blue-500 text-white px-4 py-2 rounded"
                                 >
                                     Pay Now
-                                </Link>
+                                </button>
                             )}
+
                             {/* Cancellation button */}
                             {transaction.status === 0 && (
-                                <Link
-                                    href={route("profile.transaction.cancel", {
-                                        id: transaction.id,
-                                    })}
+                                <button
+                                    onClick={() =>
+                                        handleCancellation(transaction.id)
+                                    }
                                     className="bg-red-500 text-white px-4 py-2 rounded ml-2"
                                 >
                                     Cancel
-                                </Link>
+                                </button>
                             )}
                             {/* Display Procesing */}
                             {transaction.status === 1 && (
@@ -376,83 +369,6 @@ const BookingDetails = ({ auth, transaction, passengers, message }) => {
                     </div>
                 </div>
             </div>
-            {notification && (
-                <div
-                    className={`flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow ${
-                        notification.type === "success"
-                            ? "dark:text-gray-400 dark:bg-gray-800"
-                            : "dark:text-gray-500 dark:bg-red-800"
-                    }`}
-                    role="alert"
-                >
-                    {/* Notification content based on the message type */}
-                    <div
-                        className={`inline-flex items-center justify-center flex-shrink-0 w-8 h-8 ${
-                            notification.type === "success"
-                                ? "text-green-500 bg-green-100"
-                                : "text-red-500 bg-red-100"
-                        } rounded-lg dark:bg-green-800 dark:text-green-200`}
-                    >
-                        {/* Notification icon */}
-                        {notification.type === "success" ? (
-                            <svg
-                                className="w-5 h-5"
-                                aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                            >
-                                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
-                            </svg>
-                        ) : (
-                            <svg
-                                className="w-5 h-5"
-                                aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                            >
-                                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM10 15a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm1-4a1 1 0 0 1-2 0V6a1 1 0 0 1 2 0v5Z" />
-                            </svg>
-                        )}
-                        <span className="sr-only">
-                            {notification.type === "success"
-                                ? "Check icon"
-                                : "Error icon"}
-                        </span>
-                    </div>
-
-                    {/* Notification message */}
-                    <div className="ms-3 text-sm font-normal">
-                        {notification.content}
-                    </div>
-
-                    {/* Close button */}
-                    <button
-                        type="button"
-                        className="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
-                        onClick={() => setNotification(null)}
-                        aria-label="Close"
-                    >
-                        <span className="sr-only">Close</span>
-                        <svg
-                            className="w-3 h-3"
-                            aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 14 14"
-                        >
-                            <path
-                                stroke="currentColor"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-                            />
-                        </svg>
-                    </button>
-                </div>
-            )}
         </ProfileLayout>
     );
 };
