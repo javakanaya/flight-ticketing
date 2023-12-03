@@ -67,18 +67,18 @@ class TransactionController extends Controller
         $facilities = $data['facilities'];
         $travellers = $data['travellers'];
 
-    
+
         // Calculate total price based on ticket price, assurance, and facilities
         $ticketPrice = (Ticket::findOrFail($data['priceBar'][0]['id'])->price) * count($travellers);
         $assurancePrice = (($data['priceBar'][1]['name'] !== null ? 1 : 0) * 100000) * count($travellers);
         $travelAssurancePrice = (($data['priceBar'][2]['name'] !== null ? 1 : 0) * 100000) * count($travellers);
-    
+
         // Calculate facilities price
         $facilitiesPrice = 0;
         foreach ($facilities as $facility) {
             $facilitiesPrice += $facility['price'] * $facility['isChecked'];
         }
-    
+
         // Calculate total price
         $totalPrice = $ticketPrice + $assurancePrice + $travelAssurancePrice + $facilitiesPrice;
         // dd($totalPrice, $ticketPrice, $assurancePrice, $travelAssurancePrice,  $facilitiesPrice);
@@ -99,10 +99,10 @@ class TransactionController extends Controller
         // Iterate through the facilities and associate them with passengers
         foreach ($travellers as $index => $passenger) {
             $passengerData = $passenger; // Convert the passenger model to an array
-        
+
             // Add the transaction_id to the passenger data
             $passengerData['transaction_id'] = $transaction->id;
-        
+
             // Create the updated passenger with transaction_id
             $updatedPassenger = Passenger::create($passengerData);
             // dd($updatedPassenger);
@@ -111,16 +111,18 @@ class TransactionController extends Controller
                 $facility = $facilities[$index];
                 $facilityId = $facility['id'];
                 $isChecked = $facility['isChecked'];
-        
+
                 // Check if the facility is selected
-                if ($isChecked) {
+                if ($isChecked && $facilityId != -1) {
                     $updatedPassenger->facilities()->attach($facilityId);
                 }
             }
         }
 
         // Continue processing the transaction and storing data...
-        return response()->json(['message' => 'Transaction stored successfully']);
+
+        // Pass the transaction ID to the next request using the with method
+        return redirect()->route('home')->with(['showTransactionMessage' => true, 'transaction_id' => $transaction->id]);
     }
 
 

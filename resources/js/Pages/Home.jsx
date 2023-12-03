@@ -1,11 +1,12 @@
 import Navbar from "@/Components/Navbar";
 import Hero from "@/Components/Hero";
 import GetTicket from "@/Components/GetTicket";
+import TransactionMessage from "@/Components/TransactionMessage";
 import { Head } from '@inertiajs/react';
 import "../../css/home.css";
 
-const Home = ({ auth, airports }) => {
-    console.log("airports in Home:", airports);
+const Home = ({ auth, airports, showTransactionMessage, transactionId }) => {
+    console.log(showTransactionMessage);
     return (
         <>
             <Head title="Home" />
@@ -30,6 +31,8 @@ const Home = ({ auth, airports }) => {
             </div>
 
             <div className="h-60 bg-white"></div>
+
+            {showTransactionMessage && <TransactionMessage transactionId={transactionId} />}
         </>
     );
 };

@@ -23,11 +23,7 @@ use App\Http\Controllers\Admin\AdminUsersController;
 |
 */
 
-Route::get('/', [HomeController::class, 'index']);
-
-// Route::get('/dashboard', [HomeController::class, 'index'])
-//     ->middleware(['auth', 'verified'])
-//     ->name('dashboard');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 
 Route::middleware('auth')->group(function () {
