@@ -107,9 +107,9 @@ class TicketController extends Controller
             'sourceAirport' => $sourceAirport,
             'destinationAirport' => $destinationAirport,
             'tickets' => $allTicket,
-            'adultCount' => $validatedRequest['adultCount'],
-            'kidCount' => $validatedRequest['kidCount'],
-            'infantCount' => $validatedRequest['infantCount'],
+            'adultCount' => $validatedRequest['adultCount'] ?? 1,
+            'kidCount' => $validatedRequest['kidCount'] ?? 0,
+            'infantCount' => $validatedRequest['infantCount'] ?? 0,
         ]);
     }
 

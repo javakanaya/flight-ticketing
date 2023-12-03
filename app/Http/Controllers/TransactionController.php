@@ -16,7 +16,7 @@ class TransactionController extends Controller
     public function show(Request $request)
     {
         // dd($request);
-        // dd($request['travellers']);
+        dd($request['facilities']);
         
         $ticket = Ticket::find($request['ticketId']);
         $countries = Country::all();
@@ -55,6 +55,7 @@ class TransactionController extends Controller
             'kidCount' => $request['kidCount'],
             'infantCount' => $request['infantCount'],
             'travellers' => $request['travellers'] ? $request['travellers'] : null,
+            // 'facilities' => $ticket->route->facilites,
             'facilities' => $request['facilities'] ? $request['facilities'] : null, 
         ]);
     }
@@ -62,7 +63,7 @@ class TransactionController extends Controller
     public function storeTransaction(Request $request)
     {
 
-        // dd($request);
+        dd($request);
         // $request->validate([
         //     'ticket_id' => 'required|integer', // Assuming 'ticket_id' is in the request
 

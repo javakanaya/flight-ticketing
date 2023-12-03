@@ -122,7 +122,8 @@ class AdminRoutesController extends Controller
     public function show(Route $route)
     {
         // Eager load the related data for the specific route
-        $route->load('source_airport', 'destination_airport', 'airline', 'seat_conf', 'facilities');
+        $route->load('source_airport', 'destination_airport', 'airline', 'seat_conf');
+        $facilities = $route->airline->facilities;
 
         // Find all tickets where route_id matches the id of the route
         $tickets = Ticket::where('route_id', $route->id)->get();
@@ -135,6 +136,7 @@ class AdminRoutesController extends Controller
 
         return Inertia::render('Admin/Routes/Show', [
             'flightRoute' => $route,
+            'facilities' => $facilities,
             'firstClassTickets' => $firstClassTickets,
             'businessClassTickets' => $businessClassTickets,
             'premiumEconomyTickets' => $premiumEconomyTickets,
@@ -149,11 +151,10 @@ class AdminRoutesController extends Controller
      */
     public function edit(Route $route)
     {
-        $route->load('airline', 'seat_conf', 'facilities'); // Load facilities
+        $route->load('airline', 'seat_conf'); 
 
         $airports = Airport::all();
         $airlines = Airline::all();
-        $facilities = Facility::where('airline_id', $route->airline_id)->get(); // Fetch facilities based on the airline
 
         // Find all tickets where route_id matches the id of the route
         $tickets = Ticket::where('route_id', $route->id)->get();
@@ -168,7 +169,6 @@ class AdminRoutesController extends Controller
             'flightRoute' => $route,
             'airports' => $airports,
             'airlines' => $airlines,
-            'facilities' => $facilities, // Pass facilities to the view
             'firstClassTickets' => $firstClassTickets,
             'businessClassTickets' => $businessClassTickets,
             'premiumEconomyTickets' => $premiumEconomyTickets,
@@ -192,7 +192,6 @@ class AdminRoutesController extends Controller
             'premium_economy_seat_count' => 'integer',
             'business_seat_count' => 'integer',
             'first_class_seat_count' => 'integer',
-            'facilities' => 'array',
             'economy_id' => 'required',
         ]);
 
@@ -243,11 +242,7 @@ class AdminRoutesController extends Controller
         $updateOrInsertTicket($request->input('business_id'), 2, $request->input('business_price'));
         $updateOrInsertTicket($request->input('first_class_id'), 1, $request->input('first_class_price'));
 
-        $facilities = $request->input('facilities', []);
-        $route->facilities()->sync($facilities);
-
         // You can add a response or redirect logic here
-
         return redirect()->route(
             "admin.routes.show",
             $route->id
