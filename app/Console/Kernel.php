@@ -4,7 +4,9 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-
+use App\Jobs\DeleteOldTransactions;
+use App\Jobs\DeleteUnusedRouteJob;
+use Illuminate\Support\Facades\Log;
 class Kernel extends ConsoleKernel
 {
     /**
@@ -12,9 +14,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        Log::info('DeleteUnusedRouteJob started.');
+        $schedule->job(new DeleteOldTransactions)->daily();
+        $schedule->job(new DeleteUnusedRouteJob())->daily();    
+        Log::info('DeleteUnusedRouteJob completed.');
     }
-
     /**
      * Register the commands for the application.
      */
