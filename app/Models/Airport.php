@@ -21,7 +21,6 @@ class Airport extends Model
     {
         return $this->hasMany(Route::class, 'source_airport_id');
     }
-
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class, 'city_id');

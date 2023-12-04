@@ -14,7 +14,9 @@ class HomeController extends Controller
         $airports = Airport::with('city')->get();
 
         return Inertia::render('Home', [
-            'airports' => $airports
+            'airports' => $airports,
+            'showTransactionMessage' => session('showTransactionMessage'),
+            'transactionId' => session('transactionId'),
         ]);
     }
 

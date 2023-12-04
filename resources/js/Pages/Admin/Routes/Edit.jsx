@@ -12,7 +12,6 @@ const Edit = ({
     businessClassTickets,
     premiumEconomyTickets,
     economyTickets,
-    facilities,
 }) => {
 
     const { data, setData, put, errors } = useForm({
@@ -43,7 +42,6 @@ const Edit = ({
             : 0,
         economy_price: economyTickets ? economyTickets.price : 0,
         economy_seat_count: economyTickets ? flightRoute.seat_conf.economy : 0,
-        facilities: flightRoute.facilities.map((facility) => facility.id), // Initialize selected facilities
     });
 
     const handleUpdate = (e) => {
@@ -446,56 +444,6 @@ const Edit = ({
                                     )}
                                 </div>
 
-                                {/* Facilities */}
-                                <div className="mb-4">
-                                    <label
-                                        htmlFor="facilities"
-                                        className="block text-sm font-medium text-gray-600"
-                                    >
-                                        Facilities
-                                    </label>
-                                    <select
-                                        id="facilities"
-                                        name="facilities"
-                                        value={data.facilities}
-                                        onChange={(e) =>
-                                            setData(
-                                                "facilities",
-                                                Array.from(
-                                                    e.target.selectedOptions,
-                                                    (option) => option.value
-                                                )
-                                            )
-                                        }
-                                        multiple
-                                        className="mt-1 p-2 w-full border rounded-md"
-                                    >
-                                        {facilities.map((facility) => (
-                                            <option
-                                                key={facility.id}
-                                                value={facility.id}
-                                            >
-                                                {facility.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    <small className="text-gray-500 text-xs mt-1">
-                                        Hold{" "}
-                                        <span className="font-semibold">
-                                            Ctrl
-                                        </span>{" "}
-                                        (or{" "}
-                                        <span className="font-semibold">
-                                            Command
-                                        </span>{" "}
-                                        on macOS) to select multiple facilities
-                                    </small>
-                                    {errors.facilities && (
-                                        <p className="text-red-500 text-xs mt-1">
-                                            {errors.facilities}
-                                        </p>
-                                    )}
-                                </div>
 
                                 <div className="flex items-center justify-end border-b border-slate-100 p-4 pl-8 text-slate-500">
                                     <button

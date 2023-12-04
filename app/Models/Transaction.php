@@ -13,14 +13,18 @@ class Transaction extends Model
 
     protected $guarded = ['id'];
 
+    use HasFactory;
+
     protected $fillable = [
         'count',
         'ticket_id',
         'user_id',
-        'external_id',
         'status',
-        'payment_url'
+        'total_price',
+        'is_travel_assurance',
+        'is_delay_assurance',
     ];
+
 
     public function ticket(): BelongsTo
     {

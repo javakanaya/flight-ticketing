@@ -34,7 +34,9 @@
         "flowbite-react": "^0.6.4",
         "framer-motion": "^10.16.5",
         "funf": "^0.8.0",
+        "ldrs": "^1.0.1",
         "preline": "^2.0.1",
+        "react-hook-form": "^7.48.2",
         "react-icons": "^4.11.0",
         "react-number-format": "^5.3.1",
 

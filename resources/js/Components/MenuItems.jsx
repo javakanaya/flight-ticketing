@@ -5,20 +5,8 @@ export const MenuItems = [
         cName : "nav-links",
     },
     {
-        title : "About",
-        url : "/",
+        title : "My Bookings",
+        url : "/profile/bookings",
         cName : "nav-links",
     },
-    {
-        title : "Flights",
-        url : "/",
-        cName : "nav-links",
-    },
-    {
-        title : "Contact",
-        url : "/",
-        cName : "nav-links",
-    },
-    
-
 ]
