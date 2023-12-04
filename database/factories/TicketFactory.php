@@ -14,8 +14,9 @@ class TicketFactory extends Factory
      */
     public function definition(): array
     {
+        $classRange = [1, 2, 3, 4];
         return [
-            'class' => 4,
+            'class' => $this->faker->randomElement($classRange),
             'price' => $this->faker->numberBetween(400000, 3000000),
         ];
     }

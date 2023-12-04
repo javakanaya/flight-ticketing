@@ -16,8 +16,11 @@ class PassengerFactory extends Factory
      */
     public function definition(): array
     {
+
         return [
-            //
+            'title' => $this->faker->randomElement(['Mr', 'Mrs', 'Miss']),
+            'first_name' => $this->faker->firstName,
+            'last_name' => $this->faker->lastName,
         ];
     }
 }

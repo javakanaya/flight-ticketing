@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Airline;
 use App\Models\Airport;
+use App\Models\Facility;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -22,93 +23,96 @@ class TicketController extends Controller
 
     public function search(Request $request)
     {
+        // Handle default values if no input provided  
         if (!$request->input()) {
+            // Set default values
             $sourceAirportId = 1;
             $destinationAirportId = 2;
-            $depatureDate = now()->format('Y-m-d');
+            $departureDate = now()->format('Y-m-d');
             $countTicket = 1;
-            $classNum = 4;
         } else {
-            // dd(request()->all());
+            // Validate the request
             $validatedRequest = $request->validate([
-                'origin' => 'required',
-                'destination' => 'required',
-                'departure_date' => 'required|date|after_or_equal:today',
-                'class' => 'required|integer|between:1,4',
-                'adult' => 'required|integer',
-                'child' => 'required|integer',
-                'infant' => 'required|integer',
+                'sourceAirport' => 'required',
+                'destAirport' => 'required',
+                'adultCount' => 'required|integer|min:0',
+                'kidCount' => 'required|integer|min:0',
+                'infantCount' => 'required|integer|min:0',
+                'departureDate' => 'required|date',
+                'returnDate' => 'nullable|date|after:departureDate',
             ]);
-
-            // dd($validatedRequest);
-            $sourceAirportId = intval($validatedRequest['origin']);
-            $destinationAirportId = intval($validatedRequest['destination']);
-            $depatureDate = strval($validatedRequest['departure_date']);
-            $countTicket = ($validatedRequest['adult'] + $validatedRequest['child']);
-            $classNum = intval($validatedRequest['class']);
+            // Extract values from the validated request
+            $sourceAirportId = intval($validatedRequest['sourceAirport']);
+            $destinationAirportId = intval($validatedRequest['destAirport']);
+            $departureDate = strval($validatedRequest['departureDate']);
+            $countTicket = ($validatedRequest['adultCount'] + $validatedRequest['kidCount'] + $validatedRequest['infantCount']);
+            // $classNum = intval($validatedRequest['class']);
         }
 
+        // Map class number to class type
+        $classTypes = [1 => 'first', 2 => 'business', 3 => 'premium_economy', 4 => 'economy'];
+        // $classType = $classTypes[$classNum] ?? 'economy';
 
-        $classType = "";
 
-        switch ($classNum) {
-            case 1:
-                $classType = "first";
-                break;
-            case 2:
-                $classType = "business";
-                break;
-            case 3:
-                $classType = "premium_economy";
-                break;
-            case 4:
-                $classType = "economy";
-                break;
-            default:
-                $classType = "economy";
-        }
-
+        // Retrieve all tickets based on the input
         $allTicket = DB::table('tickets')
             ->select('tickets.id', 'tickets.price', 'routes.departure', 'routes.arrival', 'routes.airline_id', 'routes.seat_id', 'tickets.class')
             ->join('routes', 'tickets.route_id', '=', 'routes.id')
             ->join('seats', 'routes.seat_id', '=', 'seats.id')
-            ->whereDate('routes.departure', $depatureDate)
+            ->whereDate('routes.departure', $departureDate)
             ->where('routes.source_airport_id', '=', $sourceAirportId)
             ->where('routes.destination_airport_id', '=', $destinationAirportId)
-            ->where('tickets.class', '=', $classNum)
-            ->where('seats.' . $classType, '>', $countTicket)
+            ->where('seats.' . $classTypes[1], '>', $countTicket) // first class
+            ->orWhere('seats.' . $classTypes[2], '>', $countTicket) // business class
+            ->orWhere('seats.' . $classTypes[3], '>', $countTicket) // premium economy class
+            ->orWhere('seats.' . $classTypes[4], '>', $countTicket) // economy class
             ->get();
 
+        // Retrieve source and destination airports
         $sourceAirport = Airport::find($sourceAirportId);
         $destinationAirport = Airport::find($destinationAirportId);
 
-
+        // Calculate duration and fetch airline information
         foreach ($allTicket as $ticket) {
             $departureTimestamp = Carbon::parse($ticket->departure, $sourceAirport->timezone);
             $arrivalTimestamp = Carbon::parse($ticket->arrival, $destinationAirport->timezone);
 
-            // Calculate the duration in minutes
-            $duration = $departureTimestamp->floatDiffInMinutes($arrivalTimestamp);
+            // Calculate the duration using Carbon's helper method
+            $ticket->duration = $departureTimestamp->diff($arrivalTimestamp)->format('%hh %im');
 
-            // Calculate hours and minutes
-            $hours = floor($duration / 60);
-            $minutes = $duration % 60;
+            // Extract departure time (hours and minutes)
+            $ticket->departureTime = $departureTimestamp->format('H:i');
 
-            // Format the duration as "XX hours YY minutes"
-            if ($hours == 0)
-                $ticket->duration = $minutes . 'm';
-            else 
-                $ticket->duration = $hours . 'h ' . $minutes . 'm';
+            // Extract arrival time (hours and minutes)
+            $ticket->arrivalTime = $arrivalTimestamp->format('H:i');
 
+            // Fetch airline information
             $ticket->airline = Airline::select('name')->find($ticket->airline_id);
+
+            $ticket->facilities = DB::table('facilities')
+            ->select('facilities.id', 'facilities.name', 'facilities.price')
+            ->where('facilities.airline_id', '=', $ticket->airline_id)
+            ->get();
+
         }
+
+        $allTicket = collect($allTicket)
+            ->sortBy('duration')
+            ->sortBy('price')
+            ->values()
+            ->all();
+        
 
         return Inertia::render('Flights', [
             'sourceAirport' => $sourceAirport,
             'destinationAirport' => $destinationAirport,
             'tickets' => $allTicket,
+            'adultCount' => $validatedRequest['adultCount'] ?? 1,
+            'kidCount' => $validatedRequest['kidCount'] ?? 0,
+            'infantCount' => $validatedRequest['infantCount'] ?? 0,
         ]);
     }
+
 
     /**
      * Show the form for creating a new resource.
