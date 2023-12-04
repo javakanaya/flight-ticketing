@@ -18,10 +18,16 @@ class ProcessTransactionPayment implements ShouldQueue
      * Create a new job instance.
      */
     private $transactionId;
+    private $userName;
+    private $appUrl;
+    private $userEmail;
 
-    public function __construct($transactionId)
+    public function __construct($transactionId, $userName, $appUrl, $userEmail)
     {
         $this->transactionId = $transactionId;
+        $this->userName =$userName;
+        $this->appUrl = $appUrl;
+        $this->userEmail = $userEmail;
     }
 
     /**
@@ -35,5 +41,7 @@ class ProcessTransactionPayment implements ShouldQueue
         // Update the status from 1 (processing) to 2 (paid)
         $transaction->update(['status' => 2]);
 
+        // Send email notifications the transaction ID
+        SendEmailNotifications::dispatch($transaction->id, 0,  $this->appUrl, $this->userName, $this->userEmail);
     }
 }

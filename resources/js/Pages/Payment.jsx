@@ -136,7 +136,7 @@ const Payment = ({
 
     return (
         <>
-            <Navbar />
+            <Navbar user={auth.user}/>
             <div className=" h-24 bg-[#60cff4]">
             </div>
             <div className="p-4 absolute top-[39.5%] left-[63%] w-[350px] border-2 border-slate-200">

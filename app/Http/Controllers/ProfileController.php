@@ -138,6 +138,7 @@ class ProfileController extends Controller
                 'tickets.price as ticket_price',
                 'transactions.count as count',
                 'transactions.id as id',
+                'transactions.user_id as user_id',
                 'transactions.is_travel_assurance as is_travel_assurance',
                 'transactions.is_delay_assurance as is_delay_assurance',
                 'routes.id as route_id',
@@ -146,11 +147,15 @@ class ProfileController extends Controller
                 'airlines.name as airline_name',
                 'airlines.IATA as airline_IATA',
             )
-            ->get();
+            ->get()->first();
 
         if (!$transaction) {
             // Handle the case where the transaction is not found
             abort(404);
+        }
+
+        if ($user->id != $transaction->user_id) {
+            abort(403);
         }
 
         // dd($transaction[0]->is_delay_assurance);
@@ -171,14 +176,14 @@ class ProfileController extends Controller
             ->get();
 
         // Fetch assurance prices
-        $travelAssurancePrice = $transaction[0]->is_travel_assurance ? 100000 : 0;
-        $delayAssurancePrice = $transaction[0]->is_delay_assurance ? 100000 : 0;
+        $travelAssurancePrice = $transaction->is_travel_assurance ? 100000 : 0;
+        $delayAssurancePrice = $transaction->is_delay_assurance ? 100000 : 0;
 
         // dd($passengers);
 
         return Inertia::render('Profile/BookingDetails', [
             'user' => $user,
-            'transaction' => $transaction[0],
+            'transaction' => $transaction,
             'passengers' => $passengers,
             'travelAssurancePrice' => $travelAssurancePrice,
             'delayAssurancePrice' => $delayAssurancePrice,

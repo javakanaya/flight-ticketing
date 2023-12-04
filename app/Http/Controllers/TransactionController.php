@@ -102,11 +102,14 @@ class TransactionController extends Controller
         foreach ($travellers as $index => $passenger) {
             $passengerData = $passenger; // Convert the passenger model to an array
 
-            // Add the transaction_id to the passenger data
-            $passengerData['transaction_id'] = $transaction->id;
 
             // Create the updated passenger with transaction_id
-            $updatedPassenger = Passenger::create($passengerData);
+            $updatedPassenger = Passenger::create([
+                'title' => $passengerData['title'],
+                'first_name' => $passengerData['first_name'],
+                'last_name' => $passengerData['last_name'],
+                'transaction_id' => $transaction->id,
+        ]);
             // dd($updatedPassenger);
             // Check if $facilities is not empty and if the index exists in $facilities
             if (!empty($facilities) && array_key_exists($index, $facilities)) {
@@ -138,8 +141,10 @@ class TransactionController extends Controller
         // Update the status from 0 (unpaid) to 1 (processing)
         $transaction->update(['status' => 1]);
 
+        $user = auth()->user();
+
         // Dispatch the job with the transaction ID
-        ProcessTransactionPayment::dispatch($transaction->id);
+        ProcessTransactionPayment::dispatch($transaction->id, $user->name, env('APP_URL'), $user->email);
 
         // Return a response to the frontend
         // Set a message in the session
@@ -164,8 +169,10 @@ class TransactionController extends Controller
         // Update the status from 0 (unpaid) to 1 (processing)
         $transaction->update(['status' => 1]);
 
+        $user = auth()->user();
+
         // Dispatch the job with the transaction ID
-        ProcessTransactionCancelation::dispatch($transaction->id);
+        ProcessTransactionCancelation::dispatch($transaction->id, $user->name, env('APP_URL'), $user->email);
 
         // Return a response to the frontend
         // Set a message in the session

@@ -17,12 +17,17 @@ class ProcessTransactionCancelation implements ShouldQueue
     /**
      * Create a new job instance.
      */
-
     private $transactionId;
+    private $userName;
+    private $appUrl;
+    private $userEmail;
 
-    public function __construct($transactionId)
+    public function __construct($transactionId, $userName, $appUrl, $userEmail)
     {
         $this->transactionId = $transactionId;
+        $this->userName = $userName;
+        $this->appUrl = $appUrl;
+        $this->userEmail = $userEmail;
     }
 
     /**
@@ -36,5 +41,7 @@ class ProcessTransactionCancelation implements ShouldQueue
         // Update the status from 1 (processing) to 3 (canceled)
         $transaction->update(['status' => 3]);
 
+        // Send email notifications the transaction ID
+        SendEmailNotifications::dispatch($transaction->id, 1,  $this->appUrl, $this->userName, $this->userEmail);
     }
 }

@@ -13,7 +13,7 @@ class FacilityPassengerSeeder extends Seeder
      */
     public function run(): void
     {
-        for ($i = 1; $i <= 400; $i++) {
+        for ($i = 1; $i <= 300; $i++) {
             FacilityPassenger::factory()->create(['passenger_id' => $i]);
         }
     }
