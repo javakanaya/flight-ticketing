@@ -1,99 +1,116 @@
-// resources/js/Pages/Transactions.js
-
 import React from "react";
 import { Link, Head } from "@inertiajs/react";
 import ProfileLayout from "@/Layouts/ProfileLayout";
 
-const Transactions = ({ auth, transactions }) => {
+function capitalizeCity(city) {
+    return city
+        .split(" ")
+        .map(
+            (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+        )
+        .join(" ");
+}
+
+const getStatusBadge = (status) => {
+    switch (status) {
+        case 0:
+            return (
+                <span className="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded ">
+                    Unpaid
+                </span>
+            );
+        case 1:
+            return (
+                <span className="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded ">
+                    Processing
+                </span>
+            );
+        case 2:
+            return (
+                <span className="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded ">
+                    Paid
+                </span>
+            );
+        case 3:
+            return (
+                <span className="bg-orange-100 text-orange-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded ">
+                    Canceled
+                </span>
+            );
+        default:
+            return null;
+    }
+};
+
+const Bookings = ({ auth, transactions }) => {
+    console.log(transactions);
+
     return (
         <ProfileLayout user={auth.user}>
             <Head title="Profile" />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                    <div className="p-4 sm:p-8 bg-white shadow-lg sm:rounded-lg">
-                        <div class="relative overflow-x-auto sm:rounded-lg">
-                            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                    <tr>
-                                        <th scope="col" class="px-6 py-3">
-                                            Product name
-                                        </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            Color
-                                        </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            Category
-                                        </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            Price
-                                        </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            Action
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                        <th
-                                            scope="row"
-                                            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    <div className="grid grid-cols-1 gap-4">
+                        {transactions.length > 0 ? (
+                            transactions.map((transaction) => (
+                                <div
+                                    key={transaction.id}
+                                    className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md"
+                                >
+                                    <h3 className="text-lg font-semibold mb-2">
+                                        {capitalizeCity(
+                                            transaction.source_city_name
+                                        )}{" "}
+                                        to{" "}
+                                        {capitalizeCity(
+                                            transaction.destination_city_name
+                                        )}
+                                    </h3>
+                                    <div className="flex items-center mt-2">
+                                        {getStatusBadge(transaction.status)}
+                                        <p className="text-gray-500">
+                                            {new Date(
+                                                transaction.created_date
+                                            ).toLocaleString("id-ID", {
+                                                weekday: "long",
+                                                year: "numeric",
+                                                month: "long",
+                                                day: "numeric",
+                                            })}
+                                        </p>
+                                    </div>
+                                    <p className="text-gray-500 mt-2">
+                                        Total Price: Rp{" "}
+                                        {new Intl.NumberFormat("id-ID").format(
+                                            transaction.total_price
+                                        )}
+                                    </p>
+                                    <p className="text-gray-500 mt-2">
+                                        Ticket Count: {transaction.count}
+                                    </p>
+                                    <div className="mt-4">
+                                        <Link
+                                            href={route(
+                                                "profile.transaction.detail",
+                                                {
+                                                    id: transaction.id,
+                                                }
+                                            )}
+                                            className="text-blue-500 hover:underline"
                                         >
-                                            Apple MacBook Pro 17"
-                                        </th>
-                                        <td class="px-6 py-4">Silver</td>
-                                        <td class="px-6 py-4">Laptop</td>
-                                        <td class="px-6 py-4">$2999</td>
-                                        <td class="px-6 py-4">
-                                            <a
-                                                href="#"
-                                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                            >
-                                                Edit
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                        <th
-                                            scope="row"
-                                            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                                        >
-                                            Microsoft Surface Pro
-                                        </th>
-                                        <td class="px-6 py-4">White</td>
-                                        <td class="px-6 py-4">Laptop PC</td>
-                                        <td class="px-6 py-4">$1999</td>
-                                        <td class="px-6 py-4">
-                                            <a
-                                                href="#"
-                                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                            >
-                                                Edit
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr class="bg-white dark:bg-gray-800">
-                                        <th
-                                            scope="row"
-                                            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                                        >
-                                            Magic Mouse 2
-                                        </th>
-                                        <td class="px-6 py-4">Black</td>
-                                        <td class="px-6 py-4">Accessories</td>
-                                        <td class="px-6 py-4">$99</td>
-                                        <td class="px-6 py-4">
-                                            <a
-                                                href="#"
-                                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                            >
-                                                Edit
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                                            View Details
+                                        </Link>
+                                    </div>
+                                </div>
+                            ))
+                        ) : (
+                            <div
+                                className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md"
+                            >
+                                No transactions found.
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
@@ -101,4 +118,4 @@ const Transactions = ({ auth, transactions }) => {
     );
 };
 
-export default Transactions;
+export default Bookings;

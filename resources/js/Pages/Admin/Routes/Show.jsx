@@ -43,6 +43,7 @@ const FacilityCard = ({ name, price }) => {
 
 const Show = ({
     flightRoute,
+    facilities,
     auth,
     firstClassTickets,
     businessClassTickets,
@@ -219,7 +220,7 @@ const Show = ({
                                 <h2 className="text-lg font-medium text-gray-900">
                                     Facilities
                                 </h2>
-                                {flightRoute.facilities.map(
+                                {facilities.map(
                                     (facility, index) => (
                                         <FacilityCard
                                             key={index}

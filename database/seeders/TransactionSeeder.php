@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Transaction;
 use Faker\Factory as Faker;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
 
 class TransactionSeeder extends Seeder
 {
@@ -13,19 +15,20 @@ class TransactionSeeder extends Seeder
      */
     public function run(): void
     {
-        $faker = Faker::create();
-
-        // Let's seed 50 transactions for demonstration purposes
-        for ($i = 0; $i < 1; $i++) {
-            Transaction::create([
-                'count' => $faker->numberBetween(1, 10),
-                'ticket_id' => $faker->numberBetween(1, 10),
-                'user_id' => $faker->numberBetween(1, 10),
-                'status' => $faker->randomElement([0, 1, 2]), // Assuming 0: pending, 1: success, 2: failure
-                'total_price' => $faker->randomFloat(2, 10, 1000),
-                'is_travel_assurance' => $faker->boolean,
-                'is_delay_assurance' => $faker->boolean,
-            ]);
+        for ($i = 1; $i <= 20; $i++) {
+            Transaction::factory()->create(['count' => 1]);
+        }
+        for ($i = 21; $i <= 40; $i++) {
+            Transaction::factory()->create(['count' => 2]);
+        }
+        for ($i = 41; $i <= 60; $i++) {
+            Transaction::factory()->create(['count' => 3]);
+        }
+        for ($i = 61; $i <= 80; $i++) {
+            Transaction::factory()->create(['count' => 4]);
+        }
+        for ($i = 81; $i <= 100; $i++) {
+            Transaction::factory()->create(['count' => 5]);
         }
     }
 }

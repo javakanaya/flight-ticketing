@@ -2,10 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\Ticket;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class TicketFactory extends Factory
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\FacilityPassenger>
+ */
+class FacilityPassengerFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -14,10 +16,8 @@ class TicketFactory extends Factory
      */
     public function definition(): array
     {
-        $classRange = [1, 2, 3, 4];
         return [
-            'class' => $this->faker->randomElement($classRange),
-            'price' => $this->faker->numberBetween(400000, 3000000),
+            'facility_id' => $this->faker->numberBetween(1, 17),
         ];
     }
 }
