@@ -6,8 +6,9 @@ import { Head } from '@inertiajs/react';
 import "../../css/home.css";
 import Card from "@/Components/Card";
 
-const Home = ({ auth, airports, showTransactionMessage, transactionId }) => {
+const Home = ({ auth, promotions, airports, showTransactionMessage, transactionId }) => {
     console.log(showTransactionMessage);
+    console.log(promotions);
     return (
         <>
             <Head title="Home" />
@@ -35,25 +36,12 @@ const Home = ({ auth, airports, showTransactionMessage, transactionId }) => {
 
             <div className="h-60 mt-5 px-[200px] bg-white">
                 <h1 className="text-lg font-semibold">Rediscover yourself in Indonesia and beyond</h1>
-                <div className="pt-1 grid grid-rows-2 grid-cols-3 h-[450px] gap-5">
-                    <div className="grid">
-                        <Card />
-                    </div>
-                    <div className="grid">
-                        <Card />
-                    </div>
-                    <div className="grid">
-                        <Card />
-                    </div>
-                    <div className="grid">
-                        <Card />
-                    </div>
-                    <div className="grid">
-                        <Card />
-                    </div>
-                    <div className="grid">
-                        <Card />
-                    </div>
+                <div className="py-1 my-3 grid grid-rows-2 grid-cols-3 h-[450px] gap-5">
+                    {promotions.map((promotion, index) => (
+                        <div key={index} className="grid">
+                            <Card promotion={promotion} />
+                        </div>
+                    ))}
                 </div>
             </div>
 
