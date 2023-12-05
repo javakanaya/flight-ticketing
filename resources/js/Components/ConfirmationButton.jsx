@@ -1,13 +1,13 @@
 // ConfirmationButton.js
 import React from "react";
 import { Button } from "@material-tailwind/react";
-import { Inertia } from "@inertiajs/inertia";
+import { router } from '@inertiajs/react'
 
 function ConfirmationButton({ priceBar, travellers, facilities }) {
 
     const handleSubmit = () => {
         // Make a post request to the server
-        Inertia.post(route("bookings.store"), {
+        router.post(route("bookings.store"), {
             data: {
                 priceBar: priceBar,
                 travellers: travellers,

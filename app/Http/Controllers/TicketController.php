@@ -62,10 +62,12 @@ class TicketController extends Controller
             ->where('routes.destination_airport_id', '=', $destinationAirportId)
             ->join('seats', 'routes.seat_id', '=', 'seats.id')
             ->whereDate('routes.departure', $departureDate)
-            ->where('seats.' . $classTypes[1], '>', $countTicket) // first class
-            // ->orWhere('seats.' . $classTypes[2], '>', $countTicket) // business class
-            // ->orWhere('seats.' . $classTypes[3], '>', $countTicket) // premium economy class
-            // ->orWhere('seats.' . $classTypes[4], '>', $countTicket) // economy class
+            ->where(function ($query) use ($classTypes, $countTicket) {
+                $query->orWhere('seats.' . $classTypes[1], '>', $countTicket) // first class
+                    ->orWhere('seats.' . $classTypes[2], '>', $countTicket) // business class
+                    ->orWhere('seats.' . $classTypes[3], '>', $countTicket) // premium economy class
+                    ->orWhere('seats.' . $classTypes[4], '>', $countTicket); // economy class
+            })
             ->get();
 
         // Retrieve source and destination airports

@@ -19,10 +19,10 @@ class RouteFactory extends Factory
 
         $departureDatetime = $this->faker->dateTimeInInterval('now', '+3 days');
         $arrivalDatetime = $this->faker->dateTimeInInterval($departureDatetime, '+5 hours');
-        $sourceAirportId = $this->faker->numberBetween(1, 6);
+        $sourceAirportId = $this->faker->numberBetween(1, 76);
 
         do {
-            $destinationAirportId = $this->faker->numberBetween(1, 6);
+            $destinationAirportId = $this->faker->numberBetween(1, 76);
         } while ($destinationAirportId === $sourceAirportId);
 
 

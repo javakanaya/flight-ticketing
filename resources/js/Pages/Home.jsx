@@ -7,11 +7,12 @@ import "../../css/home.css";
 import Card from "@/Components/Card";
 
 const Home = ({ auth, promotions, airports, showTransactionMessage, transactionId }) => {
-    console.log(showTransactionMessage);
-    console.log(promotions);
+    // console.log(showTransactionMessage);
+    // console.log(promotions);
     return (
         <>
             <Head title="Home" />
+            
             <Navbar user={auth.user} />
             <div className="bg-[#60cff4] h-[500px]">
                 <Hero

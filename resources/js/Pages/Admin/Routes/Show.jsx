@@ -54,6 +54,7 @@ const Show = ({
     success,
     errors,
 }) => {
+    console.log(flightRoute.destination_airport);
     const deleteRoute = async (id) => {
         Inertia.delete(`/admin/routes/${id}`);
     };

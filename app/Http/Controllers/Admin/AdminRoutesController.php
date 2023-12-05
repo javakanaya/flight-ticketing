@@ -131,7 +131,7 @@ class AdminRoutesController extends Controller
 
         // Find all tickets where route_id matches the id of the route
         $tickets = Ticket::where('route_id', $route->id)->get();
-
+ 
         // Split tickets into different classes
         $firstClassTickets = $tickets->where('class', 1)->first();
         $businessClassTickets = $tickets->where('class', 2)->first();

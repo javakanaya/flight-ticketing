@@ -13,7 +13,7 @@ class SeatSeeder extends Seeder
      */
     public function run(): void
     {
-        Seat::factory()->count(500)->create();
+        Seat::factory()->count(1000)->create();
         
     }
 }

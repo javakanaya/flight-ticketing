@@ -24,11 +24,14 @@ class Navbar extends Component {
                     <ul className="items-center flex gap-5">
                         {MenuItems.map((item, index) => {
                             return (
-                                <li key={index}>
-                                    <a href={item.url}>{item.title}</a>
-                                </li>
+                                (user == null || (!user.is_admin || item.disabled === 0)) && (
+                                    <li key={index}>
+                                        <a href={item.url}>{item.title}</a>
+                                    </li>
+                                )
                             );
                         })}
+
                     </ul>
                 </div>
 
