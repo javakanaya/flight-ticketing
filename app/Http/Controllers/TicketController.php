@@ -58,14 +58,14 @@ class TicketController extends Controller
         $allTicket = DB::table('tickets')
             ->select('tickets.id', 'tickets.price', 'routes.departure', 'routes.arrival', 'routes.airline_id', 'routes.seat_id', 'tickets.class')
             ->join('routes', 'tickets.route_id', '=', 'routes.id')
-            ->join('seats', 'routes.seat_id', '=', 'seats.id')
-            ->whereDate('routes.departure', $departureDate)
             ->where('routes.source_airport_id', '=', $sourceAirportId)
             ->where('routes.destination_airport_id', '=', $destinationAirportId)
+            ->join('seats', 'routes.seat_id', '=', 'seats.id')
+            ->whereDate('routes.departure', $departureDate)
             ->where('seats.' . $classTypes[1], '>', $countTicket) // first class
-            ->orWhere('seats.' . $classTypes[2], '>', $countTicket) // business class
-            ->orWhere('seats.' . $classTypes[3], '>', $countTicket) // premium economy class
-            ->orWhere('seats.' . $classTypes[4], '>', $countTicket) // economy class
+            // ->orWhere('seats.' . $classTypes[2], '>', $countTicket) // business class
+            // ->orWhere('seats.' . $classTypes[3], '>', $countTicket) // premium economy class
+            // ->orWhere('seats.' . $classTypes[4], '>', $countTicket) // economy class
             ->get();
 
         // Retrieve source and destination airports

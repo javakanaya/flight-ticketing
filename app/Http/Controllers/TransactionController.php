@@ -19,11 +19,9 @@ class TransactionController extends Controller
     public function show(Request $request)
     {
         // dd($request['facilities']);
-
+        
         $ticket = Ticket::find($request['ticketId']);
         $countries = Country::all();
-
-        
 
         // Map class number to class type
         $classTypes = [1 => 'first', 2 => 'business', 3 => 'premium_economy', 4 => 'economy'];
