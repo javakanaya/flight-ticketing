@@ -117,9 +117,7 @@ const Index = ({ flightRoutes, auth, success, errors }) => {
                                             </td>
                                             <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">
                                                 {
-                                                    flightRoute
-                                                        .destination_airport
-                                                        .name
+                                                    flightRoute.destination_airport.name
                                                 }
                                             </td>
                                             <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">
@@ -151,7 +149,7 @@ const Index = ({ flightRoutes, auth, success, errors }) => {
                                     ))}
                                 </tbody>
                             </table>
-                            <RenderPagination/>
+                            <RenderPagination />
                         </div>
                     </div>
                 </div>

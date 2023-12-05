@@ -28,7 +28,8 @@ const Transaction = ({
     travellers,
     facilities,
 }) => {
-
+    console.log(ticketId)
+    console.log(source_city);
 
     // Step 1: Maintain state to store form data
     const [formData, setFormData] = useState({
@@ -118,7 +119,7 @@ const Transaction = ({
     };
     
     
-  
+    
     return (
         <>
             <Head title="Booking" />

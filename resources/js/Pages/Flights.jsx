@@ -19,7 +19,7 @@ const Flights = ({
     infantCount,
     auth,
 }) => {
-    console.log(tickets);
+    // console.log(tickets);
     const TicketCard = lazy(() => import('@/Components/TicketCard'));
     const [selectedClasses, setSelectedClasses] = useState([]);
     const classTypes = {1: 'First', 2: 'Business', 3: 'Premium Economy', 4: 'Economy'};

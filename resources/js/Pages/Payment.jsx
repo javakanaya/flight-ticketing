@@ -9,6 +9,7 @@ import Traveller_Detail from "../Components/Traveller";
 import AddBaggage from "@/Components/AddBaggage";
 import { AddItems } from "@/Components/AddItems";
 import ConfirmationButton from "@/Components/ConfirmationButton";
+import { Head } from '@inertiajs/react';
 
 const Payment = ({
     auth,
@@ -33,6 +34,7 @@ const Payment = ({
     price,
     facilities,
 }) => {
+    console.log(ticketId);
     const result = []
     const [selectedBaggage, setSelectedBaggage] = useState([]);
     const [priceBar, setPriceBar] = useState(() => {
@@ -137,6 +139,7 @@ const Payment = ({
     return (
         <>
             <Navbar user={auth.user}/>
+            <Head title="Payment"/>
             <div className=" h-24 bg-[#60cff4]">
             </div>
             <div className="p-4 absolute top-[39.5%] left-[63%] w-[350px] border-2 border-slate-200">
