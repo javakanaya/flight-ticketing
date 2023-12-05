@@ -92,7 +92,6 @@ class AirportSeeder extends Seeder
             ['name' => 'Bandar Udara Pangsuma', 'IATA' => 'PSU', 'city_id' => 112, 'timezone' => 7],
             ['name' => 'Bandar Udara Paser (Tanah Grogot)', 'IATA' => 'TNB', 'city_id' => 113, 'timezone' => 7],
         ];
-
         DB::table('airports')->insert($indonesia_airports);
     }
 }

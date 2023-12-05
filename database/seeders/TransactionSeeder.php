@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Transaction;
 use Illuminate\Database\Seeder;
+use App\Models\Transaction;
+use Faker\Factory as Faker;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
 
 class TransactionSeeder extends Seeder
 {
