@@ -17,6 +17,7 @@ use Database\Seeders\ProvinceSeeder;
 use Database\Seeders\PassengerSeeder;
 use Database\Seeders\TransactionSeeder;
 use Database\Seeders\FacilityPassengerSeeder;
+use Database\Seeders\PromotionTableSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -50,9 +51,10 @@ class DatabaseSeeder extends Seeder
             RouteSeeder::class,
             TicketSeeder::class,
             FacilitySeeder::class,
-            PassengerSeeder::class,
-            FacilityPassengerSeeder::class,
-            TransactionSeeder::class,
+            // PassengerSeeder::class,
+            // FacilityPassengerSeeder::class,
+            // TransactionSeeder::class,
+            PromotionTableSeeder::class,
         ]);
     }
 }

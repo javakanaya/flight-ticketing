@@ -72,9 +72,13 @@ class AdminRoutesController extends Controller
         // Create seats for each class
         $seat = Seat::create([
             'first' => $request->input('first_class_price') > 0 ? $request->input('first_class_seat_count') : 0,
+            'first_original' => $request->input('first_class_price') > 0 ? $request->input('first_class_seat_count') : 0,
             'business' => $request->input('business_price') > 0 ? $request->input('business_seat_count') : 0,
+            'business_original' => $request->input('business_price') > 0 ? $request->input('business_seat_count') : 0,
             'premium_economy' => $request->input('premium_economy_price') > 0 ? $request->input('premium_economy_seat_count') : 0,
+            'premium_economy_original' => $request->input('premium_economy_price') > 0 ? $request->input('premium_economy_seat_count') : 0,
             'economy' => $request->input('economy_price') > 0 ? $request->input('economy_seat_count') : 0,
+            'economy_original' => $request->input('economy_price') > 0 ? $request->input('economy_seat_count') : 0,
         ]);
 
         // Create a new route
