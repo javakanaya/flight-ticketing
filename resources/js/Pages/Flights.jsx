@@ -71,7 +71,7 @@ const Flights = ({
                                     value={classType}
                                     checked={selectedClasses.includes(parseInt(classType, 10))}
                                     onChange={() => handleClassCheckboxChange(parseInt(classType, 10))}
-                                    className='rounded-md focus:bg-[#60cff4]'
+                                    className='rounded-md'
                                 />
                                 <label className="mr-2 ml-1">{classTypes[classType]}</label>
                             </div>
