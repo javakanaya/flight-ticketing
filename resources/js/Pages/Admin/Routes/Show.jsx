@@ -4,7 +4,7 @@ import React from "react";
 import { Link, Head } from "@inertiajs/react";
 
 
-const PriceCard = ({ title, quantity, price }) => {
+const PriceCard = ({ title, price, seatsLeft, seatsSold, totalSeats }) => {
     const formattedPrice = price
         ? new Intl.NumberFormat("id-ID", {
               style: "currency",
@@ -16,8 +16,10 @@ const PriceCard = ({ title, quantity, price }) => {
         <div className="mb-4 bg-white border p-4 rounded-md shadow-md">
             <h3 className="text-lg font-medium text-gray-900">{title}</h3>
             <p className="mt-1 text-sm text-gray-600">
-                Quantity: {quantity} <br />
-                Price: {formattedPrice}
+                Price: {formattedPrice} <br />
+                Total Seats: {totalSeats} <br />
+                Seats Left: {seatsLeft} <br />
+                Seats Sold: {seatsSold} 
             </p>
         </div>
     );
@@ -148,7 +150,9 @@ const Show = ({
                                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                                     <PriceCard
                                         title="First Class"
-                                        quantity={flightRoute.seat_conf.first}
+                                        seatsLeft={flightRoute.seat_conf.first}
+                                        seatsSold={flightRoute.seat_conf.first_original - flightRoute.seat_conf.first}
+                                        totalSeats={flightRoute.seat_conf.first_original}
                                         price={
                                             firstClassTickets
                                                 ? firstClassTickets.price
@@ -157,9 +161,9 @@ const Show = ({
                                     />
                                     <PriceCard
                                         title="Business Class"
-                                        quantity={
-                                            flightRoute.seat_conf.business
-                                        }
+                                        seatsLeft={flightRoute.seat_conf.business}
+                                        seatsSold={flightRoute.seat_conf.business_original - flightRoute.seat_conf.business}
+                                        totalSeats={flightRoute.seat_conf.business_original}
                                         price={
                                             businessClassTickets
                                                 ? businessClassTickets.price
@@ -168,10 +172,9 @@ const Show = ({
                                     />
                                     <PriceCard
                                         title="Premium Economy"
-                                        quantity={
-                                            flightRoute.seat_conf
-                                                .premium_economy
-                                        }
+                                        seatsLeft={flightRoute.seat_conf.premium_economy}
+                                        seatsSold={flightRoute.seat_conf.premium_economy_original - flightRoute.seat_conf.premium_economy}
+                                        totalSeats={flightRoute.seat_conf.premium_economy_original}
                                         price={
                                             premiumEconomyTickets
                                                 ? premiumEconomyTickets.price
@@ -180,7 +183,9 @@ const Show = ({
                                     />
                                     <PriceCard
                                         title="Economy"
-                                        quantity={flightRoute.seat_conf.economy}
+                                        seatsLeft={flightRoute.seat_conf.economy}
+                                        seatsSold={flightRoute.seat_conf.economy_original - flightRoute.seat_conf.economy}
+                                        totalSeats={flightRoute.seat_conf.economy_original}
                                         price={
                                             economyTickets
                                                 ? economyTickets.price

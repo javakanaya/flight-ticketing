@@ -15,9 +15,13 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->integer('first');
+            $table->integer('first_original');
             $table->integer('business');
+            $table->integer('business_original');
             $table->integer('premium_economy');
+            $table->integer('premium_economy_original');
             $table->integer('economy');
+            $table->integer('economy_original');
         });
     }
 

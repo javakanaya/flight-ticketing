@@ -51,9 +51,9 @@ class DatabaseSeeder extends Seeder
             RouteSeeder::class,
             TicketSeeder::class,
             FacilitySeeder::class,
-            PassengerSeeder::class,
-            FacilityPassengerSeeder::class,
-            TransactionSeeder::class,
+            // PassengerSeeder::class,
+            // FacilityPassengerSeeder::class,
+            // TransactionSeeder::class,
             PromotionTableSeeder::class,
         ]);
     }

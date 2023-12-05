@@ -16,7 +16,16 @@ class TicketSeeder extends Seeder
     public function run()
     {
         for ($i = 1; $i <= 500; $i++) {
-            Ticket::factory()->create(['route_id' => $i]);
+            Ticket::factory()->create(['route_id' => $i, 'class' => 4]);
+        }
+        for ($i = 1; $i <= 500; $i++) {
+            Ticket::factory()->create(['route_id' => $i, 'class' => 3]);
+        }
+        for ($i = 1; $i <= 500; $i++) {
+            Ticket::factory()->create(['route_id' => $i, 'class' => 2]);
+        }
+        for ($i = 1; $i <= 500; $i++) {
+            Ticket::factory()->create(['route_id' => $i, 'class' => 1]);
         }
     }
 }

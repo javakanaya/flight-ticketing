@@ -14,6 +14,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\Admin\AdminUsersController;
 use App\Http\Controllers\Admin\AdminRoutesController;
 use App\Http\Controllers\Admin\AdminAirlinesController;
+use App\Http\Controllers\Admin\AdminTransactionsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,7 +65,19 @@ Route::middleware(['auth', 'admin'])->group(function () {
         ]
     ]);
 
-    Route::get('/admin/transaction', [AdminController::class, 'index'])->name('admin.transactions');
+    // Route::get('/admin/transaction', [AdminController::class, 'index'])->name('admin.transactions');
+
+    Route::resource('/admin/transaction', AdminTransactionsController::class, [
+        'names' => [
+            'index' => 'admin.transactions',
+            'show' => 'admin.transactions.show',
+            'create' => 'admin.transactions.create',
+            'store' => 'admin.transactions.store',
+            'edit' => 'admin.transactions.edit',
+            'update' => 'admin.transactions.update',
+            'destroy' => 'admin.transactions.destroy'
+        ]
+    ]);
 
     Route::resource('/admin/users', AdminUsersController::class, [
         'names' => [

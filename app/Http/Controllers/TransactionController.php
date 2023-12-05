@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\ProcessTransactionCancelation;
+use App\Models\Seat;
 use Inertia\Inertia;
 use App\Models\Ticket;
 use App\Models\Country;
@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use App\Jobs\ProcessTransactionPayment;
+use App\Jobs\ProcessTransactionCancelation;
 
 class TransactionController extends Controller
 {
@@ -64,14 +65,15 @@ class TransactionController extends Controller
     public function storeTransaction(Request $request)
     {
         $data = $request->input('data');
-        // dd($data);
-        // Get the facilities and travellers arrays
+
         $facilities = $data['facilities'];
         $travellers = $data['travellers'];
 
+        $selectedTicket = Ticket::findOrFail($data['priceBar'][0]['id']);
+        $ticketClass = $selectedTicket->class;
 
         // Calculate total price based on ticket price, assurance, and facilities
-        $ticketPrice = (Ticket::findOrFail($data['priceBar'][0]['id'])->price) * count($travellers);
+        $ticketPrice = ($selectedTicket->price) * count($travellers);
         $assurancePrice = (($data['priceBar'][1]['name'] !== null ? 1 : 0) * 100000) * count($travellers);
         $travelAssurancePrice = (($data['priceBar'][2]['name'] !== null ? 1 : 0) * 100000) * count($travellers);
 
@@ -83,8 +85,7 @@ class TransactionController extends Controller
 
         // Calculate total price
         $totalPrice = $ticketPrice + $assurancePrice + $travelAssurancePrice + $facilitiesPrice;
-        // dd($totalPrice, $ticketPrice, $assurancePrice, $travelAssurancePrice,  $facilitiesPrice);
-        // dd($totalPrice);
+
 
         // Create a new transaction record
         $transaction = Transaction::create([
@@ -97,7 +98,26 @@ class TransactionController extends Controller
             'is_delay_assurance' => $data['priceBar'][2]['name'] !== null,
         ]);
 
-        // dd($data);
+        // Update seats count for the selected class
+        $seats = Seat::find($selectedTicket->route->seat_id);
+        switch ($ticketClass) {
+            case 1:
+                $seats->first -= count($travellers);
+                break;
+            case 2:
+                $seats->business -= count($travellers);
+                break;
+            case 3:
+                $seats->premium_economy -= count($travellers);
+                break;
+            case 4:
+                $seats->economy -= count($travellers);
+                break;
+            // Add more cases if you have more classes
+        }
+        $seats->save();
+        
+
         // Iterate through the facilities and associate them with passengers
         foreach ($travellers as $index => $passenger) {
             $passengerData = $passenger; // Convert the passenger model to an array
@@ -109,7 +129,7 @@ class TransactionController extends Controller
                 'first_name' => $passengerData['first_name'],
                 'last_name' => $passengerData['last_name'],
                 'transaction_id' => $transaction->id,
-        ]);
+            ]);
             // dd($updatedPassenger);
             // Check if $facilities is not empty and if the index exists in $facilities
             if (!empty($facilities) && array_key_exists($index, $facilities)) {
