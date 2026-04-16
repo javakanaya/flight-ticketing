@@ -93,10 +93,11 @@ class AdminUsersController extends Controller
     {
         try {
             $user->delete();
+
             return redirect()->route('admin.users')->with('success', 'User deleted successfully');
         } catch (\Exception $e) {
             // Handle the exception, e.g., display a warning that the user cannot be deleted
-            return redirect()->back()->with('error', 'Failed to delete user: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to delete user: '.$e->getMessage());
         }
     }
 }

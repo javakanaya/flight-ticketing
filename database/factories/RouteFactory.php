@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Route;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Route>
+ * @extends Factory<Route>
  */
 class RouteFactory extends Factory
 {
@@ -24,7 +25,6 @@ class RouteFactory extends Factory
         do {
             $destinationAirportId = $this->faker->numberBetween(1, 76);
         } while ($destinationAirportId === $sourceAirportId);
-
 
         return [
             'departure' => $departureDatetime,

@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Airline;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Airline>
+ * @extends Factory<Airline>
  */
 class AirlineFactory extends Factory
 {

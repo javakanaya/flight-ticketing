@@ -5,19 +5,6 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Database\Seeders\CitySeeder;
-use Database\Seeders\SeatSeeder;
-use Database\Seeders\RouteSeeder;
-use Database\Seeders\TicketSeeder;
-use Database\Seeders\AirlineSeeder;
-use Database\Seeders\AirportSeeder;
-use Database\Seeders\CountrySeeder;
-use Database\Seeders\FacilitySeeder;
-use Database\Seeders\ProvinceSeeder;
-use Database\Seeders\PassengerSeeder;
-use Database\Seeders\TransactionSeeder;
-use Database\Seeders\FacilityPassengerSeeder;
-use Database\Seeders\PromotionTableSeeder;
 
 class DatabaseSeeder extends Seeder
 {

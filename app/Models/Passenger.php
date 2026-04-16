@@ -13,11 +13,13 @@ class Passenger extends Model
 
     protected $guarded = ['id'];
 
-    public function transaction(): BelongsTo {
+    public function transaction(): BelongsTo
+    {
         return $this->belongsTo(Transaction::class);
     }
 
-    public function facilities(): BelongsToMany {
-        return $this->belongsToMany(Facility:: class);
+    public function facilities(): BelongsToMany
+    {
+        return $this->belongsToMany(Facility::class);
     }
 }

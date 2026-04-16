@@ -1,20 +1,17 @@
 <?php
 
-use Inertia\Inertia;
-use App\Jobs\SendEmailNotifications;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\SendPaymentSuccessEmail;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Application;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\TicketController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\TransactionController;
-use App\Http\Controllers\Admin\AdminUsersController;
-use App\Http\Controllers\Admin\AdminRoutesController;
 use App\Http\Controllers\Admin\AdminAirlinesController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AdminRoutesController;
 use App\Http\Controllers\Admin\AdminTransactionsController;
+use App\Http\Controllers\Admin\AdminUsersController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TicketController;
+use App\Http\Controllers\TransactionController;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,8 +46,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
             'store' => 'admin.routes.store',
             'edit' => 'admin.routes.edit',
             'update' => 'admin.routes.update',
-            'destroy' => 'admin.routes.destroy'
-        ]
+            'destroy' => 'admin.routes.destroy',
+        ],
     ]);
 
     Route::resource('/admin/airlines', AdminAirlinesController::class, [
@@ -61,8 +58,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
             'store' => 'admin.airlines.store',
             'edit' => 'admin.airlines.edit',
             'update' => 'admin.airlines.update',
-            'destroy' => 'admin.airlines.destroy'
-        ]
+            'destroy' => 'admin.airlines.destroy',
+        ],
     ]);
 
     // Route::get('/admin/transaction', [AdminController::class, 'index'])->name('admin.transactions');
@@ -75,8 +72,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
             'store' => 'admin.transactions.store',
             'edit' => 'admin.transactions.edit',
             'update' => 'admin.transactions.update',
-            'destroy' => 'admin.transactions.destroy'
-        ]
+            'destroy' => 'admin.transactions.destroy',
+        ],
     ]);
 
     Route::resource('/admin/users', AdminUsersController::class, [
@@ -87,19 +84,18 @@ Route::middleware(['auth', 'admin'])->group(function () {
             'store' => 'admin.users.store',
             'edit' => 'admin.users.edit',
             'update' => 'admin.users.update',
-            'destroy' => 'admin.users.destroy'
-        ]
+            'destroy' => 'admin.users.destroy',
+        ],
     ]);
 });
 
 Route::get('/search', [TicketController::class, 'search'])->name('tickets.search');
 Route::get('/booking', [TransactionController::class, 'show'])->name('bookings.show')->middleware(['auth', 'verified']);
 Route::get('/facilities', [TransactionController::class, 'show'])->name('facilities.add')->middleware(['auth', 'verified']);
-;
+
 Route::post('/transaction', [TransactionController::class, 'storeTransaction'])->name('bookings.store')->middleware(['auth', 'verified']);
-;
+
 Route::post('/store', [TransactionController::class, 'editTransaction'])->name('bookings.edit')->middleware(['auth', 'verified']);
-;
 
 Route::get('/paying', function () {
     return Inertia::render('LoadingScreen');
@@ -118,5 +114,4 @@ Route::get('/flights', function () {
     ]);
 });
 
-
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

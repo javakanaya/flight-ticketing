@@ -6,12 +6,10 @@ use App\Models\Seat;
 use App\Models\Ticket;
 use App\Models\Transaction;
 use Illuminate\Bus\Queueable;
-use App\Jobs\SendEmailNotifications;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class ProcessTransactionCancelation implements ShouldQueue
 {
@@ -21,8 +19,11 @@ class ProcessTransactionCancelation implements ShouldQueue
      * Create a new job instance.
      */
     private $transactionId;
+
     private $userName;
+
     private $appUrl;
+
     private $userEmail;
 
     public function __construct($transactionId, $userName, $appUrl, $userEmail)
@@ -40,7 +41,6 @@ class ProcessTransactionCancelation implements ShouldQueue
     {
         sleep(5);
         $transaction = Transaction::find($this->transactionId);
-
 
         $selectedTicket = Ticket::findOrFail($transaction->ticket_id);
         $ticketClass = $selectedTicket->class;
@@ -60,7 +60,7 @@ class ProcessTransactionCancelation implements ShouldQueue
             case 4:
                 $seats->economy += $transaction->count;
                 break;
-            // Add more cases if you have more classes
+                // Add more cases if you have more classes
         }
         $seats->save();
 

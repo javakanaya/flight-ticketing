@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
 use App\Models\Airport;
-use App\Models\City;
-use Illuminate\Http\Request;
 use App\Services\PromotionServiceInterface;
+use Inertia\Inertia;
 
 class HomeController extends Controller
-{   
+{
     protected $promotionService;
 
     public function __construct(PromotionServiceInterface $promotionService)
@@ -29,6 +27,4 @@ class HomeController extends Controller
             'transactionId' => session('transactionId'),
         ]);
     }
-
-
 }

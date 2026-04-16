@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 // app/Http/Controllers/CardController.php
 
@@ -18,6 +18,7 @@ class PromotionController extends Controller
     public function index()
     {
         $cards = $this->promotionService->getAllPromotion();
+
         return view('cards.index', compact('cards'));
     }
 }

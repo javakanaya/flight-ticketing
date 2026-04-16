@@ -12,7 +12,6 @@ class Ticket extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
-    
 
     public function route(): BelongsTo
     {

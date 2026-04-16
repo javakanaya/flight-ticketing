@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\PromotionService;
+use App\Services\PromotionServiceInterface;
 use Illuminate\Support\ServiceProvider;
 
 class PromotionServiceProvider extends ServiceProvider
@@ -12,8 +14,8 @@ class PromotionServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(
-            \App\Services\PromotionServiceInterface::class,
-            \App\Services\PromotionService::class);
+            PromotionServiceInterface::class,
+            PromotionService::class);
     }
 
     /**

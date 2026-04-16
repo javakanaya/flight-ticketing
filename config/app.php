@@ -1,5 +1,12 @@
 <?php
 
+use App\Providers\AppServiceProvider;
+use App\Providers\AuthServiceProvider;
+use App\Providers\EventServiceProvider;
+use App\Providers\PromotionServiceProvider;
+use App\Providers\RepositoryServiceProvider;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Concurrency\ConcurrencyServiceProvider;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 
@@ -163,14 +170,14 @@ return [
         /*
          * Application Service Providers...
          */
-        App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
+        AppServiceProvider::class,
+        AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
-        App\Providers\RepositoryServiceProvider::class,
-        App\Providers\PromotionServiceProvider::class,
-        Illuminate\Concurrency\ConcurrencyServiceProvider::class,
+        EventServiceProvider::class,
+        RouteServiceProvider::class,
+        RepositoryServiceProvider::class,
+        PromotionServiceProvider::class,
+        ConcurrencyServiceProvider::class,
     ])->toArray(),
 
     /*

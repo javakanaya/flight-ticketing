@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Route;
-use App\Models\Ticket;
-use App\Models\Airport;
 use App\Models\Airline;
+use App\Models\Airport;
+use App\Models\Route;
 use App\Models\Seat;
-use App\Models\Facility;
+use App\Models\Ticket;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -32,7 +31,6 @@ class AdminRoutesController extends Controller
         ]);
     }
 
-
     /**
      * Show the form for creating a new resource.
      */
@@ -40,6 +38,7 @@ class AdminRoutesController extends Controller
     {
         $airports = Airport::all();
         $airlines = Airline::all();
+
         return Inertia::render('Admin/Routes/Create', [
             'airports' => $airports,
             'airlines' => $airlines,
@@ -110,11 +109,10 @@ class AdminRoutesController extends Controller
         $updateOrInsertTicket(2, $request->input('business_price'));
         $updateOrInsertTicket(1, $request->input('first_class_price'));
 
-
         // You can add a response or redirect logic here
 
         return redirect()->route(
-            "admin.routes.show",
+            'admin.routes.show',
             $route->id
         )->with('success', 'Route created successfully, Add facilities via EDIT');
 
@@ -131,7 +129,7 @@ class AdminRoutesController extends Controller
 
         // Find all tickets where route_id matches the id of the route
         $tickets = Ticket::where('route_id', $route->id)->get();
- 
+
         // Split tickets into different classes
         $firstClassTickets = $tickets->where('class', 1)->first();
         $businessClassTickets = $tickets->where('class', 2)->first();
@@ -155,7 +153,7 @@ class AdminRoutesController extends Controller
      */
     public function edit(Route $route)
     {
-        $route->load('airline', 'seat_conf'); 
+        $route->load('airline', 'seat_conf');
 
         $airports = Airport::all();
         $airlines = Airline::all();
@@ -248,17 +246,15 @@ class AdminRoutesController extends Controller
 
         // You can add a response or redirect logic here
         return redirect()->route(
-            "admin.routes.show",
+            'admin.routes.show',
             $route->id
         )->with('success', 'Route updated successfully');
-
 
     }
 
     /**
      * Remove the specified resource from storage.
      */
-
     public function destroy(Route $route)
     {
         // Get the associated ticket IDs for the route
@@ -281,5 +277,4 @@ class AdminRoutesController extends Controller
 
         return redirect()->route('admin.routes')->with('failed', 'Error deleting Route');
     }
-
 }

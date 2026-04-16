@@ -2,15 +2,14 @@
 
 namespace App\Jobs;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\SendPaymentSuccessEmail;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use App\Mail\SendPaymentCancelationEmail;
+use App\Mail\SendPaymentSuccessEmail;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Mail;
 
 class SendEmailNotifications implements ShouldQueue
 {
@@ -20,10 +19,15 @@ class SendEmailNotifications implements ShouldQueue
      * Create a new job instance.
      */
     public $transactionId;
+
     public $type; // 0 succeeded, 1 failed
+
     public $appUrl;
+
     public $userName;
+
     public $userEmail;
+
     public function __construct($transactionId, $type, $appUrl, $userName, $userEmail)
     {
         $this->transactionId = $transactionId;
@@ -32,6 +36,7 @@ class SendEmailNotifications implements ShouldQueue
         $this->userName = $userName;
         $this->userEmail = $userEmail;
     }
+
     /**
      * Execute the job.
      */
@@ -45,7 +50,7 @@ class SendEmailNotifications implements ShouldQueue
 
         if ($this->type === 0) {
             Mail::to($this->userEmail)->send(new SendPaymentSuccessEmail($data));
-        } else if ($this->type === 1) {
+        } elseif ($this->type === 1) {
             Mail::to($this->userEmail)->send(new SendPaymentCancelationEmail($data));
         }
     }

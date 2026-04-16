@@ -25,7 +25,6 @@ class Transaction extends Model
         'is_delay_assurance',
     ];
 
-
     public function ticket(): BelongsTo
     {
         return $this->belongsTo(Ticket::class);

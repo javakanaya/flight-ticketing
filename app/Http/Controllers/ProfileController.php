@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
-use Inertia\Response;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class ProfileController extends Controller
 {
@@ -106,7 +104,7 @@ class ProfileController extends Controller
     public function showTransaction($id)
     {
         // Check if $id is not an integer
-        if (!ctype_digit($id)) {
+        if (! ctype_digit($id)) {
             abort(404);
         }
         $user = auth()->user();
@@ -149,7 +147,7 @@ class ProfileController extends Controller
             )
             ->get()->first();
 
-        if (!$transaction) {
+        if (! $transaction) {
             // Handle the case where the transaction is not found
             abort(404);
         }
@@ -191,4 +189,3 @@ class ProfileController extends Controller
         ]);
     }
 }
-

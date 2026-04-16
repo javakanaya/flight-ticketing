@@ -21,5 +21,4 @@ class Airline extends Model
     {
         return $this->hasMany(Facility::class);
     }
-
 }

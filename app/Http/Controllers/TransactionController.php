@@ -2,24 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Seat;
-use Inertia\Inertia;
-use App\Models\Ticket;
+use App\Jobs\ProcessTransactionCancelation;
+use App\Jobs\ProcessTransactionPayment;
 use App\Models\Country;
 use App\Models\Passenger;
+use App\Models\Seat;
+use App\Models\Ticket;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use App\Http\Controllers\Controller;
-use App\Jobs\ProcessTransactionPayment;
-use App\Jobs\ProcessTransactionCancelation;
+use Inertia\Inertia;
 
 class TransactionController extends Controller
 {
     public function show(Request $request)
     {
         // dd($request['facilities']);
-        
+
         $ticket = Ticket::find($request['ticketId']);
         $countries = Country::all();
 
@@ -38,6 +37,7 @@ class TransactionController extends Controller
 
         // Extract arrival time (hours and minutes)
         $arrivalTime = $arrivalTimestamp->format('H:i');
+
         return Inertia::render($request['routeTo'], [
             'ticketId' => $ticket->id,
             'source_city' => $ticket->route->source_airport->city->name,
@@ -84,7 +84,6 @@ class TransactionController extends Controller
         // Calculate total price
         $totalPrice = $ticketPrice + $assurancePrice + $travelAssurancePrice + $facilitiesPrice;
 
-
         // Create a new transaction record
         $transaction = Transaction::create([
             'count' => count($travellers),
@@ -111,15 +110,13 @@ class TransactionController extends Controller
             case 4:
                 $seats->economy -= count($travellers);
                 break;
-            // Add more cases if you have more classes
+                // Add more cases if you have more classes
         }
         $seats->save();
-        
 
         // Iterate through the facilities and associate them with passengers
         foreach ($travellers as $index => $passenger) {
             $passengerData = $passenger; // Convert the passenger model to an array
-
 
             // Create the updated passenger with transaction_id
             $updatedPassenger = Passenger::create([
@@ -130,7 +127,7 @@ class TransactionController extends Controller
             ]);
             // dd($updatedPassenger);
             // Check if $facilities is not empty and if the index exists in $facilities
-            if (!empty($facilities) && array_key_exists($index, $facilities)) {
+            if (! empty($facilities) && array_key_exists($index, $facilities)) {
                 $facility = $facilities[$index];
                 $facilityId = $facility['id'];
                 $isChecked = $facility['isChecked'];
@@ -148,9 +145,7 @@ class TransactionController extends Controller
         return redirect()->route('home')->with(['showTransactionMessage' => true, 'transactionId' => $transaction->id]);
     }
 
-
-
-    public function payTransaction(request $request)
+    public function payTransaction(Request $request)
     {
         $id = intval($request->input('id'));
         // Retrieve the transaction by ID
@@ -171,13 +166,11 @@ class TransactionController extends Controller
             'content' => 'Payment process initiated',
         ]);
 
-
         // Redirect back to the booking details page
         return redirect()->route('profile.transaction.detail', ['id' => $id]);
     }
 
-
-    public function cancelTransaction(request $request)
+    public function cancelTransaction(Request $request)
     {
         $id = intval($request->input('id'));
 
@@ -199,10 +192,8 @@ class TransactionController extends Controller
             'content' => 'Cancelation process initiated',
         ]);
 
-
         // Redirect back to the booking details page
         return redirect()->route('profile.transaction.detail', ['id' => $id]);
 
     }
-
 }

@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Ticket;
-use Database\Factories\TicketFactory;
 use Illuminate\Database\Seeder;
 
 class TicketSeeder extends Seeder

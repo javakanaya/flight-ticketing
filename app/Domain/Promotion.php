@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 // app/Domain/Card.php
 
 namespace App\Domain;
@@ -6,7 +7,9 @@ namespace App\Domain;
 class Promotion
 {
     public $imageUrl;
+
     public $title;
+
     public $caption;
 
     public function __construct($imageUrl, $title, $caption)

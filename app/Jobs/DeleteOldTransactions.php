@@ -2,16 +2,14 @@
 
 namespace App\Jobs;
 
+use App\Models\Transaction;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Transaction;
 use Illuminate\Support\Facades\Log;
-use Carbon\Carbon;
-
 
 class DeleteOldTransactions implements ShouldQueue
 {

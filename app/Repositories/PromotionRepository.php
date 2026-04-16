@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Repositories\PromotionRepositoryInterface;
 use App\Models\Promotion;
 
 class PromotionRepository implements PromotionRepositoryInterface
@@ -12,4 +11,3 @@ class PromotionRepository implements PromotionRepositoryInterface
         return Promotion::all();
     }
 }
-

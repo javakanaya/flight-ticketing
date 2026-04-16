@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Airline;
 use App\Models\Airport;
-use App\Models\Facility;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -23,8 +22,8 @@ class TicketController extends Controller
 
     public function search(Request $request)
     {
-        // Handle default values if no input provided  
-        if (!$request->input()) {
+        // Handle default values if no input provided
+        if (! $request->input()) {
             // Set default values
             $sourceAirportId = 1;
             $destinationAirportId = 2;
@@ -53,7 +52,6 @@ class TicketController extends Controller
         $classTypes = [1 => 'first', 2 => 'business', 3 => 'premium_economy', 4 => 'economy'];
         // $classType = $classTypes[$classNum] ?? 'economy';
 
-
         // Retrieve all tickets based on the input
         $allTicket = DB::table('tickets')
             ->select('tickets.id', 'tickets.price', 'routes.departure', 'routes.arrival', 'routes.airline_id', 'routes.seat_id', 'tickets.class')
@@ -63,10 +61,10 @@ class TicketController extends Controller
             ->join('seats', 'routes.seat_id', '=', 'seats.id')
             ->whereDate('routes.departure', $departureDate)
             ->where(function ($query) use ($classTypes, $countTicket) {
-                $query->orWhere('seats.' . $classTypes[1], '>', $countTicket) // first class
-                    ->orWhere('seats.' . $classTypes[2], '>', $countTicket) // business class
-                    ->orWhere('seats.' . $classTypes[3], '>', $countTicket) // premium economy class
-                    ->orWhere('seats.' . $classTypes[4], '>', $countTicket); // economy class
+                $query->orWhere('seats.'.$classTypes[1], '>', $countTicket) // first class
+                    ->orWhere('seats.'.$classTypes[2], '>', $countTicket) // business class
+                    ->orWhere('seats.'.$classTypes[3], '>', $countTicket) // premium economy class
+                    ->orWhere('seats.'.$classTypes[4], '>', $countTicket); // economy class
             })
             ->get();
 
@@ -92,9 +90,9 @@ class TicketController extends Controller
             $ticket->airline = Airline::select('name')->find($ticket->airline_id);
 
             $ticket->facilities = DB::table('facilities')
-            ->select('facilities.id', 'facilities.name', 'facilities.price')
-            ->where('facilities.airline_id', '=', $ticket->airline_id)
-            ->get();
+                ->select('facilities.id', 'facilities.name', 'facilities.price')
+                ->where('facilities.airline_id', '=', $ticket->airline_id)
+                ->get();
 
         }
 
@@ -103,7 +101,6 @@ class TicketController extends Controller
             ->sortBy('price')
             ->values()
             ->all();
-        
 
         return Inertia::render('Flights', [
             'sourceAirport' => $sourceAirport,
@@ -114,7 +111,6 @@ class TicketController extends Controller
             'infantCount' => $validatedRequest['infantCount'] ?? 0,
         ]);
     }
-
 
     /**
      * Show the form for creating a new resource.

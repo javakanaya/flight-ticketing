@@ -1,11 +1,10 @@
-<?php 
+<?php
+
 // app/Services/PromotionService.php
 
 namespace App\Services;
 
 use App\Repositories\PromotionRepositoryInterface;
-
-use App\Services\PromotionServiceInterface;
 
 class PromotionService implements PromotionServiceInterface
 {
