@@ -1,6 +1,5 @@
 // resources/js/Pages/Users/Create.jsx
 import AdminLayout from "@/Layouts/AdminLayout";
-import { Inertia } from "@inertiajs/inertia";
 import { useForm } from "@inertiajs/react";
 import { Link } from "@inertiajs/react";
 

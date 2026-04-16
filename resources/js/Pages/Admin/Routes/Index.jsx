@@ -1,12 +1,11 @@
 // resources/js/Pages/Products/Index.jsx
 import AdminLayout from "@/Layouts/AdminLayout";
-import { Link, Head } from "@inertiajs/react";
-import { Inertia } from "@inertiajs/inertia";
+import { Link, Head, router } from "@inertiajs/react";
 import React from "react";
 
 const Index = ({ flightRoutes, auth, success, errors }) => {
     const deleteRoute = async (id) => {
-        Inertia.delete(`/admin/routes/${id}`);
+        router.delete(`/admin/routes/${id}`);
     };
 
     const [confirmDelete, setConfirmDelete] = React.useState(false);
@@ -28,24 +27,36 @@ const Index = ({ flightRoutes, auth, success, errors }) => {
         setConfirmDelete(false);
     };
 
-    const renderPaginationLink = (link, index) => (
-        <Link
-            key={index}
-            href={link.url}
-            dangerouslySetInnerHTML={{ __html: link.label }}
-            className={`flex items-center justify-center px-3 h-8 ${
-                link.active
-                    ? "text-blue-600 bg-blue-50 hover:bg-blue-100"
-                    : "text-gray-500 bg-white hover:bg-gray-100"
-            } border border-gray-300 ${
-                index === 0
-                    ? "rounded-s-lg"
-                    : index === flightRoutes.links.length - 1
-                    ? "rounded-e-lg"
-                    : ""
-            }`}
-        />
-    );
+    const renderPaginationLink = (link, index) => {
+        const className = `flex items-center justify-center px-3 h-8 ${
+            link.active
+                ? "text-blue-600 bg-blue-50 hover:bg-blue-100"
+                : "text-gray-500 bg-white hover:bg-gray-100"
+        } border border-gray-300 ${
+            index === 0
+                ? "rounded-s-lg"
+                : index === flightRoutes.links.length - 1
+                ? "rounded-e-lg"
+                : ""
+        }`;
+        if (!link.url) {
+            return (
+                <span
+                    key={index}
+                    dangerouslySetInnerHTML={{ __html: link.label }}
+                    className={`${className} cursor-not-allowed opacity-50`}
+                />
+            );
+        }
+        return (
+            <Link
+                key={index}
+                href={link.url}
+                dangerouslySetInnerHTML={{ __html: link.label }}
+                className={className}
+            />
+        );
+    };
 
     const RenderPagination = () => (
         <nav aria-label="">

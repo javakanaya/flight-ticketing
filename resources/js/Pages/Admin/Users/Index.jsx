@@ -1,12 +1,11 @@
 // resources/js/Pages/Users/Index.jsx
 import AdminLayout from "@/Layouts/AdminLayout";
-import { Link, Head } from "@inertiajs/react";
-import { Inertia } from "@inertiajs/inertia";
+import { Link, Head, router } from "@inertiajs/react";
 
 const Index = ({ users, auth, success, errors }) => {
     const deleteUser = async (id) => {
         try {
-            await Inertia.delete(`/admin/users/${id}`);
+            router.delete(`/admin/users/${id}`);
             // Handle success, e.g., show a success toast
         } catch (error) {
             // Handle errors, e.g., show an error toast

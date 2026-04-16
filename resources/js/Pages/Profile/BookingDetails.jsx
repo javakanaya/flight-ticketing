@@ -2,7 +2,6 @@ import React from "react";
 import { Link, Head, router } from "@inertiajs/react";
 import ProfileLayout from "@/Layouts/ProfileLayout";
 import { useState } from "react";
-import { Inertia } from "@inertiajs/inertia";
 
 function capitalizeCity(city) {
     return city

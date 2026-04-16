@@ -5,24 +5,36 @@ import { Link, Head } from "@inertiajs/react";
 const Index = ({ transactions, auth }) => {
     console.log(transactions);
 
-    const renderPaginationLink = (link, index) => (
-        <Link
-            key={index}
-            href={link.url}
-            dangerouslySetInnerHTML={{ __html: link.label }}
-            className={`flex items-center justify-center px-3 h-8 ${
-                link.active
-                    ? "text-blue-600 bg-blue-50 hover:bg-blue-100"
-                    : "text-gray-500 bg-white hover:bg-gray-100"
-            } border border-gray-300 ${
-                index === 0
-                    ? "rounded-s-lg"
-                    : index === transactions.links.length - 1
-                    ? "rounded-e-lg"
-                    : ""
-            }`}
-        />
-    );
+    const renderPaginationLink = (link, index) => {
+        const className = `flex items-center justify-center px-3 h-8 ${
+            link.active
+                ? "text-blue-600 bg-blue-50 hover:bg-blue-100"
+                : "text-gray-500 bg-white hover:bg-gray-100"
+        } border border-gray-300 ${
+            index === 0
+                ? "rounded-s-lg"
+                : index === transactions.links.length - 1
+                ? "rounded-e-lg"
+                : ""
+        }`;
+        if (!link.url) {
+            return (
+                <span
+                    key={index}
+                    dangerouslySetInnerHTML={{ __html: link.label }}
+                    className={`${className} cursor-not-allowed opacity-50`}
+                />
+            );
+        }
+        return (
+            <Link
+                key={index}
+                href={link.url}
+                dangerouslySetInnerHTML={{ __html: link.label }}
+                className={className}
+            />
+        );
+    };
 
     const RenderPagination = () => (
         <nav aria-label="">

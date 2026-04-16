@@ -1,12 +1,11 @@
 import AdminLayout from "@/Layouts/AdminLayout";
-import { Link, Head } from "@inertiajs/react";
-import { Inertia } from "@inertiajs/inertia";
+import { Link, Head, router } from "@inertiajs/react";
 import React from "react";
 
 const Index = ({ airlines, auth, success, errors }) => {
     const deleteAirline = async (id) => {
         try {
-            await Inertia.delete(`/admin/airlines/${id}`);
+            router.delete(`/admin/airlines/${id}`);
             // Handle success, e.g., show a success toast
         } catch (error) {
             // Handle errors, e.g., show an error toast
